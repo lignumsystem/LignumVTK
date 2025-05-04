@@ -30,6 +30,16 @@ In the command line type:
 	
 Upload *outputfile.vtpc* to Paraview and finish the editing for final visualization.
 
+## Software documentation
+LignumVTK files are commented for Doxygen:
+
+	doxygen Doxyfile
+	
+Open the HTML index file, for example on macOS Terminal type:
+
+	open DoxygenDoc/html/index.html
+	
+
 ## Notes
 This is work under progress. Currently broadleaved Lignum trees with kite shaped leaves
 can be tentatively operated.
