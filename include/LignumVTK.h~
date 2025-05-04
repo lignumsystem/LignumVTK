@@ -1,0 +1,29 @@
+#ifndef LIGNUMVTK_H
+#define LIGNUMVTK_H
+#include <vtkCollection.h>
+#include <vtkDoubleArray.h>
+#include <vtkPointData.h>
+#include <vtkCellData.h>
+#include <vtkLineSource.h>
+#include <vtkLine.h>
+
+#include <vtkActor.h>
+#include <vtkGlyph3DMapper.h>
+#include <vtkNamedColors.h>
+#include <vtkNew.h>
+#include <vtkParametricFunctionSource.h>
+#include <vtkParametricSpline.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkRenderer.h>
+#include <vtkSphereSource.h>
+
+#include <vtkTubeFilter.h>
+#include <vtkMultiBlockDataSet.h>
+#include <vtkRenderer.h>
+#include <vtkXMLMultiBlockDataWriter.h>
+#endif

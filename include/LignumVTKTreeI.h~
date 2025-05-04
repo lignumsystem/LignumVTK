@@ -1,0 +1,68 @@
+#ifndef LIGNUMVTK_TREE_I_H
+#define LIGNUMVTK_TREE_I_H
+namespace lignumvtk{
+
+  template <class TS, class BUD>
+  TSDataVector& CollectTSData<TS,BUD>::operator()(TSDataVector& v, TreeCompartment<TS,BUD>* tc)const
+    {
+
+      if (BUD* b = dynamic_cast<BUD*>(tc)){
+	//Create new tree segment data collection item
+	TSData data;
+	Point p = GetPoint(*b);
+	//The last end point in the segment points in this branch
+	data.vpoints.insert(data.vpoints.begin(),p);
+	//Corresponding segment length, radius and heartwood radius
+	data.vL.insert(data.vL.begin(),0.0);
+	data.vR.insert(data.vR.begin(),MIN_SEGMENT_RADIUS);
+	data.vRh.insert(data.vRh.begin(),MIN_SEGMENT_RADIUS);
+	data.vname.insert(data.vname.begin(),TUBE_RADIUS_SCALAR);
+	v.push_back(data);
+      }
+      if (TS* ts = dynamic_cast<TS*>(tc)){
+	//Collect data of interest
+	Point p = GetPoint(*ts);
+	double l = GetValue(*ts,LGAL);
+	double r = GetValue(*ts,LGAR);
+	double rh = GetValue(*ts,LGARh);
+	//Insert the point 
+	v[0].vpoints.insert(v[0].vpoints.begin(),p);
+	//Corresponding segment length, radius and heartwood radius
+	v[0].vL.insert(v[0].vL.begin(),l);
+	v[0].vR.insert(v[0].vR.begin(),r);
+	v[0].vRh.insert(v[0].vRh.begin(),rh);
+	v[0].vname.insert(v[0].vname.begin(),TUBE_RADIUS_SCALAR);
+      }
+      return v;
+    }
+
+  template <class TS, class BUD,class S>
+  TSDataVector& CollectPetioleData<TS,BUD,S>::operator()(TSDataVector& v, TreeCompartment<TS,BUD>* tc)const
+  {
+    if (TS* ts = dynamic_cast<TS*>(tc)){
+	if (GetNumberOfLeaves(*ts) != 0){
+	  std::list<BroadLeaf<S>*>& ls = GetLeafList(*ts);
+	  for (auto it=ls.begin();it != ls.end();it++){
+	    //Each petiole will be independent with two points and radius
+	    TSData data;
+	    BroadLeaf<S>* leaf = *it;
+	    const Petiole& petiole = GetPetiole(*leaf);
+	    Point p1 = GetStartPoint(petiole);
+	    Point p2 = GetEndPoint(petiole);
+	    //Petiole points
+	    data.vpoints.push_back(p1);
+	    data.vpoints.push_back(p2);
+	    //Two points need two radii for point data
+	    data.vR.push_back(LINE_WIDTH);
+	    data.vR.push_back(LINE_WIDTH);
+	    data.vname.push_back(LINE_WIDTH_SCALAR);
+	    data.vname.push_back(LINE_WIDTH_SCALAR);
+	    v.push_back(data);
+	  }
+	}
+    }
+    //The result is a list of TSData elements 
+    return v;
+  }
+}
+#endif

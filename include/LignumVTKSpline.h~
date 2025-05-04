@@ -1,0 +1,10 @@
+#ifndef LIGNUMVTK_SPLINE_H
+#define LIGNUMVTP_SPLINE_H
+
+class LignumVTKSpline{
+public:
+private:
+  vtkNew<vtkXMLMultiBlockDataWriter> writer;
+};
+
+#endif
