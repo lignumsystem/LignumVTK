@@ -16,6 +16,8 @@ not in working order.
 ## Building LignumVTK
 Use CMake to compile:
 	
+	mkdir release
+	cd release
 	cmake .. -DCMAKE_BUILD_TYPE=Release
 	make install
 
