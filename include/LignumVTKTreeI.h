@@ -101,37 +101,43 @@ namespace lignumvtk{
   template<typename TREE>
   LignumToVTK& LignumToVTK::createBroadLeafTreeVTKDataSets(TREE& t, bool add_to_renderer)
   {
-      TSDataVector tsv;
-      tsv = treeToTSData(t,tsv);
-      TSDataVector pv;
-      pv = treeToPetioleData(t,pv);
-      TSDataVector lv;
-      lv = treeToKiteLeafData(t,lv);
+    //Data collection from the tree
+    TSDataVector tsv;
+    tsv = treeToTSData(t,tsv);
+    TSDataVector pv;
+    pv = treeToPetioleData(t,pv);
+    TSDataVector lv;
+    lv = treeToKiteLeafData(t,lv);
 
-       PFSVector sv;
-       sv = vtkPointsToVtkSpline(tsv,sv);
-       sv = createTubeRadiusScalars(tsv,sv);
-       TubeFilterVector tfv;
-       tfv = createTubeFilters(sv,tfv);
-       TubeMapperVector tmv;
-       tmv = createTubeMappers(tfv,tmv);
-       
-       TubeActorVector tav;
-       tav = createTubeActors(tmv,tav);
-       LeafActorVector lav;
-       lav = createKiteLeafActors(lv,lav);
-       LineActorVector lineav;
-       lineav = createLineActors(pv,lineav);
+    //VTK geometric objects for tree segments 
+    PFSVector sv;
+    sv = vtkPointsToVtkSpline(tsv,sv);
+    sv = createTubeRadiusScalars(tsv,sv);
+    TubeFilterVector tfv;
+    tfv = createTubeFilters(sv,tfv);
+    TubeMapperVector tmv;
+    tmv = createTubeMappers(tfv,tmv);
 
-       addPartitionedDataSet(tav);
-       addPartitionedDataSet(lav);
-       addPartitionedDataSet(lineav);
-       if (add_to_renderer == true){
-	 addActorsToRenderer(tav);
-	 addActorsToRenderer(lav);
-	 addActorsToRenderer(lineav);
-       }
-       return *this;
+    //VTK actors for tree segments, leaves an petioles.
+    //Leaf and petiole actor construction creates also
+    //corresponding geometric objects
+    TubeActorVector tav;
+    tav = createTubeActors(tmv,tav);
+    LeafActorVector lav;
+    lav = createKiteLeafActors(lv,lav);
+    LineActorVector lineav;
+    lineav = createLineActors(pv,lineav);
+
+    //Add datasets to dataset collection
+    addPartitionedDataSet(tav,TREE_SEGMENT_BLOCK);
+    addPartitionedDataSet(lav,LEAF_BLOCK);
+    addPartitionedDataSet(lineav,PETIOLE_BLOCK);
+    if (add_to_renderer == true){
+      addActorsToRenderer(tav);
+      addActorsToRenderer(lav);
+      addActorsToRenderer(lineav);
+    }
+    return *this;
   }
 
   template<typename TREE>

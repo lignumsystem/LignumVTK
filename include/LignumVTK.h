@@ -2,6 +2,7 @@
 #define LIGNUMVTK_H
 #include <vtkNew.h>
 #include <vtkProperty.h>
+#include <vtkInformation.h>
 #include <vtkNamedColors.h>
 #include <vtkCollection.h>
 #include <vtkDoubleArray.h>

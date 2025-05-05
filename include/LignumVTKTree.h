@@ -132,7 +132,15 @@ namespace lignumvtk{
   ///\ingroup VTKconstants
   ///\brief VTK MultiBlockDataSet file extension
   const std::string VTM_EXTENSION=".vtm";
-  
+  ///\ingroup VTKconstants
+  ///\brief VTK DataSet block name for tree segments 
+  const std::string TREE_SEGMENT_BLOCK="TreeSegmentBlock";
+  ///\ingroup VTKconstants
+  ///\brief VTK DataSet block name for leaves
+  const std::string LEAF_BLOCK="LeafBlock";
+  ///\ingroup VTKconstants
+  ///\brief VTK DataSet block name for petioles
+  const std::string PETIOLE_BLOCK="PetioleBlock";
   
   ///\brief Data to be collected from tree segments.
   ///
@@ -450,10 +458,11 @@ namespace lignumvtk{
     ///\brief Set coloring for an VTK actor
     ///\param color Color name available in VTK
     LignumToVTK& setActorColor(const string& color);
-    ///\brief Add vector \p v of actors as to VTK partitioned data set collection
+    ///\brief Add vector \p v of actors to \p dataset_collection as VTK partitioned data set block
     ///\param v Vector of actors
+    ///\param block_name Name of the dataset block, visible in ParaView
     ///\sa LignumVTK::dataset_collection
-    LignumToVTK& addPartitionedDataSet(VTKActorVector& v);
+    LignumToVTK& addPartitionedDataSet(VTKActorVector& v, const string& block_name);
     ///\brief Populate VTK multiblock data set with actors
     ///\param v Vector of actors
     ///\note The use of VTK MultiBlockDataSets is discouraged, use VTK ParitionedDataSets instead.

@@ -262,7 +262,7 @@ namespace lignumvtk{
     return *this;
   }
   
-  LignumToVTK& LignumToVTK::addPartitionedDataSet(VTKActorVector& v)
+  LignumToVTK& LignumToVTK::addPartitionedDataSet(VTKActorVector& v,const string& block_name)
   {
     cout << "Adding ParitionedDataSet with " << v.size() << " actors" << endl;
     vtkNew<vtkPartitionedDataSet> dataset_new;
@@ -274,6 +274,8 @@ namespace lignumvtk{
     }
     int partitions = this->dataset_collection->GetNumberOfPartitionedDataSets();    
     this->dataset_collection->SetPartitionedDataSet(partitions,dataset_new);
+    //Technique to give name to the dataset block
+    this->dataset_collection->GetMetaData(static_cast<unsigned int>(partitions))->Set(vtkPartitionedDataSet::NAME(),block_name);
     return *this;
   }
 
