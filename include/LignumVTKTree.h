@@ -14,6 +14,7 @@ namespace lignumvtk{
 
   class TreeSegmentDataCollection;
   class VTKBud;
+  class VTKCfBud;
   
   ///\brief VKTHwSegment tree segment for LignumVKT project.
   ///
@@ -34,6 +35,25 @@ namespace lignumvtk{
 
   };
 
+  ///\brief VKTCfSegment tree segment for LignumVKT project.
+  ///
+  ///Currently HwTreeSegment with Kite leaf.
+  class VTKCfSegment: public CfTreeSegment<VTKCfSegment,VTKCfBud>{
+  public:
+    ///\brief Constructor, identical in CfTreeSegment
+    ///\param p Base point of the segment
+    ///\param d Direction of the segment
+    ///\param go Gravelius order
+    ///\param l Segment length
+    ///\param r Segment radius
+    ///\param rh Segment heartwood radius
+    ///\param tree Tree the segment belongs to
+    VTKCfSegment(const Point& p,const PositionVector& d, const LGMdouble go,const METER l,
+		 const METER r,const METER rh,Tree<VTKCfSegment,VTKCfBud>* tree)
+      :CfTreeSegment(p,d,go,l,r,rh,tree){}
+
+  };
+  
   ///\brief VKTBud bud for LignumVKT project.
   ///
   ///Currently Bud with VKTHwSegment and VKTBud.
@@ -47,13 +67,27 @@ namespace lignumvtk{
     VTKBud(const Point& p, const PositionVector& d, const LGMdouble go, Tree<VTKHwSegment,VTKBud>* tree)
       :Bud(p,d,go,tree){}
   };
-    
+
+  ///\brief VKTCfBud bud for LignumVKT project.
+  ///
+  ///Currently Bud with VKTCfSegment and VKTCfBud.
+  class VTKCfBud: public  Bud<VTKCfSegment,VTKCfBud>{
+  public:
+    ///\brief Constructor, identical in Bud
+    ///\param p  Position of the bud
+    ///\param d Direction of the bud
+    ///\param go Gravelius order
+    ///\param tree Tree the bud belongs to
+    VTKCfBud(const Point& p, const PositionVector& d, const LGMdouble go, Tree<VTKCfSegment,VTKCfBud>* tree)
+      :Bud(p,d,go,tree){}
+  };
   ///\defgroup VTKTypes Type definitions
   ///Type aliases for VTK datatypes
 
   ///\ingroup VTKTypes
   ///\brief Lignum tree
   typedef Tree<VTKHwSegment,VTKBud> LignumVTKTree;
+  typedef Tree<VTKCfSegment,VTKCfBud> LignumVTKCfTree;
   ///\ingroup VTKTypes
   ///\brief Data collection from tree segments and leaves
   typedef TreeSegmentDataCollection TSData;
@@ -118,6 +152,12 @@ namespace lignumvtk{
   ///\brief Tree segment radius as tube radius scalar
   const std::string TUBE_RADIUS_SCALAR = "LGAR";
   ///\ingroup VTKconstants
+  ///\brief Tree segment heartwood radius as tube radius scalar
+  const std::string TUBE_HW_RADIUS_SCALAR = "LGARh";
+  ///\ingroup VTKconstants
+  ///\brief Tree segment radius including foliage radius as tube radius scalar
+  const std::string TUBE_FOLIAGE_RADIUS_SCALAR = "LGARf";
+  ///\ingroup VTKconstants
   ///\brief Leaf area scalar
   const std::string LEAF_AREA_SCALAR="LGAA";
   ///\ingroup VTKconstants
@@ -135,6 +175,12 @@ namespace lignumvtk{
   ///\ingroup VTKconstants
   ///\brief VTK DataSet block name for tree segments 
   const std::string TREE_SEGMENT_BLOCK="TreeSegmentBlock";
+  ///\ingroup VTKconstants
+  ///\brief VTK DataSet block name for tree segment heartwood
+  const std::string TREE_HWSEGMENT_BLOCK="TreeHwSegmentBlock";
+  ///\ingroup VTKconstants
+  ///\brief VTK DataSet block name for tree segment foliage
+  const std::string TREE_SEGMENT_FOLIAGE_BLOCK="TreeSegmentFoliageBlock";
   ///\ingroup VTKconstants
   ///\brief VTK DataSet block name for leaves
   const std::string LEAF_BLOCK="LeafBlock";
@@ -342,6 +388,8 @@ namespace lignumvtk{
     ///if necessary.
     template <typename TREE>
     LignumToVTK& createBroadLeafTreeVTKDataSets(TREE& t, bool add_to_renderer=false);
+    template<typename TREE>
+    LignumToVTK& createConiferTreeVTKDataSets(TREE& t,bool add_to_renderer=false);
     ///\brief Write VTK partitioned data sets to a file
     ///\param file_name The file name with *vtpc* file extension 
     LignumToVTK& writePartitionedDataSetCollection(const string& file_name);
@@ -376,7 +424,8 @@ namespace lignumvtk{
     ///\param t Lignum tree
     ///\param tsdv Vector for tree segment data collection
     ///\retval tsdv Vector containing collected tree segment data
-    TSDataVector& treeToTSData(LignumVTKTree& t, TSDataVector& tsdv);
+    TSDataVector& treeToHwTSData(LignumVTKTree& t, TSDataVector& tsdv);
+    TSDataVector& treeToCfTSData(LignumVTKCfTree& t, TSDataVector& tsdv);
     ///\brief Collect petiole data.
     ///
     ///Collect petiole points for VTK line. Each TSData element in \p tsdv represents one petiole
@@ -418,7 +467,7 @@ namespace lignumvtk{
     ///\param pfsv Vector for splines
     ///\retval psfv Vector containing splines
     ///\note The `vtkParametricSpline` class used creates 1D interpolating splines. 
-    PFSVector& vtkPointsToVtkSpline(TSDataVector& tsdv, PFSVector& pfsv) ;
+    PFSVector& vtkPointsToVtkSpline(TSDataVector& tsdv, PFSVector& pfsv)const;
     ///\brief Add tree segment spline tube radius data.
     ///
     ///Use tree segment radius scalar data to set spline tube radius for each spline point.
@@ -426,7 +475,7 @@ namespace lignumvtk{
     ///\param tsdv Vector containg collected tree segment data from LignumToVTK::treeToTSData
     ///\param pfsv Vector for splines with their radii in each point
     ///\retval psfv Vector containg splines and radii for each spline point 
-    PFSVector& createTubeRadiusScalars(TSDataVector& tsdv, PFSVector& pfsv);
+    PFSVector& createTubeRadiusScalars(TSDataVector& tsdv, PFSVector& pfsv, const string& scalar_name)const;
     ///\brief Create tree segment spline tube filters.
     ///
     ///Create spline tube filters for each spline returned by LignumToVTK::vtkPointsToVtkScalars.
@@ -441,7 +490,7 @@ namespace lignumvtk{
     ///\param tfv Vector containing spline tube filters
     ///\param tmv Vector for spline tube filter mappers
     ///\retval tmv Vector containing spline tube filter mappers
-    TubeMapperVector& createTubeMappers(TubeFilterVector& tfv,TubeMapperVector& tmv)const;
+    TubeMapperVector& createTubeMappers(TSDataVector& tfv,TubeMapperVector& tmv,const string& scalar_name)const;
     ///\brief Create tree segment tube actors for mappers.
     ///
     ///Create actors for mappers returnd by LignumToVTK::createTubeMappers.

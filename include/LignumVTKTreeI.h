@@ -16,6 +16,7 @@ namespace lignumvtk{
 	data.vL.insert(data.vL.begin(),0.0);
 	data.vR.insert(data.vR.begin(),MIN_SEGMENT_RADIUS);
 	data.vRh.insert(data.vRh.begin(),MIN_SEGMENT_RADIUS);
+	data.vRf.insert(data.vRf.begin(),MIN_SEGMENT_RADIUS);
 	data.vname.insert(data.vname.begin(),TUBE_RADIUS_SCALAR);
 	v.push_back(data);
       }
@@ -25,12 +26,18 @@ namespace lignumvtk{
 	double l = GetValue(*ts,LGAL);
 	double r = GetValue(*ts,LGAR);
 	double rh = GetValue(*ts,LGARh);
+	double rf = 0.0;
+	if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc)){
+	  rf =  GetValue(*cfts,LGARf);
+	}
+	//cout << "Foliage radius " << rf <<endl;
 	//Insert the point 
 	v[0].vpoints.insert(v[0].vpoints.begin(),p);
 	//Corresponding segment length, radius and heartwood radius
 	v[0].vL.insert(v[0].vL.begin(),l);
 	v[0].vR.insert(v[0].vR.begin(),r);
 	v[0].vRh.insert(v[0].vRh.begin(),rh);
+	v[0].vRf.insert(v[0].vRf.begin(),rf);
 	v[0].vname.insert(v[0].vname.begin(),TUBE_RADIUS_SCALAR);
       }
       return v;
@@ -103,20 +110,15 @@ namespace lignumvtk{
   {
     //Data collection from the tree
     TSDataVector tsv;
-    tsv = treeToTSData(t,tsv);
+    tsv = treeToHwTSData(t,tsv);
     TSDataVector pv;
     pv = treeToPetioleData(t,pv);
     TSDataVector lv;
     lv = treeToKiteLeafData(t,lv);
 
-    //VTK geometric objects for tree segments 
-    PFSVector sv;
-    sv = vtkPointsToVtkSpline(tsv,sv);
-    sv = createTubeRadiusScalars(tsv,sv);
-    TubeFilterVector tfv;
-    tfv = createTubeFilters(sv,tfv);
+    //Create geometric obtects for tree segments
     TubeMapperVector tmv;
-    tmv = createTubeMappers(tfv,tmv);
+    tmv = createTubeMappers(tsv,tmv,TUBE_RADIUS_SCALAR);
 
     //VTK actors for tree segments, leaves an petioles.
     //Leaf and petiole actor construction creates also
@@ -143,32 +145,57 @@ namespace lignumvtk{
   template<typename TREE>
   LignumToVTK& LignumToVTK::createBroadLeafTreeVTKMultiBlockDataSets(TREE& t)
   {
-      TSDataVector tsv;
-      tsv = treeToTSData(t,tsv);
-      TSDataVector pv;
-      pv = treeToPetioleData(t,pv);
-      TSDataVector lv;
-      lv = treeToKiteLeafData(t,lv);
+    TSDataVector tsv;
+    tsv = treeToHwTSData(t,tsv);
+    TSDataVector pv;
+    pv = treeToPetioleData(t,pv);
+    TSDataVector lv;
+    lv = treeToKiteLeafData(t,lv);
+      
+    TubeMapperVector tmv;
+    tmv = createTubeMappers(tsv,tmv,TUBE_RADIUS_SCALAR);
+      
+    TubeActorVector tav;
+    tav = createTubeActors(tmv,tav);
+    LeafActorVector lav;
+    lav = createKiteLeafActors(lv,lav);
+    LineActorVector lineav;
+    lineav = createLineActors(pv,lineav);
 
-       PFSVector sv;
-       sv = vtkPointsToVtkSpline(tsv,sv);
-       sv = createTubeRadiusScalars(tsv,sv);
-       TubeFilterVector tfv;
-       tfv = createTubeFilters(sv,tfv);
-       TubeMapperVector tmv;
-       tmv = createTubeMappers(tfv,tmv);
-       
-       TubeActorVector tav;
-       tav = createTubeActors(tmv,tav);
-       LeafActorVector lav;
-       lav = createKiteLeafActors(lv,lav);
-       LineActorVector lineav;
-       lineav = createLineActors(pv,lineav);
+    addMultiBlockDataSet(tav);
+    addMultiBlockDataSet(lav);
+    addMultiBlockDataSet(lineav);
+    return *this;
+  }
 
-       addMultiBlockDataSet(tav);
-       addMultiBlockDataSet(lav);
-       addMultiBlockDataSet(lineav);
-       return *this;
+  template<typename TREE>
+  LignumToVTK& LignumToVTK::createConiferTreeVTKDataSets(TREE& t,bool add_to_renderer)
+  {
+    TSDataVector tsv;
+    tsv = treeToCfTSData(t,tsv);
+    TubeMapperVector tm_radius_v;
+    tm_radius_v = createTubeMappers(tsv,tm_radius_v,TUBE_RADIUS_SCALAR);
+    TubeMapperVector tm_hwradius_v;
+    tm_hwradius_v = createTubeMappers(tsv,tm_hwradius_v,TUBE_HW_RADIUS_SCALAR);
+    TubeMapperVector tm_foliage_radius_v;
+    tm_foliage_radius_v = createTubeMappers(tsv,tm_foliage_radius_v,TUBE_FOLIAGE_RADIUS_SCALAR);
+    TubeActorVector ta_radius_v;
+    ta_radius_v= createTubeActors(tm_radius_v,ta_radius_v);
+    TubeActorVector ta_hwradius_v;
+    ta_hwradius_v = createTubeActors(tm_hwradius_v,ta_hwradius_v);
+    TubeActorVector ta_foliage_radius_v;
+    ta_foliage_radius_v = createTubeActors(tm_foliage_radius_v,ta_foliage_radius_v);
+
+    addPartitionedDataSet(ta_foliage_radius_v,TREE_SEGMENT_FOLIAGE_BLOCK);
+    addPartitionedDataSet(ta_hwradius_v,TREE_HWSEGMENT_BLOCK);
+    addPartitionedDataSet(ta_radius_v,TREE_SEGMENT_BLOCK);
+    
+    if (add_to_renderer == true){
+      addActorsToRenderer(ta_radius_v);
+      addActorsToRenderer(ta_hwradius_v);
+      addActorsToRenderer(ta_foliage_radius_v);
+    }
+    return *this;
   }
 }
 #endif

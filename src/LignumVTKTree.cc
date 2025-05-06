@@ -170,11 +170,18 @@ namespace lignumvtk{
     return v;
   }
   
-  TSDataVector& LignumToVTK::treeToTSData(LignumVTKTree& t, TSDataVector& v)
+  TSDataVector& LignumToVTK::treeToHwTSData(LignumVTKTree& t, TSDataVector& v)
   {
     v = AccumulateDown(t,v,Append,CollectTSData<VTKHwSegment,VTKBud>());
     return v;
   }
+
+   TSDataVector& LignumToVTK::treeToCfTSData(LignumVTKCfTree& t, TSDataVector& v)
+  {
+    v = AccumulateDown(t,v,Append,CollectTSData<VTKCfSegment,VTKCfBud>());
+    return v;
+  }
+  
   LineActorVector& LignumToVTK::createLineActors(TSDataVector& v,LineActorVector& lav)
   {
     lav = accumulate(v.begin(),v.end(),lav,CreateVTKLineActor());
@@ -187,13 +194,13 @@ namespace lignumvtk{
     return lav;
   }
   
-  PFSVector& LignumToVTK::vtkPointsToVtkSpline(TSDataVector& v, PFSVector& pfsv) 
+  PFSVector& LignumToVTK::vtkPointsToVtkSpline(TSDataVector& v, PFSVector& pfsv)const
   {
     pfsv=accumulate(v.begin(),v.end(),pfsv,CreateVTKSpline(resolution));
     return pfsv;
   }
 
-  PFSVector& LignumToVTK::createTubeRadiusScalars(TSDataVector& v, PFSVector& pfsv)
+  PFSVector& LignumToVTK::createTubeRadiusScalars(TSDataVector& v, PFSVector& pfsv, const string& scalar_name)const
   {
     //There are equal number of axes and their representation as spline segments
     assert(v.size() == pfsv.size() && "The vectors must be of equal length");
@@ -203,9 +210,18 @@ namespace lignumvtk{
       unsigned int npoints = fs->GetOutput()->GetNumberOfPoints();
       vtkNew<vtkDoubleArray> tube_radius;
       tube_radius->SetNumberOfTuples(npoints);
-      tube_radius->SetName(v[i].vname[0].c_str());
+      tube_radius->SetName(scalar_name.c_str());
       for (unsigned int j = 0; j < data.vR.size(); j++){
-	double r =  data.vR[j];
+	double r = 0.0;
+	if (scalar_name == TUBE_RADIUS_SCALAR){
+	  r =  data.vR[j];
+	}
+	else if (scalar_name == TUBE_HW_RADIUS_SCALAR){
+	  r = data.vRh[j];
+	}
+	else if (scalar_name == TUBE_FOLIAGE_RADIUS_SCALAR){
+	  r = data.vRf[j];
+	}
 	for (int k = 0; k < (this->resolution); k++){
 	  //Copy the radius for each spline point
 	  tube_radius->InsertTuple1(j*(this->resolution)+k,r);
@@ -216,7 +232,7 @@ namespace lignumvtk{
       tube_radius->InsertTuple1(data.vR.size()*(this->resolution),data.vR[data.vR.size()-1]);
       vtkPolyData* polydata = fs->GetOutput();
       polydata->GetPointData()->AddArray(tube_radius);
-      polydata->GetPointData()->SetActiveScalars(v[i].vname[0].c_str());
+      polydata->GetPointData()->SetActiveScalars(scalar_name.c_str());
     }
     return pfsv;
   }
@@ -227,8 +243,13 @@ namespace lignumvtk{
     return v;
   }
 
-  TubeMapperVector& LignumToVTK::createTubeMappers(TubeFilterVector& tfv,TubeMapperVector& v)const
+  TubeMapperVector& LignumToVTK::createTubeMappers(TSDataVector& tsv,TubeMapperVector& v,const string& scalar_name)const
   {
+    PFSVector sv;
+    sv = vtkPointsToVtkSpline(tsv,sv);
+    sv = createTubeRadiusScalars(tsv,sv,scalar_name);
+    TubeFilterVector tfv;
+    tfv = createTubeFilters(sv,tfv);
     v = accumulate(tfv.begin(),tfv.end(),v,CreateVTKTubeMapper());
     return v;
   }
