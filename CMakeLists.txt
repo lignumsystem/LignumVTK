@@ -46,6 +46,7 @@ include(../stl-lignum/lib/LGM.cmake)
 include(../stl-voxelspace/lib/voxel.cmake)
 set(SOURCE_FILES lignumvtk.cc
   src/LignumVTKTree.cc
+  src/LignumVTKXML.cc
 )
 
 # Prevent a "command line is too long" failure in Windows.
