@@ -471,9 +471,12 @@ namespace lignumvtk{
     ///\brief Add tree segment spline tube radius data.
     ///
     ///Use tree segment radius scalar data to set spline tube radius for each spline point.
-    ///These are returned by LignumToVTK::treeToTSData and LignumToVtk::vtkPointsToVtkSpline respectively
+    ///The \p scalar_name should describe the radius, for example segment radius, segment heartwood radius
+    ///or radius to foliage limit. These are returned by LignumToVTK::treeToTSData and
+    ///LignumToVtk::vtkPointsToVtkSpline respectively.
     ///\param tsdv Vector containg collected tree segment data from LignumToVTK::treeToTSData
     ///\param pfsv Vector for splines with their radii in each point
+    ///\param scalar_name The scalar name for the tube radius
     ///\retval psfv Vector containg splines and radii for each spline point 
     PFSVector& createTubeRadiusScalars(TSDataVector& tsdv, PFSVector& pfsv, const string& scalar_name)const;
     ///\brief Create tree segment spline tube filters.
