@@ -91,15 +91,15 @@ and vtk python packages. Install these with `pip`.
 
 #### Usage:
 
-python lignumvtk.py -h
-Usage: lignumvtk.py [options]
+	python lignumvtk.py -h
+	Usage: lignumvtk.py [options]
+	Options:
 
-Options:
-  -h, --help        show this help message and exit
-  -i F1, --fxml=F1  Read Lignum xml file
-  -o F2, --fvtp=F2  VTP output file
-  -c, --cylinder    Use segment base radius as segment top radius (pure
-                    cylinder)
+	-h, --help        show this help message and exit
+	-i F1, --fxml=F1  Read Lignum xml file
+	-o F2, --fvtp=F2  VTP output file
+	-c, --cylinder    Use segment base radius as segment top radius (pure
+                      cylinder)
 
    
 
