@@ -83,7 +83,7 @@ Open the HTML index file, for example on macOS Terminal type:
 	open DoxygenDoc/html/index.html
 	
 ## Notes
-This is work under progress.
+LignumVTK is work under progress.
 
 ### lignumvtk.py: 
 
