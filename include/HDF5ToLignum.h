@@ -27,7 +27,7 @@ namespace lignumvtk{
   ///\brief Query datasets from HDF5 file.
   ///
   ///Query dataset paths. Retrieve Lignum xml as std::string from
-  ///given dataset.
+  ///a given dataset.
   class HDF5ToLignum{
   public:
     ///\brief Open HDF5 file
