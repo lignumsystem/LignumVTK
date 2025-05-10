@@ -24,25 +24,60 @@ Use CMake to compile:
 See CMakeLists.txt for details.
 
 ## Usage
-In the command line type:
+The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. The command line is:
+
+	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year -number>] [-dataset <path_string>]
 	
-	./lignumvtk lignumtree.xml outputfile.vtpc 
+The first example creates VTK/VTPC file from Lignumm XML file:
 	
-Upload *outputfile.vtpc* to Paraview and finish the editing for final visualization.
+	./lignumvtk -input File.xml -output VTKFile.vtpc
+
+The second example lists datasets for trees in Lignum HDF5 file:
+
+	./lignumvtk -input File.h5 -list
+	
+The third example creates VTK/VTPC file for growth year 20:
+
+	./lignumvtk -input File.h5 -output VTKFile.vtpc -year 20
+	
+The fourth example createss VTK/VTPC file for the dataset Tree_8 in /TreeXML/60/Tree_8
+
+	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset /TreeXML/60/Tree_8
+	
+The fifth example creates VTK/VTPC file for Tree_8 for all growth years saved in HDF5 file:
+
+	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset Tree_8
+	
+In general the argument string for the option *-dataset* is matched as a substring to all
+dataset paths in the HDF5 input file. 
+	
+Upload *outputfile.vtpc* to Paraview and finish by postediting trees for final visualization.
+
+> [!NOTE] 
+> The creation of the VTK/VTPC files can take a while, possibly several minutes depending the number of trees
+> and their sizes. 
+
+> [!CAUTION]
+> Overly generic dataset path argument to the -dataset option can retrieve significant number of tree datasets,
+> possibly all of them.
+
+## Paraview
+From  ParaView Preferences and further via RenderView tab it is possible to adjust rendering options.
+Lower the values (for example by factor of 10) for LOD Threshold and Outline Threshold if needed.
+This decreases memory requirments at the expense of rendering quality. If ParaView crashes during rendering process 
+it may indicate failed memory request when processing the graphics pipeline. 
 
 ## Software documentation
-LignumVTK files are commented for Doxygen:
+LignumVTK files are commented for Doxygen, the Terminal command line example for `zsh` and `bash`:
 
-	doxygen Doxyfile
+	doxygen Doxyfile 2>error.txt
 	
 Open the HTML index file, for example on macOS Terminal type:
 
 	open DoxygenDoc/html/index.html
 	
-
 ## Notes
-This is work under progress. Currently broadleaved Lignum trees with kite shaped leaves
-can be tentatively operated.
+This is work under progress.
 
 ### lignumvtk.py: 
 
