@@ -51,7 +51,7 @@ The fifth example creates VTK/VTPC file for Tree_8 for all growth years saved in
 In general the argument string for the option *-dataset* is matched as a substring to all
 dataset paths in the HDF5 input file. 
 	
-Upload *outputfile.vtpc* to Paraview and finish by postediting trees for final visualization.
+Upload the *.vtpc* output file to Paraview and finish by postediting trees for final visualization.
 
 > [!NOTE] 
 > The creation of the VTK/VTPC files can take a while, possibly several minutes depending the number of trees
