@@ -1,5 +1,5 @@
 # LignumVTK
-Create VTK/VTPC files for ParaView.
+Create VTK/VTPC files for ParaView. 
 
 ## Prerequisites 
 Download *LignumVTK* and *lignum-core* from GitHub. Install VTK package.
@@ -61,11 +61,17 @@ Upload the *.vtpc* output file to Paraview and finish by postediting trees for f
 > Overly generic dataset path argument to the -dataset option can retrieve significant number of tree datasets,
 > possibly all of them.
 
-## Paraview
+## ParaView
+ParaView is a builder, post-processing and 3D visualization engine for computer geometry models.
+
 From  ParaView Preferences and further via RenderView tab it is possible to adjust rendering options.
 Lower the values (for example by factor of 10) for LOD Threshold and Outline Threshold if needed.
 This decreases memory requirments at the expense of rendering quality. If ParaView crashes during rendering process 
 it may indicate failed memory request when processing the graphics pipeline. 
+
+### Blender
+Another 3D creation suite is [Blender](https://www.blender.org). ParaView can export graphics models
+compatible with Blender's file formats. 
 
 ## Software documentation
 LignumVTK files are commented for Doxygen, the Terminal command line example for `zsh` and `bash`:
