@@ -10,6 +10,7 @@ cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 project(LignumVTK DESCRIPTION "Create VTK files from Lignum XML files")
 include(ExternalProject)
 include(CMakePrintHelpers)
+find_package(HDF5 COMPONENTS C CXX HL REQUIRED)
 find_package(Qt5 COMPONENTS Xml Core  REQUIRED)
 find_package(VTK COMPONENTS 
   CommonColor
@@ -47,6 +48,8 @@ include(../stl-voxelspace/lib/voxel.cmake)
 set(SOURCE_FILES lignumvtk.cc
   src/LignumVTKTree.cc
   src/LignumVTKXML.cc
+  src/HDF5ToLignum.cc
+  src/CreateVTPCFile.cc
 )
 
 # Prevent a "command line is too long" failure in Windows.
@@ -59,7 +62,7 @@ target_include_directories(lignumvtk PUBLIC
   ${CMAKE_CURRENT_LIST_DIR}/../lignum-tls/include
 )
 target_compile_options(lignumvtk PUBLIC -std=c++17)
-target_link_libraries(lignumvtk PRIVATE ${VTK_LIBRARIES} Qt5::Xml Qt5::Core sky LGM cxxadt)
+target_link_libraries(lignumvtk PRIVATE ${VTK_LIBRARIES} HDF5::HDF5  Qt5::Xml Qt5::Core sky LGM cxxadt)
 add_dependencies(lignumvtk lignum-core)
 # vtk_module_autoinit is needed
 #The VTK render window is nonresponsive if vtk_module_autoinit is not done
