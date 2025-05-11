@@ -37,7 +37,7 @@ The second example lists datasets for trees in Lignum HDF5 file:
 
 	./lignumvtk -input File.h5 -list
 	
-The third example creates VTK/VTPC file for growth year 20:
+The third example creates VTK/VTPC file for all trees in growth year 20:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -year 20
 	
