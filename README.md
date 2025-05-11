@@ -72,7 +72,7 @@ default rendering values with consumer products like MacBooks (although the Para
 But for example for forest plots (see LignumForest) it is mandatory to lower the threshold values for LOD and Outline.
 
 ### Blender
-Another 3D creation suite is [Blender](https://www.blender.org). ParaView can export graphics models
+Another 3D creation suite is [Blender](https://www.blender.org). ParaView can export computer graphics models
 in file formats supported by Blender. 
 
 ## Software documentation
