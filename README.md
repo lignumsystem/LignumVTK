@@ -1,5 +1,5 @@
 # LignumVTK
-Create VTK/VTPC files for ParaView. ParaView is a 3D builder, post-processing visualization engine for computer geometry models.
+Create VTK/VTPC files for ParaView. ParaView is a 3D builder, post-processing and visualization engine for computer geometry models.
 
 ## Prerequisites 
 Download *LignumVTK* and *lignum-core* from GitHub. Install VTK package.
