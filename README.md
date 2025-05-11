@@ -1,5 +1,5 @@
 # LignumVTK
-Create VTK/VTPC files for ParaView. 
+Create VTK/VTPC files for ParaView. ParaView is a builder, post-processing and 3D visualization engine for computer geometry models.
 
 ## Prerequisites 
 Download *LignumVTK* and *lignum-core* from GitHub. Install VTK package.
@@ -26,7 +26,7 @@ See CMakeLists.txt for details.
 ## Usage
 The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. The command line is:
 
-	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year -number>] [-dataset <path_string>]
+	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year <number>] [-dataset <path_string>]
 	
 The first example creates VTK/VTPC file from Lignumm XML file:
 	
@@ -62,8 +62,6 @@ Upload the *.vtpc* output file to Paraview and finish by postediting trees for f
 > possibly all of them.
 
 ## ParaView
-ParaView is a builder, post-processing and 3D visualization engine for computer geometry models.
-
 From  ParaView Preferences and further via RenderView tab it is possible to adjust rendering options.
 Lower the values (for example by factor of 10) for LOD Threshold and Outline Threshold if needed.
 This decreases memory requirments at the expense of rendering quality. If ParaView crashes during rendering process 
