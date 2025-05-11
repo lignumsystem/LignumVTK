@@ -40,7 +40,7 @@ The third example creates VTK/VTPC file for growth year 20:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -year 20
 	
-The fourth example createss VTK/VTPC file for the dataset Tree_8 in /TreeXML/60/Tree_8:
+The fourth example creates VTK/VTPC file for the dataset Tree_8 in /TreeXML/60/Tree_8:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset /TreeXML/60/Tree_8
 	
@@ -49,7 +49,7 @@ The fifth example creates VTK/VTPC file for Tree_8 for all growth years saved in
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset Tree_8
 	
 In general the argument string for the option *-dataset* is matched as a substring to all
-dataset paths in the HDF5 input file. 
+dataset paths in the HDF5 input file. The options *-year* and *-dataset* are mutually exclusive.
 	
 Upload the *.vtpc* output file to Paraview and finish by postediting trees for final visualization.
 
