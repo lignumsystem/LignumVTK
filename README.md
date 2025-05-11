@@ -64,7 +64,7 @@ Upload the *.vtpc* output file to Paraview and finish by postediting trees for f
 ## ParaView
 From  ParaView Preferences and further via RenderView tab it is possible to adjust rendering options.
 Lower the values (for example by factor of 10) for LOD Threshold and Outline Threshold if needed.
-This decreases memory requirments at the expense of rendering quality. If ParaView crashes during rendering process 
+These two options decrease memory requirments at the expense of rendering quality. If ParaView crashes during rendering process 
 it may indicate failed memory request when processing the graphics pipeline. 
 
 It seems that it is possible to visualize single trees produced by `lignumvtk` in ParaView with 
