@@ -69,7 +69,7 @@ it may indicate failed memory request when processing the graphics pipeline.
 
 ### Blender
 Another 3D creation suite is [Blender](https://www.blender.org). ParaView can export graphics models
-compatible with Blender's file formats. 
+in file formats supported by Blender. 
 
 ## Software documentation
 LignumVTK files are commented for Doxygen, the Terminal command line example for `zsh` and `bash`:
