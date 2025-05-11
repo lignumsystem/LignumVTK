@@ -88,9 +88,7 @@ Open the HTML index file, for example on macOS Terminal type:
 LignumVTK is work under progress.
 
 ### lignumvtk.py: 
-
-Initial proposition to use vtk library
-to visualize tree roots with Lignum and ParaView. The `lignumvtk.py`
+Initial trial to use vtk library to visualize tree roots with Lignum and ParaView. The `lignumvtk.py`
 program creates *vtp* xml file that can be imported
 to ParaView.
 
