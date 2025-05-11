@@ -40,7 +40,7 @@ The third example creates VTK/VTPC file for growth year 20:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -year 20
 	
-The fourth example createss VTK/VTPC file for the dataset Tree_8 in /TreeXML/60/Tree_8
+The fourth example createss VTK/VTPC file for the dataset Tree_8 in /TreeXML/60/Tree_8:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset /TreeXML/60/Tree_8
 	
