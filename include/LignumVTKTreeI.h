@@ -17,6 +17,7 @@ namespace lignumvtk{
 	data.vR.insert(data.vR.begin(),MIN_SEGMENT_RADIUS);
 	data.vRh.insert(data.vRh.begin(),MIN_SEGMENT_RADIUS);
 	data.vRf.insert(data.vRf.begin(),MIN_SEGMENT_RADIUS);
+	data.vWf.insert(data.vWf.begin(),0.0);
 	data.vname.insert(data.vname.begin(),TUBE_RADIUS_SCALAR);
 	v.push_back(data);
       }
@@ -30,6 +31,7 @@ namespace lignumvtk{
 	if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc)){
 	  rf =  GetValue(*cfts,LGARf);
 	}
+	double wf = GetValue(*ts,LGAWf);
 	//cout << "Foliage radius " << rf <<endl;
 	//Insert the point 
 	v[0].vpoints.insert(v[0].vpoints.begin(),p);
@@ -38,6 +40,7 @@ namespace lignumvtk{
 	v[0].vR.insert(v[0].vR.begin(),r);
 	v[0].vRh.insert(v[0].vRh.begin(),rh);
 	v[0].vRf.insert(v[0].vRf.begin(),rf);
+	v[0].vWf.insert(v[0].vWf.begin(),wf);
 	v[0].vname.insert(v[0].vname.begin(),TUBE_RADIUS_SCALAR);
       }
       return v;

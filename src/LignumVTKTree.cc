@@ -119,7 +119,7 @@ namespace lignumvtk{
     vtkNew<vtkNamedColors> colors;
     
     vtkIdType n = static_cast<vtkIdType>(data.vpoints.size());
-    assert(n==4 && "CreateVTKKiteLeafActor: Kite leaf has four points");
+    assert(n==4 && "CreateVTKKiteLeafActor: Kite leaf must have exactly four points");
     //Leaf points are in counterclockwise order. Single TriangleStrip needs four points
     //for two triangles. In VTK three consecutive points create a triangle for TriangleStrip 
     Point p0 = data.vpoints[0];//Base cornet
@@ -141,14 +141,31 @@ namespace lignumvtk{
     polydata->SetStrips(cell_array);
     int ncells = polydata->GetNumberOfCells();
     //cout << "Kite leaf cells: " << ncells << " leaf area " << data.vA[0] << endl <<endl;
+    //Add scalars required
     vtkNew<vtkDoubleArray> leaf_area;
+    vtkNew<vtkDoubleArray> qin;
+    vtkNew<vtkDoubleArray> qabs;
+    vtkNew<vtkDoubleArray> photosynthesis;
     leaf_area->SetName(data.vname[0].c_str());
+    qin->SetName(QIN_SCALAR.c_str());
+    qabs->SetName(QABS_SCALAR.c_str());
+    photosynthesis->SetName(PHOTOSYNTHESIS_SCALAR.c_str());
     leaf_area->SetNumberOfTuples(ncells);
+    qin->SetNumberOfTuples(ncells);
+    qabs->SetNumberOfTuples(ncells);
+    photosynthesis->SetNumberOfTuples(ncells);
     for (unsigned int i=0; i < ncells;i++){
       leaf_area->InsertTuple1(i,data.vA[0]);
+      qin->InsertTuple1(i,data.vQin[0]);
+      qabs->InsertTuple1(i,data.vQabs[0]);
+      photosynthesis->InsertTuple1(i,data.vP[0]);
     }
     polydata->GetCellData()->AddArray(leaf_area);
+    polydata->GetCellData()->AddArray(qin);
+    polydata->GetCellData()->AddArray(qabs);
+    polydata->GetCellData()->AddArray(photosynthesis); 
     polydata->GetCellData()->SetActiveScalars(data.vname[0].c_str());
+    //Scalars added
     mapper->SetInputData(polydata);
     mapper->SetScalarRange(polydata->GetScalarRange());
     mapper->ScalarVisibilityOff();
@@ -211,8 +228,13 @@ namespace lignumvtk{
       vtkNew<vtkDoubleArray> tube_radius;
       tube_radius->SetNumberOfTuples(npoints);
       tube_radius->SetName(scalar_name.c_str());
+      //Foliage mass in a segment
+      vtkNew<vtkDoubleArray> wfarray;
+      wfarray->SetNumberOfTuples(npoints);
+      wfarray->SetName(FOLIAGE_MASS_SCALAR.c_str());
       for (unsigned int j = 0; j < data.vR.size(); j++){
 	double r = 0.0;
+	double wf= 0.0;
 	if (scalar_name == TUBE_RADIUS_SCALAR){
 	  r =  data.vR[j];
 	}
@@ -221,18 +243,25 @@ namespace lignumvtk{
 	}
 	else if (scalar_name == TUBE_FOLIAGE_RADIUS_SCALAR){
 	  r = data.vRf[j];
+	  wf = data.vWf[j];
 	}
 	for (int k = 0; k < (this->resolution); k++){
 	  //Copy the radius for each spline point
 	  tube_radius->InsertTuple1(j*(this->resolution)+k,r);
+	  wfarray->InsertTuple1(j*(this->resolution)+k,wf);
 	}
       }
       //There are Npoints*Resolution+1 spline points (i.e. NPoints*Resolution line segments)
       //Add radius for the last point
       tube_radius->InsertTuple1(data.vR.size()*(this->resolution),data.vR[data.vR.size()-1]);
+      wfarray->InsertTuple1(data.vWf.size()*(this->resolution),data.vWf[data.vWf.size()-1]);
       vtkPolyData* polydata = fs->GetOutput();
       polydata->GetPointData()->AddArray(tube_radius);
       polydata->GetPointData()->SetActiveScalars(scalar_name.c_str());
+      //Add Foliage mass only to one polydata representing radius to foliage scalar   
+      if (scalar_name == TUBE_FOLIAGE_RADIUS_SCALAR){
+	polydata->GetPointData()->AddArray(wfarray);
+      }
     }
     return pfsv;
   }

@@ -158,6 +158,18 @@ namespace lignumvtk{
   ///\brief Tree segment radius including foliage radius as tube radius scalar
   const std::string TUBE_FOLIAGE_RADIUS_SCALAR = "LGARf";
   ///\ingroup VTKconstants
+  ///\brief Foliage mass scalar
+  const std::string FOLIAGE_MASS_SCALAR="LGAWf";
+  ///\ingroup VTKconstants
+  ///\brief Incoming radiation scalar
+  const std::string QIN_SCALAR="LGAQin";
+  ///\ingroup VTKconstants
+  ///\brief Absorbed radiation scalar
+  const std::string QABS_SCALAR="LGAQabs";
+  ///\ingroup VTKconstants
+  ///\brief Photosynthetic production scalar
+  const std::string PHOTOSYNTHESIS_SCALAR="LGAP";
+  ///\ingroup VTKconstants
   ///\brief Leaf area scalar
   const std::string LEAF_AREA_SCALAR="LGAA";
   ///\ingroup VTKconstants
