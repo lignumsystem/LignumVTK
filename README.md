@@ -1,5 +1,6 @@
 # LignumVTK
-Create VTK/VTPC files for ParaView.
+Create VTK/VTPC files for ParaView. ParaView is a 3D builder, post-processing and visualization engine for scientific data
+with computer geometry models.
 
 ## Prerequisites 
 Download *LignumVTK* and *lignum-core* from GitHub. Install VTK package.
@@ -26,7 +27,7 @@ See CMakeLists.txt for details.
 ## Usage
 The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. The command line is:
 
-	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year -number>] [-dataset <path_string>]
+	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year <number>] [-dataset <path_string>]
 	
 The first example creates VTK/VTPC file from Lignumm XML file:
 	
@@ -36,11 +37,11 @@ The second example lists datasets for trees in Lignum HDF5 file:
 
 	./lignumvtk -input File.h5 -list
 	
-The third example creates VTK/VTPC file for growth year 20:
+The third example creates VTK/VTPC file for all trees in growth year 20:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -year 20
 	
-The fourth example createss VTK/VTPC file for the dataset Tree_8 in /TreeXML/60/Tree_8
+The fourth example creates VTK/VTPC file for the dataset Tree_8 in /TreeXML/60/Tree_8:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset /TreeXML/60/Tree_8
 	
@@ -49,7 +50,7 @@ The fifth example creates VTK/VTPC file for Tree_8 for all growth years saved in
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset Tree_8
 	
 In general the argument string for the option *-dataset* is matched as a substring to all
-dataset paths in the HDF5 input file. 
+dataset paths in the HDF5 input file. The options *-year* and *-dataset* are mutually exclusive.
 	
 Upload the *.vtpc* output file to Paraview and finish by postediting trees for final visualization.
 
@@ -61,11 +62,19 @@ Upload the *.vtpc* output file to Paraview and finish by postediting trees for f
 > Overly generic dataset path argument to the -dataset option can retrieve significant number of tree datasets,
 > possibly all of them.
 
-## Paraview
+## ParaView
 From  ParaView Preferences and further via RenderView tab it is possible to adjust rendering options.
 Lower the values (for example by factor of 10) for LOD Threshold and Outline Threshold if needed.
-This decreases memory requirments at the expense of rendering quality. If ParaView crashes during rendering process 
+These two options decrease memory requirments at the expense of rendering quality. If ParaView crashes during rendering process 
 it may indicate failed memory request when processing the graphics pipeline. 
+
+It seems that it is possible to visualize single trees produced by `lignumvtk` in ParaView with 
+default rendering values with consumer products like MacBooks (although the ParaView rendering may take a while). 
+But for example for forest plots (see LignumForest) it is mandatory to lower the threshold values for LOD and Outline.
+
+### Blender
+Another 3D creation suite is [Blender](https://www.blender.org). ParaView can export computer graphics models
+in file formats supported by Blender. 
 
 ## Software documentation
 LignumVTK files are commented for Doxygen, the Terminal command line example for `zsh` and `bash`:
@@ -77,17 +86,13 @@ Open the HTML index file, for example on macOS Terminal type:
 	open DoxygenDoc/html/index.html
 	
 ## Notes
-This is work under progress.
+LignumVTK is work under progress.
 
 ### lignumvtk.py: 
+Initial trial to use vtk library to visualize tree roots with Lignum and ParaView. The tree roots are produced in 
+the project FineRoots. The `lignumvtk.py` program creates VTK/VTM file that can be imported to ParaView.
 
-Initial proposition to use vtk library
-to visualize tree roots with Lignum and ParaView. The `lignumvtk.py`
-program creates *vtp* xml file that can be imported
-to ParaView.
-
-lignumvtk.py is a python3 program that requires numpy 
-and vtk python packages. Install these with `pip`.
+lignumvtk.py is a python3 program that requires numpy and vtk python packages. Install these with `pip`.
 
 #### Usage:
 
