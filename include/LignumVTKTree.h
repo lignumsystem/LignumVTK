@@ -466,7 +466,9 @@ namespace lignumvtk{
     ///\brief Kite leaf VTK triangular strip.
     ///
     ///Each leaf is represented as VTK triangular strip and VTP mappers and actors are created.
-    ///Additional leaf data will be represented as VTK scalars
+    ///Additional leaf data will be represented as VTK scalars.
+    ///The folloing scalars are collected: Lignum::LGAWf, Lignum::LGAQin,
+    ///Lignum::LGAQabs and Lignum::LGAP
     ///\param tsdv Vector for leaf data, shape and scalar values
     ///\param lav Vector for VTK triangular strip actors
     ///\retval lav Vector containing VTK triangular strip actors
@@ -486,6 +488,9 @@ namespace lignumvtk{
     ///The \p scalar_name should describe the radius, for example segment radius, segment heartwood radius
     ///or radius to foliage limit. These are returned by LignumToVTK::treeToTSData and
     ///LignumToVtk::vtkPointsToVtkSpline respectively.
+    ///
+    ///The folloing scalars in addition to segment dimensions are collected: Lignum::LGAWf, Lignum::LGAQin,
+    ///Lignum::LGAQabs and Lignum::LGAP
     ///\param tsdv Vector containg collected tree segment data from LignumToVTK::treeToTSData
     ///\param pfsv Vector for splines with their radii in each point
     ///\param scalar_name The scalar name for the tube radius

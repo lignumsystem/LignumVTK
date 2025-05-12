@@ -17,12 +17,16 @@ namespace lignumvtk{
 	data.vR.insert(data.vR.begin(),MIN_SEGMENT_RADIUS);
 	data.vRh.insert(data.vRh.begin(),MIN_SEGMENT_RADIUS);
 	data.vRf.insert(data.vRf.begin(),MIN_SEGMENT_RADIUS);
+	//Other scalars of interest
 	data.vWf.insert(data.vWf.begin(),0.0);
+	data.vQin.insert(data.vQin.begin(),0.0);
+	data.vQabs.insert(data.vQabs.begin(),0.0);
+	data.vP.insert(data.vP.begin(),0.0);
 	data.vname.insert(data.vname.begin(),TUBE_RADIUS_SCALAR);
 	v.push_back(data);
       }
       if (TS* ts = dynamic_cast<TS*>(tc)){
-	//Collect data of interest
+	//Collect segment dimensions data of interest
 	Point p = GetPoint(*ts);
 	double l = GetValue(*ts,LGAL);
 	double r = GetValue(*ts,LGAR);
@@ -31,7 +35,11 @@ namespace lignumvtk{
 	if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc)){
 	  rf =  GetValue(*cfts,LGARf);
 	}
+	//Other scalars of interest
 	double wf = GetValue(*ts,LGAWf);
+	double qin = GetValue(*ts,LGAQin);
+	double qabs = GetValue(*ts,LGAQabs);
+	double prod = GetValue(*ts,LGAP);
 	//cout << "Foliage radius " << rf <<endl;
 	//Insert the point 
 	v[0].vpoints.insert(v[0].vpoints.begin(),p);
@@ -40,7 +48,11 @@ namespace lignumvtk{
 	v[0].vR.insert(v[0].vR.begin(),r);
 	v[0].vRh.insert(v[0].vRh.begin(),rh);
 	v[0].vRf.insert(v[0].vRf.begin(),rf);
+	//Other scalars of interest
 	v[0].vWf.insert(v[0].vWf.begin(),wf);
+	v[0].vQin.insert(v[0].vQin.begin(),qin);
+	v[0].vQabs.insert(v[0].vQabs.begin(),qabs);
+	v[0].vP.insert(v[0].vP.begin(),prod);
 	v[0].vname.insert(v[0].vname.begin(),TUBE_RADIUS_SCALAR);
       }
       return v;

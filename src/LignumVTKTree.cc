@@ -225,16 +225,28 @@ namespace lignumvtk{
       TSData& data = v[i];
       vtkParametricFunctionSource* fs = pfsv[i];
       unsigned int npoints = fs->GetOutput()->GetNumberOfPoints();
+      //Scalars for the segment
       vtkNew<vtkDoubleArray> tube_radius;
+      vtkNew<vtkDoubleArray> wfarray;
+      vtkNew<vtkDoubleArray> qinarray;
+      vtkNew<vtkDoubleArray> qabsarray;
+      vtkNew<vtkDoubleArray> photosynthesis;
       tube_radius->SetNumberOfTuples(npoints);
       tube_radius->SetName(scalar_name.c_str());
-      //Foliage mass in a segment
-      vtkNew<vtkDoubleArray> wfarray;
       wfarray->SetNumberOfTuples(npoints);
       wfarray->SetName(FOLIAGE_MASS_SCALAR.c_str());
+      qinarray->SetNumberOfTuples(npoints);
+      qinarray->SetName(QIN_SCALAR.c_str());
+      qabsarray->SetNumberOfTuples(npoints);
+      qabsarray->SetName(QABS_SCALAR.c_str());
+      photosynthesis->SetNumberOfTuples(npoints);
+      photosynthesis->SetName(PHOTOSYNTHESIS_SCALAR.c_str());
       for (unsigned int j = 0; j < data.vR.size(); j++){
 	double r = 0.0;
-	double wf= 0.0;
+	double wf = 0.0;
+	double qin = 0.0;
+	double qabs = 0.0;
+	double prod = 0.0;
 	if (scalar_name == TUBE_RADIUS_SCALAR){
 	  r =  data.vR[j];
 	}
@@ -244,23 +256,48 @@ namespace lignumvtk{
 	else if (scalar_name == TUBE_FOLIAGE_RADIUS_SCALAR){
 	  r = data.vRf[j];
 	  wf = data.vWf[j];
+	  qin = data.vQin[j];
+	  qabs = data.vQabs[j];
+	  prod = data.vP[j];
+	  //cout << "Qabs: " << qabs << " P: " << prod <<endl;
+	}
+	else{
+	  cout << "The radius " << scalar_name << " not supported" <<endl;
 	}
 	for (int k = 0; k < (this->resolution); k++){
 	  //Copy the radius for each spline point
 	  tube_radius->InsertTuple1(j*(this->resolution)+k,r);
 	  wfarray->InsertTuple1(j*(this->resolution)+k,wf);
+	  qinarray->InsertTuple1(j*(this->resolution)+k,qin);
+	  qabsarray->InsertTuple1(j*(this->resolution)+k,qabs);
+	  photosynthesis->InsertTuple1(j*(this->resolution)+k,prod);
 	}
       }
       //There are Npoints*Resolution+1 spline points (i.e. NPoints*Resolution line segments)
       //Add radius for the last point
-      tube_radius->InsertTuple1(data.vR.size()*(this->resolution),data.vR[data.vR.size()-1]);
-      wfarray->InsertTuple1(data.vWf.size()*(this->resolution),data.vWf[data.vWf.size()-1]);
+      if (scalar_name == TUBE_RADIUS_SCALAR){
+	tube_radius->InsertTuple1(data.vR.size()*(this->resolution),data.vR[data.vR.size()-1]);
+      }
+      else if (scalar_name == TUBE_HW_RADIUS_SCALAR){
+	tube_radius->InsertTuple1(data.vRh.size()*(this->resolution),data.vRh[data.vRh.size()-1]);
+      }
+      else if (scalar_name == TUBE_FOLIAGE_RADIUS_SCALAR){
+	tube_radius->InsertTuple1(data.vRh.size()*(this->resolution),data.vRh[data.vRh.size()-1]);
+	//Similarly for other scalars
+	wfarray->InsertTuple1(data.vWf.size()*(this->resolution),data.vWf[data.vWf.size()-1]);
+	qinarray->InsertTuple1(data.vQin.size()*(this->resolution),data.vQin[data.vQin.size()-1]);
+	qabsarray->InsertTuple1(data.vQabs.size()*(this->resolution),data.vQabs[data.vQabs.size()-1]);
+	photosynthesis->InsertTuple1(data.vP.size()*(this->resolution),data.vP[data.vP.size()-1]);
+      }
       vtkPolyData* polydata = fs->GetOutput();
       polydata->GetPointData()->AddArray(tube_radius);
       polydata->GetPointData()->SetActiveScalars(scalar_name.c_str());
-      //Add Foliage mass only to one polydata representing radius to foliage scalar   
+      //Add scalars of interest only to one polydata representing radius to foliage limit 
       if (scalar_name == TUBE_FOLIAGE_RADIUS_SCALAR){
 	polydata->GetPointData()->AddArray(wfarray);
+	polydata->GetPointData()->AddArray(qinarray);
+	polydata->GetPointData()->AddArray(qabsarray);
+	polydata->GetPointData()->AddArray(photosynthesis);
       }
     }
     return pfsv;
