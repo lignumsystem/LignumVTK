@@ -2,22 +2,6 @@
 
 namespace lignumvtk{
 
-  class CopyDataSetName{
-  public:
-    CopyDataSetName(const string& path):partial_name(path){}
-    bool operator()(const string& path){
-      std::string::size_type n = path.find(partial_name);
-      if (std::string::npos == n){
-	return false;
-      }
-      else{
-	return true;
-      }
-    }
-  private:
-    const string partial_name;  
-  };
-    
   int CreateVTPCFileFromXML(const string& input_file,const string& output_file)
   {
     XMLDomTreeReader<VTKHwSegment,VTKBud,Kite> tree_hwreader;
@@ -94,7 +78,7 @@ namespace lignumvtk{
     return EXIT_SUCCESS;
   }
 
-  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, const string& dataset_path)
+  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, const string& dataset_path, bool exact_match)
   {
     LignumVTKXML vtk_xml;
     LignumToVTK lignumvtkcf;
@@ -103,9 +87,14 @@ namespace lignumvtk{
     string tree_group=hdf5lignum.getTreeGroupName();
     vector<string> v = hdf5lignum.getDataSetNames(tree_group);
     vector<string> valid_paths;
-    std::copy_if(v.begin(),v.end(), std::back_inserter(valid_paths),CopyDataSetName(dataset_path));
+    if (exact_match == true){
+      std::copy_if(v.begin(),v.end(), std::back_inserter(valid_paths),FindExactMatch(dataset_path));
+    }
+    else{
+      std::copy_if(v.begin(),v.end(), std::back_inserter(valid_paths),FindSubstring(dataset_path));
+    }
     if (valid_paths.size() == 0){
-      cout << "No HDF5 datasets for trees for " << dataset_path << endl;
+      cout << "No HDF5 datasets for trees for path: " << dataset_path << endl;
       return EXIT_FAILURE;
     }
     //Test for broadleaved trees

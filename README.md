@@ -27,7 +27,7 @@ See CMakeLists.txt for details.
 ## Usage
 The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. The command line is:
 
-	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year <number>] [-dataset <path_string>]
+	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year <number>] [-dataset <path_string>] [-substring <path_string]
 	
 The first example creates VTK/VTPC file from Lignumm XML file:
 	
@@ -49,8 +49,12 @@ The fifth example creates VTK/VTPC file for Tree_8 for all growth years saved in
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset Tree_8
 	
-In general the argument string for the option *-dataset* is matched as a substring to all
-dataset paths in the HDF5 input file. The options *-year* and *-dataset* are mutually exclusive.
+The sixth example creates VTK/VTPC file for trees for all years matching Tree_13:
+
+	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11
+	
+In general the argument string for the option *-substring* is matched as a substring to all
+dataset paths in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
 	
 Upload the *.vtpc* output file to Paraview and finish by postediting trees for final visualization.
 
@@ -59,7 +63,7 @@ Upload the *.vtpc* output file to Paraview and finish by postediting trees for f
 > and their sizes. 
 
 > [!CAUTION]
-> Overly generic dataset path argument to the -dataset option can retrieve significant number of tree datasets,
+> Overly generic dataset path argument to the -substring option can retrieve significant number of tree datasets,
 > possibly all of them.
 
 ## ParaView
