@@ -14,7 +14,7 @@ int Usage()
 {
   cout << "Usage:" <<endl;
   cout << "./lignumvtk -help" <<endl;
-  cout << "./lignumvtk -input file.h5 [-list] [-output file.vtpc] [-year -number>] [-dataset <path_string>] [-substring <path_string>]" << endl;
+  cout << "./lignumvtk -input file.h5 [-list] [-output file.vtpc] [-year -number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>" << endl;
   cout << "./lignumvtk -input file.xml -output file.vtpc" << endl;
   cout << "Examples:" <<endl;
   cout << "Read Lignum XML file and produce VTK/VTPC file" << endl; 
@@ -27,6 +27,8 @@ int Usage()
   cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset /TreeXML/60/Tree_8" << endl;
   cout << "Read Lignum HDF5 file and produce VTK/VTPC file for all trees for all years match Tree_13" <<endl;
   cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_13" << endl;
+  cout << "Set spline accuracy to 10" <<endl;
+  cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_13 -spline 10" << endl;
   return EXIT_SUCCESS;
 }
   
@@ -35,6 +37,12 @@ int main(int argc,char* argv[])
 {
   if (argc < 2||CheckCommandLine(argc,argv,"-help") ){
     return Usage();
+  }
+  
+  std::string resolution;
+  int spline_resolution = lignumvtk::SPLINE_RESOLUTION;
+  if (ParseCommandLine(argc,argv,"-spline",resolution)){
+    spline_resolution = std::stoi(resolution);
   }
   bool list_content = false;
   if (CheckCommandLine(argc,argv,"-list")){
@@ -107,19 +115,19 @@ int main(int argc,char* argv[])
   }
   //Case 2: The input file is a single xml file
   if (is_xml){
-    retval = CreateVTPCFileFromXML(input_file,output_file);
+    retval = CreateVTPCFileFromXML(input_file,output_file,spline_resolution);
   }
   //Case 3: The HDF5 datasets from a given year are used
   else if (use_year == true){
-    retval = CreateVTPCFileFromHDF5(input_file,output_file,growth_year);
+    retval = CreateVTPCFileFromHDF5(input_file,output_file,growth_year,spline_resolution);
   }
   //Case 4: The HDF5 Dataset name or path is used
   else if (use_dataset == true){
-    retval = CreateVTPCFileFromHDF5(input_file,output_file,dataset,true);
+    retval = CreateVTPCFileFromHDF5(input_file,output_file,dataset,true,spline_resolution);
   }
   //Case 5: The search substring is used to pick HDF5 datasets
   else if (use_substring ==true){
-    retval =  CreateVTPCFileFromHDF5(input_file,output_file,substring,false);
+    retval =  CreateVTPCFileFromHDF5(input_file,output_file,substring,false,spline_resolution);
   }
   else{
     cout << "Define input XML file or define year or dataset name for HDF5 file" << endl;
