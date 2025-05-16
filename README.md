@@ -27,7 +27,7 @@ See CMakeLists.txt for details.
 ## Usage
 The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. The command line is:
 
-	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year <number>] [-dataset <path_string>] [-substring <path_string]
+	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year <number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>]
 	
 The first example creates VTK/VTPC file from Lignumm XML file:
 	
@@ -52,6 +52,10 @@ The fifth example creates VTK/VTPC file for Tree_8 for all growth years saved in
 The sixth example creates VTK/VTPC file for trees for all years matching Tree_13:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11
+	
+The final example adjust the spline accuracy to 10, i.e. a line segment is divided to 10 spline segments:_
+
+	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11 -spline 10
 	
 In general the argument string for the option *-substring* is matched as a substring to all
 dataset paths in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
