@@ -67,13 +67,13 @@ namespace lignumvtk{
   ///\param input_file Lignum XM file
   ///\param output_file VTK/VTPC file
   ///\return EXIT_SUCCESS if VTK/VTPC file is created, EXIT_FAILURE otherwise
-  int CreateVTPCFileFromXML(const string& input_file,const string& output_file);
+  int CreateVTPCFileFromXML(const string& input_file,const string& output_file, int spline_resolution);
   ///\brief Create VTK/VTPC file from Lignum HDF5 file
   ///\param input_file Lignum XM file
   ///\param output_file VTK/VTPC file
   ///\param year Simulation year group in HDF5 file
   ///\return EXIT_SUCCESS if VTK/VTPC file is created, EXIT_FAILURE otherwise
-  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file,int year);
+  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file,int year, int spline_resolution);
   ///\brief Create VTK/VTPC file from Lignum HDF5 file
   ///
   ///Collect datasets matching  \p dataset_path string and create VTK/VTPC file for those datasets
@@ -82,6 +82,7 @@ namespace lignumvtk{
   ///\param dataset_path HDF5 path substring
   ///\param exact_match If true Search as suffix if false search as substring 
   ///\return EXIT_SUCCESS if VTK/VTPC file is created, EXIT_FAILURE otherwise
-  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, const string& dataset_path, bool exact_match);  
+  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, const string& dataset_path, bool exact_match,
+			     int spline_resolution);  
 }
 #endif

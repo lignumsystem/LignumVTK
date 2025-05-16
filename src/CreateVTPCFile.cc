@@ -2,12 +2,12 @@
 
 namespace lignumvtk{
 
-  int CreateVTPCFileFromXML(const string& input_file,const string& output_file)
+  int CreateVTPCFileFromXML(const string& input_file,const string& output_file, int spline_resolution)
   {
     XMLDomTreeReader<VTKHwSegment,VTKBud,Kite> tree_hwreader;
     XMLDomTreeReader<VTKCfSegment,VTKCfBud> tree_cfreader;
     LignumVTKXML vtk_xml;
-    LignumToVTK lignumvtk;
+    LignumToVTK lignumvtk(spline_resolution);
     Tree<VTKHwSegment,VTKBud> lignum_hwtree(Point(0,0,0), PositionVector(0,0,1.0));
     Tree<VTKCfSegment,VTKCfBud> lignum_cftree;
 
@@ -41,10 +41,10 @@ namespace lignumvtk{
     return EXIT_SUCCESS;
   }
 
-  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, int year)
+  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, int year, int spline_resolution)
   {
     LignumVTKXML vtk_xml;
-    LignumToVTK lignumvtkcf;
+    LignumToVTK lignumvtkcf(spline_resolution);
     HDF5ToLignum hdf5lignum;
     hdf5lignum.openFile(input_file);
     vector<string> v = hdf5lignum.getDataSetNames(year);
@@ -78,10 +78,11 @@ namespace lignumvtk{
     return EXIT_SUCCESS;
   }
 
-  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, const string& dataset_path, bool exact_match)
+  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, const string& dataset_path, bool exact_match,
+			     int spline_resolution)
   {
     LignumVTKXML vtk_xml;
-    LignumToVTK lignumvtkcf;
+    LignumToVTK lignumvtkcf(spline_resolution);
     HDF5ToLignum hdf5lignum;
     hdf5lignum.openFile(input_file);
     string tree_group=hdf5lignum.getTreeGroupName();
