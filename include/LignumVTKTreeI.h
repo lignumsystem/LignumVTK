@@ -9,9 +9,12 @@ namespace lignumvtk{
       if (BUD* b = dynamic_cast<BUD*>(tc)){
 	//Create new tree segment data collection item
 	TSData data;
+	//Mark that this is coming from bud
+	data.from_bud = true;
 	Point p = GetPoint(*b);
 	//The last end point in the segment points in this branch
 	data.vpoints.insert(data.vpoints.begin(),p);
+	//Set initial values and update in the preceding segment
 	//Corresponding segment length, radius and heartwood radius
 	data.vL.insert(data.vL.begin(),0.0);
 	data.vR.insert(data.vR.begin(),MIN_SEGMENT_RADIUS);
@@ -40,7 +43,24 @@ namespace lignumvtk{
 	double qin = GetValue(*ts,LGAQin);
 	double qabs = GetValue(*ts,LGAQabs);
 	double prod = GetValue(*ts,LGAP);
+	//Update the last data point from the bud with segment data
+	if (v[0].from_bud == true){
+	  //Mark false so that this was the mother segment for the bud
+	  v[0].from_bud = false;
+	  v[0].vL[0] = l;
+	  v[0].vR[0] = r;
+	  v[0].vRh[0] = rh;
+	  if (CfTreeSegment<TS,BUD>* cfts = dynamic_cast<CfTreeSegment<TS,BUD>*>(tc)){
+	    v[0].vRf[0] = rf;
+	  }
+	  v[0].vWf[0] = wf;
+	  v[0].vQin[0] = qin;
+	  v[0].vQabs[0] = qabs;
+	  v[0].vP[0] = prod;
+	}
 	//cout << "Foliage radius " << rf <<endl;
+	//Add segment length to total length
+	v[0].total_length += l;
 	//Insert the point 
 	v[0].vpoints.insert(v[0].vpoints.begin(),p);
 	//Corresponding segment length, radius and heartwood radius

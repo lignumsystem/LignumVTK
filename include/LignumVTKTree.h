@@ -3,6 +3,7 @@
 #ifndef LIGNUMVTK_TREE_H
 #define LIGNUMVTK_TREE_H
 #include <cassert>
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <numeric>
@@ -142,7 +143,11 @@ namespace lignumvtk{
   ///\note For VTK the minimum value is 1.
   const double LINE_WIDTH = 1.0;
   ///\ingroup VTKconstants
-  ///\brief Resolution for spline tube rectangular sides in visualization.
+  ///\brief Spline resolution, number of spline segments between line points.
+  ///\note This is not constant but can be set from command line
+  const int SPLINE_RESOLUTION = 20;
+  ///\ingroup VTKconstants
+  ///\brief Spline resolution, number of tube rectangular sides.
   const int TUBE_NUMBER_OF_SIDES = 30;
   ///\ingroup VTKconstants
   ///\brief Technical minimum segment radius for visualization 
@@ -210,6 +215,9 @@ namespace lignumvtk{
   ///\note Add new vectors for data items to the list as needed
   class TreeSegmentDataCollection{
   public:
+    TreeSegmentDataCollection():from_bud(false),total_length(0.0){}
+    bool from_bud;///< Boolean marker to information from bud
+    double total_length; ///< Sum of segment lengths in the axis
     std::vector<cxxadt::Point> vpoints;///< Vector of points of interest to construct geometry of the object
     std::vector<double> vL;///< Vector of (segment) lengths in one axis
     std::vector<double> vR;///< Vector of segment radii in one axis
@@ -389,7 +397,7 @@ namespace lignumvtk{
   public:
     ///\brief Constructor
     ///\param r Spline segment lengthwise resolution
-    LignumToVTK(int r=10):resolution(r){}
+    LignumToVTK(int r):resolution(r){}
     ///\brief Create VTK geometric representation of the Lignum tree.
     ///
     ///Each axis will be represented as VTK tube, each leaf as a VTK triangular strip
