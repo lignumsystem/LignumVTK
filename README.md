@@ -49,16 +49,16 @@ The fifth example creates VTK/VTPC file for Tree_8 for all growth years saved in
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset Tree_8
 	
-The sixth example creates VTK/VTPC file for trees for all years matching Tree_13:
+The sixth example creates VTK/VTPC file for trees for all years matching Tree_11:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11
 	
-The final example adjust the spline accuracy to 10, i.e. a line segment is divided to 10 spline segments:_
+The final example adjust the spline accuracy to 10, i.e. a line segment denoting a tree segment is divided into 10 spline segments:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11 -spline 10
 	
-In general the argument string for the option *-substring* is matched as a substring to all
-dataset paths in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
+In general, the argument string for *-dataset* finds exact match for the dataset name, the option *-substring* uses the argument string 
+aa a substring in all dataset paths in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
 	
 Upload the *.vtpc* output file to Paraview and finish by postediting trees for final visualization.
 
