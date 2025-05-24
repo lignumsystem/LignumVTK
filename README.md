@@ -72,7 +72,7 @@ Upload the *.vtpc* output file to Paraview and finish by postediting trees for f
 
 ## ParaView
 From  ParaView Preferences and further via RenderView tab it is possible to adjust rendering options.
-Lower the values (for example by factor of 10) for LOD Threshold and Outline Threshold if needed.
+Lower the values (for example by factor of 10) for LOD Threshold[^lod] and Outline Threshold if needed.
 These two options decrease memory requirments at the expense of rendering quality. If ParaView crashes during rendering process 
 it may indicate failed memory request when processing the graphics pipeline. 
 
@@ -114,7 +114,9 @@ lignumvtk.py is a python3 program that requires numpy and vtk python packages. I
 	-c, --cylinder    Use segment base radius as segment top radius (pure
                       cylinder)
 
-   
+[^lod]: Level Of Detail (LOD) refers to the dynamic complexity of a 3D model representation. Reduce or 
+increase the LOD according to some metrics, for example observing the distance from the camera/viewer
+or depending on the importance of the object.
 
 
 
