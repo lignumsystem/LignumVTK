@@ -114,9 +114,9 @@ lignumvtk.py is a python3 program that requires numpy and vtk python packages. I
 	-c, --cylinder    Use segment base radius as segment top radius (pure
                       cylinder)
 
-[^lod]: Level Of Detail (LOD) refers to the dynamic complexity of a 3D model representation. Reduce or 
-increase the LOD according to some metrics, for example observing the distance from the camera/viewer
-or depending on the importance of the object.
+[^lod]: In computer graphics Level of Detail (LOD) refers to the dynamic complexity of a 3D model representation. 
+The LOD of an object is increased or decreased according to some metrics, for example observing the distance from the camera 
+or viewer in a 3D scene or designating the importance of the object.
 
 
 
