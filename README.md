@@ -30,11 +30,12 @@ Use CMake to compile:
 See CMakeLists.txt for details.
 
 ## Usage
-The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. The command line is:
+The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. Note that `lignumvtk` can recognize between 
+conifers and hardwood trees. Currently kite shaped leaves are supported. The command line is:
 
 	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year <number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>]
 	
-The first example creates VTK/VTPC file from Lignumm XML file:
+The first example creates VTK/VTPC file from Lignum XML file:
 	
 	./lignumvtk -input File.xml -output VTKFile.vtpc
 
@@ -61,11 +62,11 @@ The sixth example creates VTK/VTPC file for trees for all years matching Tree_11
 The final example adjust the spline accuracy to 10, i.e. a line segment denoting a tree segment is divided into 10 spline segments:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11 -spline 10
-	
+
 In general, the argument string for *-dataset* finds exact match for the dataset name, the option *-substring* uses the argument string 
 aa a substring in all dataset paths in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
 	
-Upload the *.vtpc* output file to Paraview and finish by postediting trees for final visualization.
+Upload the *.vtpc* output file to Paraview and finish by post-editing trees for final visualization.
 
 > [!NOTE] 
 > The creation of the VTK/VTPC files can take a while, possibly several minutes depending the number of trees
