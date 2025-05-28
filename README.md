@@ -2,7 +2,7 @@
 Create VTK/VTPC files for ParaView. ParaView is a 3D builder, post-processing and visualization engine for scientific data
 with computer geometry models.
 
-The design scheme is that the LignumVTK binary `lignumvtk` creates VTK geometric objects and attributes for the Lignum tree models but the 
+The design principle is that the LignumVTK binary `lignumvtk` creates VTK geometric objects and attributes for the Lignum tree models but the 
 final visualization will be done in ParaView by implementing appropriate graphics pipelines. This post-processing should be 
 feasible to accomplish without programming and knowledge about VTK library. 
 
