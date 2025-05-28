@@ -31,7 +31,7 @@ See CMakeLists.txt for details.
 
 ## Usage
 The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. Note that `lignumvtk` can recognize between 
-conifers and hardwood trees. Currently kite shaped leaves are supported. The command line is:
+conifers and hardwood trees. The command line is:
 
 	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year <number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>]
 	
@@ -76,7 +76,7 @@ Upload the *.vtpc* output file to Paraview and finish by post-editing trees for 
 > Overly generic dataset path argument to the -substring option can retrieve significant number of tree datasets,
 > possibly all of them.
 
-## ParaView
+## ParaView settings
 From  ParaView Preferences and further via RenderView tab it is possible to adjust rendering options.
 Lower the values (for example by factor of 10) for LOD Threshold[^lod] and Outline Threshold if needed.
 These two options decrease memory requirments at the expense of rendering quality. If ParaView crashes during rendering process 
@@ -100,15 +100,15 @@ Open the HTML index file, for example on macOS Terminal type:
 	open DoxygenDoc/html/index.html
 	
 ## Notes
-LignumVTK is work under progress.
+LignumVTK is work under progress. Currently kite shaped leaves are supported for hardwoods.
 
-### lignumvtk.py: 
+### lignumvtk.py
 Initial trial to use vtk library to visualize tree roots with Lignum and ParaView. The tree roots are produced in 
 the project FineRoots. The `lignumvtk.py` program creates VTK/VTM file that can be imported to ParaView.
 
 lignumvtk.py is a python3 program that requires numpy and vtk python packages. Install these with `pip`.
 
-#### Usage:
+#### Usage
 
 	python lignumvtk.py -h
 	Usage: lignumvtk.py [options]
