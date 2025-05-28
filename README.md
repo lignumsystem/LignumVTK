@@ -100,7 +100,8 @@ Open the HTML index file, for example on macOS Terminal type:
 	open DoxygenDoc/html/index.html
 	
 ## Notes
-LignumVTK is work under progress. Currently kite shaped leaves are supported for hardwoods.
+LignumVTK is work under progress. Currently kite shaped leaves are supported for hardwoods. Ellipse and triangle
+leaves will be implemented when needed.
 
 ### lignumvtk.py
 Initial trial to use vtk library to visualize tree roots with Lignum and ParaView. The tree roots are produced in 
