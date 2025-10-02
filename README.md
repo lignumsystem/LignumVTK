@@ -2,9 +2,14 @@
 Create VTK/VTPC files for ParaView. ParaView is a 3D builder, post-processing and visualization engine for scientific data
 with computer geometry models.
 
+The design principle is that the LignumVTK binary `lignumvtk` creates VTK geometric objects and attributes for the Lignum tree models but the 
+final visualization will be done in ParaView by implementing appropriate graphics pipelines. This post-processing should be 
+feasible to accomplish without programming and knowledge about VTK library. 
+
+
 ## Prerequisites 
 Download *LignumVTK* and *lignum-core* from GitHub. Install VTK package.
-With MacPorts type:
+Using MacPorts type:
 
 	sudo port install vtk
 	
@@ -25,11 +30,12 @@ Use CMake to compile:
 See CMakeLists.txt for details.
 
 ## Usage
-The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. The command line is:
+The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. Note that `lignumvtk` can recognize between 
+conifers and hardwood trees. The command line is:
 
 	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year <number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>]
 	
-The first example creates VTK/VTPC file from Lignumm XML file:
+The first example creates VTK/VTPC file from Lignum XML file:
 	
 	./lignumvtk -input File.xml -output VTKFile.vtpc
 
@@ -49,18 +55,18 @@ The fifth example creates VTK/VTPC file for Tree_8 for all growth years saved in
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset Tree_8
 	
-The sixth example creates VTK/VTPC file for trees for all years matching Tree_13:
+The sixth example creates VTK/VTPC file for trees for all years matching Tree_11:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11
 	
-The final example adjust the spline accuracy to 10, i.e. a line segment is divided to 10 spline segments:_
+The final example adjust the spline accuracy to 10, i.e. a line segment denoting a tree segment is divided into 10 spline segments:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11 -spline 10
+
+In general, the argument string for *-dataset* finds exact match for the dataset name, the option *-substring* uses the argument string 
+aa a substring in all dataset paths in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
 	
-In general the argument string for the option *-substring* is matched as a substring to all
-dataset paths in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
-	
-Upload the *.vtpc* output file to Paraview and finish by postediting trees for final visualization.
+Upload the *.vtpc* output file to Paraview and finish by post-editing trees for final visualization.
 
 > [!NOTE] 
 > The creation of the VTK/VTPC files can take a while, possibly several minutes depending the number of trees
@@ -70,9 +76,9 @@ Upload the *.vtpc* output file to Paraview and finish by postediting trees for f
 > Overly generic dataset path argument to the -substring option can retrieve significant number of tree datasets,
 > possibly all of them.
 
-## ParaView
+## ParaView settings
 From  ParaView Preferences and further via RenderView tab it is possible to adjust rendering options.
-Lower the values (for example by factor of 10) for LOD Threshold and Outline Threshold if needed.
+Lower the values (for example by factor of 10) for LOD Threshold[^lod] and Outline Threshold if needed.
 These two options decrease memory requirments at the expense of rendering quality. If ParaView crashes during rendering process 
 it may indicate failed memory request when processing the graphics pipeline. 
 
@@ -94,15 +100,16 @@ Open the HTML index file, for example on macOS Terminal type:
 	open DoxygenDoc/html/index.html
 	
 ## Notes
-LignumVTK is work under progress.
+LignumVTK is work under progress. Currently kite shaped leaves are supported for hardwoods. Ellipse and triangle
+leaves will be implemented when needed.
 
-### lignumvtk.py: 
+### lignumvtk.py
 Initial trial to use vtk library to visualize tree roots with Lignum and ParaView. The tree roots are produced in 
 the project FineRoots. The `lignumvtk.py` program creates VTK/VTM file that can be imported to ParaView.
 
 lignumvtk.py is a python3 program that requires numpy and vtk python packages. Install these with `pip`.
 
-#### Usage:
+#### Usage
 
 	python lignumvtk.py -h
 	Usage: lignumvtk.py [options]
@@ -114,7 +121,9 @@ lignumvtk.py is a python3 program that requires numpy and vtk python packages. I
 	-c, --cylinder    Use segment base radius as segment top radius (pure
                       cylinder)
 
-   
+[^lod]: In computer graphics Level of Detail (LOD) refers to the dynamic complexity of a 3D model representation. 
+The LOD of an object is increased or decreased according to some metrics, for example observing the distance from the camera 
+or viewer in a 3D scene or designating the importance of the object.
 
 
 
