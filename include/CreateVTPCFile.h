@@ -6,6 +6,7 @@
 #include <LignumVTK.h>
 #include <LignumVTKXML.h>
 #include <LignumVTKTree.h>
+using namespace lignumxml;
 namespace lignumvtk{
 
   ///\brief Find HDF5 dataset path with substring
@@ -63,24 +64,32 @@ namespace lignumvtk{
     const string exact_name;///<HDF5 dataset name
   };
   
-  ///\brief Create VTK/VTPC file from Lignum XML
+  ///\brief Create VTK/VTPC file from Lignum XML file
   ///\param input_file Lignum XM file
   ///\param output_file VTK/VTPC file
+  ///\param spline_resolution Number of spline points for tubes, higher values means more spline points.
+  ///Default value lignumvtk::SPLINE_RESOLUTION.
   ///\return EXIT_SUCCESS if VTK/VTPC file is created, EXIT_FAILURE otherwise
   int CreateVTPCFileFromXML(const string& input_file,const string& output_file, int spline_resolution);
-  ///\brief Create VTK/VTPC file from Lignum HDF5 file
-  ///\param input_file Lignum XM file
+  ///\brief Create VTK/VTPC file from Lignum HDF5 file.
+  ///
+  ///Create VTK/VTPC representation for all trees.
+  ///\param input_file Lignum HDF5 file
   ///\param output_file VTK/VTPC file
   ///\param year Simulation year group in HDF5 file
+  ///\param spline_resolution Number of spline points for tubes, higher values means more spline points.
+  ///Default value lignumvtk::SPLINE_RESOLUTION.
   ///\return EXIT_SUCCESS if VTK/VTPC file is created, EXIT_FAILURE otherwise
   int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file,int year, int spline_resolution);
-  ///\brief Create VTK/VTPC file from Lignum HDF5 file
+  ///\brief Create VTK/VTPC file from Lignum HDF5 file.
   ///
-  ///Collect datasets matching  \p dataset_path string and create VTK/VTPC file for those datasets
-  ///\param input_file Lignum XM file
+  ///Create VTK/VTPC representation for trees trees matching \p dataset_path string.
+  ///\param input_file Lignum HDF5 file
   ///\param output_file VTK/VTPC file
-  ///\param dataset_path HDF5 path substring
-  ///\param exact_match If true Search as suffix if false search as substring 
+  ///\param dataset_path HDF5 dataset path substring
+  ///\param exact_match If true use \p dataset_path as path suffix, if false search \p dataset_path as path substring.
+  ///\param spline_resolution Number of spline points for tubes, higher values means more spline points.
+  ///Default value lignumvtk::SPLINE_RESOLUTION.
   ///\return EXIT_SUCCESS if VTK/VTPC file is created, EXIT_FAILURE otherwise
   int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, const string& dataset_path, bool exact_match,
 			     int spline_resolution);  

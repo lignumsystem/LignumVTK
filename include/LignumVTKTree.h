@@ -398,16 +398,21 @@ namespace lignumvtk{
     ///\brief Constructor
     ///\param r Spline segment lengthwise resolution
     LignumToVTK(int r):resolution(r){}
-    ///\brief Create VTK geometric representation of the Lignum tree.
+    ///\brief Create VTK geometric representation of a broad leaf Lignum tree.
     ///
     ///Each axis will be represented as VTK tube, each leaf as a VTK triangular strip
     ///and each petiole as VTK line. These are grouped in different data sets so that final
     ///editing for visualization is easier. For tree segments and leaves designated simulation data
     ///can be added as scalar values for tubes and triangular strips respectively.
-    ///\note Current implementation is for Kite shaped leaves. Implement triangle and ellipse leaves
+    ///\note Current implementation is for Kite shaped leaves. Implement Triangle and Ellipse leaves
     ///if necessary.
     template <typename TREE>
     LignumToVTK& createBroadLeafTreeVTKDataSets(TREE& t, bool add_to_renderer=false);
+    ///\brief Create VTK geometric representation of a conifer Lignum tree.
+    ///
+    ///Each axis will be represented as three VTK tubes for foliage, sapwood and heartwood.
+    ///These are grouped in different data sets so that final editing for visualization is easier.
+    ///For tree segments designated simulation data can be added as scalar values for the tubes. 
     template<typename TREE>
     LignumToVTK& createConiferTreeVTKDataSets(TREE& t,bool add_to_renderer=false);
     ///\brief Write VTK partitioned data sets to a file

@@ -10,6 +10,7 @@
 #include <CreateVTPCFile.h>
 
 using namespace lignumvtk;
+///\brief Print command line usage information 
 int Usage()
 {
   cout << "Usage:" <<endl;
@@ -27,12 +28,12 @@ int Usage()
   cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset /TreeXML/60/Tree_8" << endl;
   cout << "Read Lignum HDF5 file and produce VTK/VTPC file for all trees for all years match Tree_13" <<endl;
   cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_13" << endl;
-  cout << "Set spline accuracy to 10" <<endl;
+  cout << "Set spline accuracy to 10, higher value means more spline points" <<endl;
   cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_13 -spline 10" << endl;
   return EXIT_SUCCESS;
 }
   
-    
+///\brief Read xml or HDF5 file and create VTK/VTPC files for ParaView    
 int main(int argc,char* argv[])
 {
   if (argc < 2||CheckCommandLine(argc,argv,"-help") ){
@@ -91,6 +92,11 @@ int main(int argc,char* argv[])
   bool use_substring = false;
   if (ParseCommandLine(argc,argv,"-substring",substring)){
     use_substring = true;
+  }
+  std::string grouping;
+  bool use_grouping = false;
+  if (ParseCommandLine(argc,argv,"-grouping",grouping)){
+    use_grouping = true;
   }
   //Command line parsed, do the following:
   //Case 1: List the content of the HDF5 tree files  
