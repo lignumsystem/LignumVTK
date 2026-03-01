@@ -522,6 +522,7 @@ namespace lignumvtk{
     ///returned by LignumToVTK::createTubeFilters.
     ///\param tfv Vector containing spline tube filters
     ///\param tmv Vector for spline tube filter mappers
+    ///\param scalar_name  The scalar name for the tube radius
     ///\retval tmv Vector containing spline tube filter mappers
     TubeMapperVector& createTubeMappers(TSDataVector& tfv,TubeMapperVector& tmv,const string& scalar_name)const;
     ///\brief Create tree segment tube actors for mappers.
