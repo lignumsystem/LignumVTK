@@ -70,4 +70,9 @@ vtk_module_autoinit(
   TARGETS lignumvtk
   MODULES ${VTK_LIBRARIES}
 )
+add_custom_command(TARGET lignumvtk
+  COMMAND echo "Compilation for LignumVTK  done"
+  POST_BUILD
+  COMMENT "REMEMBER to type \"make install\" to install \"lignumvtk\" into the LignumVTK working directory above."
+  )
 install(TARGETS lignumvtk DESTINATION "${CMAKE_CURRENT_LIST_DIR}")
