@@ -14,7 +14,7 @@ using namespace lignumvtk;
 int Usage()
 {
   cout << "Usage:" <<endl;
-  cout << "./lignumvtk -help" <<endl;
+  cout << "./lignumvtk [-h | -help]" <<endl;
   cout << "./lignumvtk -input file.h5 [-list] [-output file.vtpc] [-year -number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>" << endl;
   cout << "./lignumvtk -input file.xml -output file.vtpc" << endl;
   cout << "Examples:" <<endl;
@@ -36,7 +36,7 @@ int Usage()
 ///\brief Read xml or HDF5 file and create VTK/VTPC files for ParaView    
 int main(int argc,char* argv[])
 {
-  if (argc < 2||CheckCommandLine(argc,argv,"-help") ){
+  if (argc < 2||CheckCommandLine(argc,argv,"-help")||CheckCommandLine(argc,argv,"-h")){
     return Usage();
   }
   
