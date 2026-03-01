@@ -30,64 +30,83 @@ Use CMake to compile:
 See CMakeLists.txt for details.
 
 ## Usage
-The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. Note that `lignumvtk` can recognize between 
-conifers and hardwood trees. The command line is:
+The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. Note that `lignumvtk` can implicitely 
+recognize between conifers and hardwood trees. After simulations such as in LignumForest the results can be found in two HDF5 files,
+one for aggregated data and one for the trees in XML format. The input data for `lignumvtk` is either an XML tree file or 
+an HDF5 file containing the tree datasets in XML format.
 
-	./lignumvtk -input file.[h5|xml] [-list] [-output file.vtpc] [-year <number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>]
-	
-The first example creates VTK/VTPC file from Lignum XML file:
-	
-	./lignumvtk -input File.xml -output VTKFile.vtpc
+### Command line 
+The `lignumvtk` command line is:
 
-The second example lists datasets for trees in Lignum HDF5 file:
+	./lignumvtk -input path/to/file.[h5|xml] [-list] [-output path/to/file.vtpc] [-year <number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>]
+	
+### Examples 
+Example 1: List datasets for trees in Lignum HDF5 file:
 
 	./lignumvtk -input File.h5 -list
 	
-The third example creates VTK/VTPC file for all trees in growth year 20:
+Example 2: Create VTK/VTPC file from Lignum XML file:
+	
+	./lignumvtk -input File.xml -output VTKFile.vtpc
+
+Example 3: Create VTK/VTPC file for all trees of age 20:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -year 20
 	
-The fourth example creates VTK/VTPC file for the dataset Tree_8 in /TreeXML/60/Tree_8:
+Example 4: Create VTK/VTPC file for the dataset Tree_8 in /TreeXML/60/Tree_8:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset /TreeXML/60/Tree_8
 	
-The fifth example creates VTK/VTPC file for Tree_8 for all growth years saved in HDF5 file:
+Example 5: Create VTK/VTPC file for Tree_8 for all growth years saved in HDF5 file:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset Tree_8
 	
-The sixth example creates VTK/VTPC file for trees for all years matching Tree_11:
+Example 6: Create VTK/VTPC file for trees for all years matching Tree_11:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11
 	
-The final example adjust the spline accuracy to 10, i.e. a line segment denoting a tree segment is divided into 10 spline segments:
+Example 7: Adjust the spline accuracy to 10. Line segments denoting tree segments are divided into 10 spline segments:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11 -spline 10
 
-In general, the argument string for *-dataset* finds exact match for the dataset name, the option *-substring* uses the argument string 
-aa a substring in all dataset paths in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
+In general, the argument string for *-dataset* finds exact match for the dataset name, 
+the option *-substring* uses the argument string as a substring to search dataset paths 
+in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
 	
-Upload the *.vtpc* output file to Paraview and finish by post-editing trees for final visualization.
+`lignumvtk`, i.e. the VTK toolkit library, will create additional directories as needed to store 
+the 3D data models in the multitude of but practicably sized files. Upload the main *.vtpc* output file to Paraview 
+and finish by post-editing trees manually in ParaView graphics pipeline for final visualization.
+
+> [!NOTE]
+> During reconstruction of trees warning messages regarding missing function files can appear. This is due to 
+> hard coded default values for tree simulations and does not prevent the creation of VTK/VTPC files.
 
 > [!NOTE] 
-> The creation of the VTK/VTPC files can take a while, possibly several minutes depending the number of trees
-> and their sizes. 
+> The creation of the VTK/VTPC files can take a while, possibly several minutes 
+> depending the number of trees and their dataset sizes. 
 
 > [!CAUTION]
-> Overly generic dataset path argument to the -substring option can retrieve significant number of tree datasets,
+> Unduly generic dataset path argument to the -substring option can retrieve significant number of tree datasets,
 > possibly all of them.
 
-## ParaView settings
-From  ParaView Preferences and further via RenderView tab it is possible to adjust rendering options.
-Lower the values (for example by factor of 10) for LOD Threshold[^lod] and Outline Threshold if needed.
-These two options decrease memory requirments at the expense of rendering quality. If ParaView crashes during rendering process 
-it may indicate failed memory request when processing the graphics pipeline. 
+> [!TIP]
+> It may be preferable to save VTK 3D data models under one directory. This directory can be excluded for example
+> from Doxygen search paths.
 
-It seems that it is possible to visualize single trees produced by `lignumvtk` in ParaView with 
-default rendering values with consumer products like MacBooks (although the ParaView rendering may take a while). 
-But for example for forest plots (see LignumForest) it is mandatory to lower the threshold values for LOD and Outline.
+## ParaView settings
+ParaView can visualize single trees produced by `lignumvtk` with default rendering values 
+in MacBooks although the rendering process may take a while. But for example for forest stands
+(see LignumForest) it is mandatory to lower the values for LOD[^lod] and Outline Threshold[^ot].
+
+Adjust ParaView rendering options from Preferences via RenderView tab.
+Lower the values (for example by factor of 10) for LOD and Outline Threshold if needed.
+These two options decrease memory requirments at the expense of rendering quality. 
+
+If ParaView crashes during a rendering process it may indicate failed memory request 
+when computing the graphics pipeline. 
 
 ### Blender
-Another 3D creation suite is [Blender](https://www.blender.org). ParaView can export computer graphics models
+Another 3D computer graphics creation suite is [Blender](https://www.blender.org). ParaView can export graphics models
 in file formats supported by Blender. 
 
 ## Software documentation
@@ -122,8 +141,10 @@ lignumvtk.py is a python3 program that requires numpy and vtk python packages. I
                       cylinder)
 
 [^lod]: In computer graphics Level of Detail (LOD) refers to the dynamic complexity of a 3D model representation. 
-The LOD of an object is increased or decreased according to some metrics, for example observing the distance from the camera 
-or viewer in a 3D scene or designating the importance of the object.
+The increasing LOD threshold value tend to render objects in full and lower value will give better interactivity. 
+
+[^ot]: The Outline Threshold value determines if an object is approximated as a bounding box only.
+
 
 
 
