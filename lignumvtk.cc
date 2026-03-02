@@ -15,7 +15,7 @@ int Usage()
 {
   cout << "Usage:" <<endl;
   cout << "./lignumvtk [-h | -help]" <<endl;
-  cout << "./lignumvtk -input file.h5 [-list] [-output file.vtpc] [-year -number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>" << endl;
+  cout << "./lignumvtk -input|-i file.h5 [-list] [-output|-o file.vtpc] [-year -number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>" << endl;
   cout << "./lignumvtk -input file.xml -output file.vtpc" << endl;
   cout << "Examples:" <<endl;
   cout << "Read Lignum XML file and produce VTK/VTPC file" << endl; 
@@ -52,7 +52,7 @@ int main(int argc,char* argv[])
   std::string input_file;
   bool is_hdf5 = true;
   bool is_xml = true;
-  if (ParseCommandLine(argc,argv,"-input",input_file)){
+  if (ParseCommandLine(argc,argv,"-input",input_file)||ParseCommandLine(argc,argv,"-i",input_file)){
      std::string::size_type n;
      n = input_file.find(".h5");
      if (n == std::string::npos){
@@ -73,7 +73,7 @@ int main(int argc,char* argv[])
   }
   std::string output_file;
   bool output_found=false;
-  if (ParseCommandLine(argc,argv,"-output",output_file)){
+  if (ParseCommandLine(argc,argv,"-output",output_file)||ParseCommandLine(argc,argv,"-o",output_file)){
     output_found = true;
   }
   std::string year;
