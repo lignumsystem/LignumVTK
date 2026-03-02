@@ -166,7 +166,7 @@ namespace lignumvtk{
     lineav = createLineActors(pv,lineav);
 
     //Add datasets to dataset collection
-    addPartitionedDataSet(tav,TREE_SEGMENT_BLOCK);
+    addPartitionedDataSet(tav,TREE_SEGMENT_R_BLOCK);
     addPartitionedDataSet(lav,LEAF_BLOCK);
     addPartitionedDataSet(lineav,PETIOLE_BLOCK);
     if (add_to_renderer == true){
@@ -210,24 +210,24 @@ namespace lignumvtk{
     tsv = treeToCfTSData(t,tsv);
     TubeMapperVector tm_radius_v;
     tm_radius_v = createTubeMappers(tsv,tm_radius_v,TUBE_RADIUS_SCALAR);
-    TubeMapperVector tm_hwradius_v;
-    tm_hwradius_v = createTubeMappers(tsv,tm_hwradius_v,TUBE_HW_RADIUS_SCALAR);
+    TubeMapperVector tm_radius_rh_v;
+    tm_radius_rh_v = createTubeMappers(tsv,tm_radius_rh_v,TUBE_HW_RADIUS_SCALAR);
     TubeMapperVector tm_foliage_radius_v;
     tm_foliage_radius_v = createTubeMappers(tsv,tm_foliage_radius_v,TUBE_FOLIAGE_RADIUS_SCALAR);
     TubeActorVector ta_radius_v;
     ta_radius_v= createTubeActors(tm_radius_v,ta_radius_v);
-    TubeActorVector ta_hwradius_v;
-    ta_hwradius_v = createTubeActors(tm_hwradius_v,ta_hwradius_v);
+    TubeActorVector ta_radius_rh_v;
+    ta_radius_rh_v = createTubeActors(tm_radius_rh_v,ta_radius_rh_v);
     TubeActorVector ta_foliage_radius_v;
     ta_foliage_radius_v = createTubeActors(tm_foliage_radius_v,ta_foliage_radius_v);
 
     addPartitionedDataSet(ta_foliage_radius_v,TREE_SEGMENT_FOLIAGE_BLOCK);
-    addPartitionedDataSet(ta_hwradius_v,TREE_HWSEGMENT_BLOCK);
-    addPartitionedDataSet(ta_radius_v,TREE_SEGMENT_BLOCK);
+    addPartitionedDataSet(ta_radius_rh_v,TREE_SEGMENT_RH_BLOCK);
+    addPartitionedDataSet(ta_radius_v,TREE_SEGMENT_R_BLOCK);
     
     if (add_to_renderer == true){
       addActorsToRenderer(ta_radius_v);
-      addActorsToRenderer(ta_hwradius_v);
+      addActorsToRenderer(ta_radius_rh_v);
       addActorsToRenderer(ta_foliage_radius_v);
     }
     return *this;

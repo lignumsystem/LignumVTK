@@ -191,13 +191,13 @@ namespace lignumvtk{
   const std::string VTM_EXTENSION=".vtm";
   ///\ingroup VTKconstants
   ///\brief VTK DataSet block name for tree segments 
-  const std::string TREE_SEGMENT_BLOCK="TreeSegmentBlock";
+  const std::string TREE_SEGMENT_R_BLOCK="TreeSegmentRBlock";
   ///\ingroup VTKconstants
   ///\brief VTK DataSet block name for tree segment heartwood
-  const std::string TREE_HWSEGMENT_BLOCK="TreeHwSegmentBlock";
+  const std::string TREE_SEGMENT_RH_BLOCK="TreeSegmentRhBlock";
   ///\ingroup VTKconstants
   ///\brief VTK DataSet block name for tree segment foliage
-  const std::string TREE_SEGMENT_FOLIAGE_BLOCK="TreeSegmentFoliageBlock";
+  const std::string TREE_SEGMENT_FOLIAGE_BLOCK="TreeSegmentRFoliageBlock";
   ///\ingroup VTKconstants
   ///\brief VTK DataSet block name for leaves
   const std::string LEAF_BLOCK="LeafBlock";
