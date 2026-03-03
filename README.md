@@ -30,7 +30,7 @@ Use CMake to compile:
 See CMakeLists.txt for details.
 
 ## Usage
-The `lignumvtk` program can produce VTK/VTPC files from Lignum XML and HDF5 files. Note that `lignumvtk` can implicitely 
+The `lignumvtk` program can produce VTK/VTPC[^vtpc] files from Lignum XML and HDF5 files. Note that `lignumvtk` can implicitely 
 recognize between conifers and hardwood trees. After simulations such as in LignumForest the results can be found in two HDF5 files,
 one for aggregated data and one for the trees in XML format. The input data for `lignumvtk` is either an XML tree file or 
 an HDF5 file containing the tree datasets in XML format.
@@ -38,7 +38,7 @@ an HDF5 file containing the tree datasets in XML format.
 ### Command line 
 The `lignumvtk` command line is:
 
-	./lignumvtk -input path/to/file.[h5|xml] [-list] [-output path/to/file.vtpc] [-year <number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>]
+	./lignumvtk -input|-i path/to/file.[h5|xml] [-list] [-output|-o path/to/file.vtpc] [-year <number>] [-dataset <string>] [-substring <string>] [-spline <number>]
 	
 ### Examples 
 Example 1: List datasets for trees in Lignum HDF5 file:
@@ -61,21 +61,23 @@ Example 5: Create VTK/VTPC file for Tree_8 for all growth years saved in HDF5 fi
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset Tree_8
 	
-Example 6: Create VTK/VTPC file for trees for all years matching Tree_11:
+Example 6: Create VTK/VTPC file for trees for all years matching the string Tree_11:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11
 	
-Example 7: Adjust the spline accuracy to 10. Line segments denoting tree segments are divided into 10 spline segments:
+Example 7: Adjust the spline accuracy to 10. Line segments denoting tree segments 
+are divided into 10 spline segments:
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11 -spline 10
 
 In general, the argument string for *-dataset* finds exact match for the dataset name, 
-the option *-substring* uses the argument string as a substring to search dataset paths 
+the option *-substring* uses the argument string to search the complete dataset path
 in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
 	
-`lignumvtk`, i.e. the VTK toolkit library, will create additional directories as needed to store 
-the 3D data models in the multitude of but practicably sized files. Upload the main *.vtpc* output file to Paraview 
-and finish by post-editing trees manually in ParaView graphics pipeline for final visualization.
+`lignumvtk`, i.e. the VTK toolkit library, will create additional subdirectory named after the *.vtpc*
+output file to save the actual 3D geometry models in multitude but reasonably sized files. 
+Upload the main *.vtpc* output file to ParaView and finish by post-editing trees manually 
+in ParaView graphics pipelines for final visualization.
 
 > [!NOTE]
 > During reconstruction of trees warning messages regarding missing function files can appear. This is due to 
@@ -106,8 +108,8 @@ If ParaView crashes during a rendering process it may indicate failed memory req
 when computing the graphics pipeline. 
 
 ### Blender
-Another 3D computer graphics creation suite is [Blender](https://www.blender.org). ParaView can export graphics models
-in file formats supported by Blender. 
+Another 3D computer graphics creation suite is [Blender](https://www.blender.org). ParaView can export its 
+3D geometry models in file formats supported by Blender. 
 
 ## Software documentation
 LignumVTK files are commented for Doxygen, the Terminal command line example for `zsh` and `bash`:
@@ -139,8 +141,9 @@ lignumvtk.py is a python3 program that requires numpy and vtk python packages. I
 	-o F2, --fvtp=F2  VTP output file
 	-c, --cylinder    Use segment base radius as segment top radius (pure
                       cylinder)
+[^vtpc]: VTK Partitioned Data Set Collection format metadata header file.
 
-[^lod]: In computer graphics Level of Detail (LOD) refers to the dynamic complexity of a 3D model representation. 
+[^lod]: Level of Detail (LOD) refers to the dynamic complexity of a 3D model representation. 
 The increasing LOD threshold value tend to render objects in full and lower value will give better interactivity. 
 
 [^ot]: The Outline Threshold value determines if an object is approximated as a bounding box only.
