@@ -204,7 +204,12 @@ namespace lignumvtk{
   ///\ingroup VTKconstants
   ///\brief VTK DataSet block name for petioles
   const std::string PETIOLE_BLOCK="PetioleBlock";
-  
+  ///\ingroup VTKconstants
+  ///\brief Root node name in LignumToVTK::dataset_assembly
+  const std::string ROOT_TREE_NODE="Trees";
+  ///\ingroup VTKconstants
+  ///\brief Default conifer tree id
+  const std::string LIGNUM_CONIFER_ID="ConiferTree";
   ///\brief Data to be collected from tree segments.
   ///
   ///Points collected will be used to construct VTK geometric objects representing tree including
@@ -396,8 +401,10 @@ namespace lignumvtk{
   class LignumToVTK{
   public:
     ///\brief Constructor
+    ///
+    ///LignumToVTK::dataset_assembly and LignumVTK::data_collection initialized for use
     ///\param r Spline segment lengthwise resolution
-    LignumToVTK(int r):resolution(r){}
+    LignumToVTK(int r);
     ///\brief Create VTK geometric representation of a broad leaf Lignum tree.
     ///
     ///Each axis will be represented as VTK tube, each leaf as a VTK triangular strip
@@ -414,7 +421,7 @@ namespace lignumvtk{
     ///These are grouped in different data sets so that final editing for visualization is easier.
     ///For tree segments designated simulation data can be added as scalar values for the tubes. 
     template<typename TREE>
-    LignumToVTK& createConiferTreeVTKDataSets(TREE& t,bool add_to_renderer=false);
+    LignumToVTK& createConiferTreeVTKDataSets(TREE& t,const string& tree_id,bool add_to_renderer=false);
     ///\brief Write VTK partitioned data sets to a file
     ///\param file_name The file name with *vtpc* file extension 
     LignumToVTK& writePartitionedDataSetCollection(const string& file_name);
@@ -544,8 +551,9 @@ namespace lignumvtk{
     ///\brief Add vector \p v of actors to \p dataset_collection as VTK partitioned data set block
     ///\param v Vector of actors
     ///\param block_name Name of the dataset block, visible in ParaView
+    ///\return Index number of the partitioned dataset in the \p dataset_collection  
     ///\sa LignumVTK::dataset_collection
-    LignumToVTK& addPartitionedDataSet(VTKActorVector& v, const string& block_name);
+    int addPartitionedDataSet(VTKActorVector& v, const string& block_name);
     ///\brief Populate VTK multiblock data set with actors
     ///\param v Vector of actors
     ///\note The use of VTK MultiBlockDataSets is discouraged, use VTK ParitionedDataSets instead.
@@ -554,7 +562,8 @@ namespace lignumvtk{
     LignumToVTK& addMultiBlockDataSet(VTKActorVector& v);
   private:
     vtkNew<vtkPartitionedDataSetCollection> dataset_collection;///< Partitioned data set for VTK geometry models
-    vtkNew<vtkXMLPartitionedDataSetCollectionWriter> collection_writer; ///< Fule output for Partitionded data sets
+    vtkNew<vtkDataAssembly> dataset_assembly;///< Hierarchy between items in \p dataset_collection
+    vtkNew<vtkXMLPartitionedDataSetCollectionWriter> collection_writer; ///< File output for VTK Partitioned data sets
     vtkNew<vtkMultiBlockDataSet> mb_set;///< Multiblock data set for VTK geometry models
     vtkNew<vtkRenderer> renderer;///< VTK renderer for VTK render window for quick testing
     vtkNew<vtkXMLMultiBlockDataWriter> writer;///< File output for VTK MultiBlock data sets

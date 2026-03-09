@@ -20,6 +20,7 @@
 #include <vtkSphereSource.h>
 #include <vtkTubeFilter.h>
 #include <vtkActor.h>
+#include <vtkDataAssembly.h>
 #include <vtkPartitionedDataSet.h>
 #include <vtkPartitionedDataSetCollection.h>
 #include <vtkXMLPartitionedDataSetCollectionWriter.h>

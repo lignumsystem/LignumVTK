@@ -204,7 +204,7 @@ namespace lignumvtk{
   }
 
   template<typename TREE>
-  LignumToVTK& LignumToVTK::createConiferTreeVTKDataSets(TREE& t,bool add_to_renderer)
+  LignumToVTK& LignumToVTK::createConiferTreeVTKDataSets(TREE& t,const string& tree_id, bool add_to_renderer)
   {
     TSDataVector tsv;
     tsv = treeToCfTSData(t,tsv);
@@ -221,10 +221,20 @@ namespace lignumvtk{
     TubeActorVector ta_foliage_radius_v;
     ta_foliage_radius_v = createTubeActors(tm_foliage_radius_v,ta_foliage_radius_v);
 
-    addPartitionedDataSet(ta_foliage_radius_v,TREE_SEGMENT_FOLIAGE_BLOCK);
-    addPartitionedDataSet(ta_radius_rh_v,TREE_SEGMENT_RH_BLOCK);
-    addPartitionedDataSet(ta_radius_v,TREE_SEGMENT_R_BLOCK);
-    
+    int foliage_dataset_index = addPartitionedDataSet(ta_foliage_radius_v,TREE_SEGMENT_FOLIAGE_BLOCK);
+    int ts_rh_dataset_index = addPartitionedDataSet(ta_radius_rh_v,TREE_SEGMENT_RH_BLOCK);
+    int ts_r_dataset_index = addPartitionedDataSet(ta_radius_v,TREE_SEGMENT_R_BLOCK);
+    //Update vtkDataAssembly for hierarchy information
+    //Create the tree hierarchy
+    const string valid_tree_id = dataset_assembly->MakeValidNodeName(tree_id.c_str());
+    int tree_node_id = dataset_assembly->AddNode(valid_tree_id.c_str(),0);
+    int foliage_node_id = dataset_assembly->AddNode(TREE_SEGMENT_FOLIAGE_BLOCK.c_str(),tree_node_id);
+    int ts_rh_node_id = dataset_assembly->AddNode(TREE_SEGMENT_RH_BLOCK.c_str(),tree_node_id);
+    int ts_r_node_id = dataset_assembly->AddNode(TREE_SEGMENT_R_BLOCK.c_str(),tree_node_id);
+    //Add dataset indices
+    dataset_assembly->AddDataSetIndex(foliage_node_id,foliage_dataset_index);
+    dataset_assembly->AddDataSetIndex(ts_rh_node_id,ts_rh_dataset_index);
+    dataset_assembly->AddDataSetIndex(ts_r_node_id,ts_r_dataset_index);
     if (add_to_renderer == true){
       addActorsToRenderer(ta_radius_v);
       addActorsToRenderer(ta_radius_rh_v);

@@ -174,6 +174,13 @@ namespace lignumvtk{
     v.push_back(actor);
     return v;
   }
+
+  LignumToVTK::LignumToVTK(int r)
+    :resolution(r)
+  {
+    dataset_assembly->SetRootNodeName(ROOT_TREE_NODE.c_str());
+    dataset_collection->SetDataAssembly(dataset_assembly);
+  }
   
   TSDataVector& LignumToVTK::treeToPetioleData(LignumVTKTree& t, TSDataVector& v)
   {
@@ -351,7 +358,7 @@ namespace lignumvtk{
     return *this;
   }
   
-  LignumToVTK& LignumToVTK::addPartitionedDataSet(VTKActorVector& v,const string& block_name)
+  int LignumToVTK::addPartitionedDataSet(VTKActorVector& v,const string& block_name)
   {
     cout << "Adding ParitionedDataSet with " << v.size() << " actors" << endl;
     vtkNew<vtkPartitionedDataSet> dataset_new;
@@ -365,7 +372,7 @@ namespace lignumvtk{
     this->dataset_collection->SetPartitionedDataSet(partitions,dataset_new);
     //Technique to give name to the dataset block
     this->dataset_collection->GetMetaData(static_cast<unsigned int>(partitions))->Set(vtkPartitionedDataSet::NAME(),block_name);
-    return *this;
+    return partitions;
   }
 
   LignumToVTK& LignumToVTK::writePartitionedDataSetCollection(const string& file_name)
@@ -380,7 +387,7 @@ namespace lignumvtk{
       cout << "File name extension should be: " << std::string(ext) <<endl;
     }
     this->collection_writer->SetFileName(file_name.c_str());
-    this->collection_writer->SetInputData(this->dataset_collection);
+    this->collection_writer->SetInputDataObject(this->dataset_collection);
     cout << "Updating writer" <<endl;
     this->collection_writer->Update();
     cout << "Writing data" <<endl;
