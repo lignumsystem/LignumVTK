@@ -2,13 +2,21 @@
 Create VTK/VTPC files for ParaView. ParaView is a 3D builder, post-processing and visualization engine for scientific data
 with computer geometry models.
 
-The design principle is that the LignumVTK binary `lignumvtk` creates VTK geometric objects and attributes for the Lignum tree models but the 
-final visualization will be done in ParaView by implementing appropriate graphics pipelines. This post-processing should be 
-feasible to accomplish without programming and knowledge about VTK library. 
+The design principle is that the binary `lignumvtk` creates VTK geometric objects and attributes 
+for the Lignum tree models but the final visualization will be done in ParaView by implementing 
+appropriate graphics pipelines. This post-processing should be feasible to accomplish 
+without programming and knowledge about VTK library. 
 
+> [!NOTE]
+> LignumVTK is work under progress. Currently kite shaped leaves are supported for hardwoods. 
+> Ellipse and triangle leaves will be implemented when needed.
 
-## Prerequisites 
-Download *LignumVTK* and *lignum-core* from GitHub. Install VTK package.
+## VTK Examples
+[VTK Examples](https://examples.vtk.org/site/) were the pivotal source of information in the `lignumvtk` implementation. 
+
+## Building LignumVTK
+### Prerequisites 
+Download *LignumVTK* and *lignum-core* from GitHub. Install the VTK library package.
 Using MacPorts type:
 
 	sudo port install vtk
@@ -19,15 +27,15 @@ Download [ParaView](https://www.paraview.org) from their site.
 MacPorts version reports poor port health, i.e. it is likely 
 not in working order.
 
-## Building LignumVTK
-Use CMake to compile:
+### Compilation
+Use CMake to compile `lignumvtk`:
 	
 	mkdir release
 	cd release
 	cmake .. -DCMAKE_BUILD_TYPE=Release
 	make install
 
-See CMakeLists.txt for details.
+The `lignumvtk` binary should be available in the LignumVTK directory. See CMakeLists.txt for details.
 
 ## Usage
 The `lignumvtk` program can produce VTK/VTPC[^vtpc] files from Lignum XML and HDF5 files. Note that `lignumvtk` can implicitely 
@@ -75,13 +83,13 @@ the option *-substring* uses the argument string to search the complete dataset 
 in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
 	
 `lignumvtk`, i.e. the VTK toolkit library, will create additional subdirectory named after the *.vtpc*
-output file to save the actual 3D geometry models in multitude but reasonably sized files. 
+output file to save the actual 3D geometry models in a set of reasonably sized files. 
 Upload the main *.vtpc* output file to ParaView and finish by post-editing trees manually 
 in ParaView graphics pipelines for final visualization.
 
 > [!NOTE]
 > During reconstruction of trees warning messages regarding missing function files can appear. This is due to 
-> hard coded default values for tree simulations and does not prevent the creation of VTK/VTPC files.
+> hard coded default file names for tree simulations and does not prevent the creation of VTK/VTPC files.
 
 > [!NOTE] 
 > The creation of the VTK/VTPC files can take a while, possibly several minutes 
@@ -107,7 +115,7 @@ These two options decrease memory requirments at the expense of rendering qualit
 If ParaView crashes during a rendering process it may indicate failed memory request 
 when computing the graphics pipeline. 
 
-### Blender
+## Blender
 Another 3D computer graphics creation suite is [Blender](https://www.blender.org). ParaView can export its 
 3D geometry models in file formats supported by Blender. 
 
@@ -119,10 +127,6 @@ LignumVTK files are commented for Doxygen, the Terminal command line example for
 Open the HTML index file, for example on macOS Terminal type:
 
 	open DoxygenDoc/html/index.html
-	
-## Notes
-LignumVTK is work under progress. Currently kite shaped leaves are supported for hardwoods. Ellipse and triangle
-leaves will be implemented when needed.
 
 ### lignumvtk.py
 Initial trial to use vtk library to visualize tree roots with Lignum and ParaView. The tree roots are produced in 
