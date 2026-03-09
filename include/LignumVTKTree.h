@@ -387,15 +387,15 @@ namespace lignumvtk{
     TSDataVector& operator()(TSDataVector& v, TreeCompartment<TS,BUD>* tc)const;
   };
 
-  ///\brief Read Lignum XML file and produce VTK VTPC/VTM file for ParaView.
+  ///\brief Produce Lignum tree VTK/VTPC files for ParaView.
   ///
-  ///Each axis will be represented as VTK tubes for sapwood and heartwood, each leaf as a VTK triangular strip
-  ///and each petiole as VTK line. These are grouped in different data sets so that final
+  ///Each axis will be represented as VTK tubes for sapwood and heartwood as well as
+  ///cylindrical foliage for conifers. Each leaf is a VTK triangular strip
+  ///and each petiole is a VTK line. These are grouped with VTK assembly so that the final
   ///editing for visualization is easier. For tree segments and leaves designated simulation data
-  ///can be added as scalar values for tubes and triangular strips respectively.
-  ///\note Current implementation is for broadleaved trees with kite shaped leaves. 
-  ///\todo Implement coniferous trees. If necessary impement broad leaved trees
-  ///with triangle and ellipse leaves.
+  ///is added as scalar values for tubes and triangular strips respectively.
+  ///\note For broadleaved trees Kite shaped leaves only are implemented.
+  ///\todo Implement broadleaved trees with triangle and ellipse leaves.
   ///\sa createBroadLeafTreeVTKDataSets
   ///\sa writePartitionedDataSetCollection
   class LignumToVTK{
@@ -411,6 +411,8 @@ namespace lignumvtk{
     ///and each petiole as VTK line. These are grouped in different data sets so that final
     ///editing for visualization is easier. For tree segments and leaves designated simulation data
     ///can be added as scalar values for tubes and triangular strips respectively.
+    ///\param t Tree
+    ///\param add_to_renderer Add vtkActors to VTK built-in renderer 
     ///\note Current implementation is for Kite shaped leaves. Implement Triangle and Ellipse leaves
     ///if necessary.
     template <typename TREE>
@@ -419,18 +421,22 @@ namespace lignumvtk{
     ///
     ///Each axis will be represented as three VTK tubes for foliage, sapwood and heartwood.
     ///These are grouped in different data sets so that final editing for visualization is easier.
-    ///For tree segments designated simulation data can be added as scalar values for the tubes. 
+    ///For tree segments designated simulation data can be added as scalar values for the tubes.
+    ///\param t Tree
+    ///\param tree_id Tree id tag for vtkAssembly
+    ///\param add_to_renderer Add vtkActors to VTK built-in renderer 
     template<typename TREE>
     LignumToVTK& createConiferTreeVTKDataSets(TREE& t,const string& tree_id,bool add_to_renderer=false);
     ///\brief Write VTK partitioned data sets to a file
     ///\param file_name The file name with *vtpc* file extension 
     LignumToVTK& writePartitionedDataSetCollection(const string& file_name);
-    //\brief Create VTK geometric representation of the Lignum tree.
+    ///\brief Create VTK geometric representation of the Lignum tree.
     ///
     ///Each axis will be represented as VTK tube, each leaf as a VTK triangular strip
     ///and each petiole as VTK line. These are grouped in different data sets so that final
     ///editing for visualization is easier. For tree segments and leaves designated simulation data
     ///can be added as scalar values for tubes and triangular strips respectively.
+    ///\param t Tree
     ///\note Current implementation is for Kite shaped leaves.
     ///\note The use of VTK MultiBlockDataSets is discouraged. Use VTK PartitionedDataSets instead
     ///\sa createBroadLeafTreeVTKDataSets
@@ -443,11 +449,11 @@ namespace lignumvtk{
     LignumToVTK& writeMultiBlockDataSet(const string& file_name);
     ///\brief Retrieve the VTK renderer.
     ///
-    ///Retrieve the VTK renderer for quick inspection in the VTK render window.
+    ///Retrieve the VTK nuilt-in renderer for quick inspection in the VTK render window.
     ///\retval renderer The VTK renderer
     vtkRenderer* getRenderer()const{return renderer;}
   protected:
-    ///\brief Collect data from tree segments.
+    ///\brief Collect data from broadleaved tree segments.
     ///
     ///Collect tree segment points for spline tube representation.
     ///Collect scalar values of interest. Scalar values are assigned
@@ -457,6 +463,14 @@ namespace lignumvtk{
     ///\param tsdv Vector for tree segment data collection
     ///\retval tsdv Vector containing collected tree segment data
     TSDataVector& treeToHwTSData(LignumVTKTree& t, TSDataVector& tsdv);
+    ///\brief Collect data from conifer tree segments.
+    ///Collect tree segment points for spline tube representation.
+    ///Collect scalar values of interest. Scalar values are assigned
+    ///as VTK point data for the each segment point.
+    ///Each TSData element in \p tsdv contain data from all segments in a single axis.
+    ///\param t Lignum tree
+    ///\param tsdv Vector for tree segment data collection
+    ///\retval tsdv Vector containing collected tree segment data
     TSDataVector& treeToCfTSData(LignumVTKCfTree& t, TSDataVector& tsdv);
     ///\brief Collect petiole data.
     ///
