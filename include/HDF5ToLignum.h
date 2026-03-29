@@ -50,7 +50,7 @@ namespace lignumvtk{
     ///\return Lignum xml as std:;string
     const string getLignumTreeString(const string& dataset_name);
     ///\brief Root group name for Lignum XML trees
-    ///\return The string `/TreeXML/`
+    ///\retval "/TreeXML/" The tree group name string 
     ///\sa LignumForest::TXMLGROUP
     const string getTreeGroupName(){return std::string("/TreeXML/");}
   private:

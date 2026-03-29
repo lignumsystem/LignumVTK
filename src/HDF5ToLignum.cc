@@ -52,7 +52,15 @@ namespace lignumvtk{
     dataset_names.names.clear();
     string group_name = getTreeGroupName()+std::to_string(year)+std::string("/");
     dataset_names.prefix = group_name;
-    H5::Group g = hdf5_file.openGroup(group_name);
+    H5::Group g;
+    try{
+      g = hdf5_file.openGroup(group_name);
+    }
+    catch (H5::FileIException e){
+      cout << "HDF5ToLignum::getDataSetNames(): H5::FileIException No data for year " << year << endl;
+      cout << "Exiting" <<endl;
+      exit(0);
+    }
     hid_t group_id = g.getId();
     herr_t status;
     status = H5Ovisit(group_id, H5_INDEX_NAME, H5_ITER_NATIVE,InsertDataSet,static_cast<void*>(&dataset_names),H5O_INFO_ALL);

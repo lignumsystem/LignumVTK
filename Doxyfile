@@ -991,8 +991,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = . \
-                         ../Pine/Pine.h \
+INPUT                  = ../Pine/Pine.h \
                          ../XMLTree \
                          ../c++adt/include \
                          ../c++adt/src \
@@ -1004,7 +1003,11 @@ INPUT                  = . \
                          ../stl-lignum/Bud \
                          ../stl-lignum/TreeSegment \
                          ../stl-voxelspace/include \
-                         ../stl-voxelspace/src
+                         ../stl-voxelspace/src \
+                         lignumvtk.cc \
+                         include \
+                         src \
+                         ./
 
 # This tag can be used to specify the character encoding of the source files
 # that Doxygen parses. Internally Doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1089,8 +1092,7 @@ FILE_PATTERNS          = *.c \
                          *.vhdl \
                          *.ucf \
                          *.qsf \
-                         *.ice \
-                         *.vtpc
+                         *.ice
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.
@@ -1105,18 +1107,7 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which Doxygen is
 # run.
 
-EXCLUDE                = pine-em98.cpp \
-                         pine-em98.L \
-                         pine-axiom.L \
-                         pine-em98-branch-C.L \
-                         pine-em98-branch-C.cpp \
-                         release \
-                         Release \
-                         debug \
-                         Debug \
-                         xcode \
-                         Xcode \
-                         test
+EXCLUDE                = ./vtpc
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
@@ -1136,10 +1127,13 @@ EXCLUDE_PATTERNS       = *.cpp \
                          *.L \
                          *.vtpc \
                          *.vtp \
-                         */test/* \
+                         *.vtk \
                          */vtpc/* \
+                         */test/* \
+                         */xcode/* \
+                         */debug/* \
                          */release/* \
-                         */debug/*
+                         */DoxygenDoc/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -1163,7 +1157,8 @@ EXAMPLE_PATH           = . \
 # *.h) to filter out the source-files in the directories. If left blank all
 # files are included.
 
-EXAMPLE_PATTERNS       = *
+EXAMPLE_PATTERNS       = *.cc \
+                         *.h
 
 # If the EXAMPLE_RECURSIVE tag is set to YES then subdirectories will be
 # searched for input files to be used with the \include or \dontinclude commands

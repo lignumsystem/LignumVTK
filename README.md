@@ -51,7 +51,8 @@ The `lignumvtk` command line is:
 ### Examples 
 Example 1: List datasets for trees in Lignum HDF5 file:
 
-	./lignumvtk -input File.h5 -list
+	./lignumvtk -input File.h5 -list #All trees
+	./lignumvtk -input File.h5 -list -year 80 #Trees for year 80
 	
 Example 2: Create VTK/VTPC file from Lignum XML file:
 	
@@ -84,12 +85,13 @@ in the HDF5 input file. The options *-year*, *-dataset* and *-substring* are mut
 	
 `lignumvtk`, i.e. the VTK toolkit library, will create additional subdirectory named after the *.vtpc*
 output file to save the actual 3D geometry models in a set of reasonably sized files. 
-Upload the main *.vtpc* output file to ParaView and finish by post-editing trees manually 
-in ParaView graphics pipelines for final visualization.
+Upload the main *.vtpc* output file in ParaView and finish by post-editing trees manually 
+in ParaView's graphics pipelines for final visualization.
 
 > [!NOTE]
 > During reconstruction of trees warning messages regarding missing function files can appear. This is due to 
 > hard coded default file names for tree simulations and does not prevent the creation of VTK/VTPC files.
+> If disturbing create dummy files to remove the warning messages.
 
 > [!NOTE] 
 > The creation of the VTK/VTPC files can take a while, possibly several minutes 
@@ -117,7 +119,8 @@ when computing the graphics pipeline.
 
 ## Blender
 Another 3D computer graphics creation suite is [Blender](https://www.blender.org). ParaView can export its 
-3D geometry models in file formats supported by Blender. 
+3D geometry models in file formats supported by Blender. Use *.ply* or *.x3d* formats or employ add-ons 
+like SciBlend for Blender. 
 
 ## Software documentation
 LignumVTK files are commented for Doxygen, the Terminal command line example for `zsh` and `bash`:

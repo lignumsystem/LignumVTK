@@ -93,22 +93,32 @@ int main(int argc,char* argv[])
   if (ParseCommandLine(argc,argv,"-substring",substring)){
     use_substring = true;
   }
-  std::string grouping;
-  bool use_grouping = false;
-  if (ParseCommandLine(argc,argv,"-grouping",grouping)){
-    use_grouping = true;
-  }
+
   //Command line parsed, do the following:
   //Case 1: List the content of the HDF5 tree files  
   if (list_content == true){
     if (is_hdf5 == false){
-      cout << "The HDF5 input file " << input_file << " to list datasets should have suffix .h5" <<endl;
+      cout << "The HDF5 input file " << input_file << ": to list datasets the input file should have the suffix \".h5\"" <<endl;
       return EXIT_FAILURE;
     }
     HDF5ToLignum hdf5lignum;
+    vector<string> v;
     hdf5lignum.openFile(input_file);
-    string tree_group=hdf5lignum.getTreeGroupName();
-    vector<string> v = hdf5lignum.getDataSetNames(tree_group);
+    if (use_year == true){
+      v = hdf5lignum.getDataSetNames(growth_year);
+    }
+    else if (use_dataset == true){
+      vector<string> all_trees_v = hdf5lignum.getDataSetNames(hdf5lignum.getTreeGroupName());
+      std::copy_if(all_trees_v.begin(),all_trees_v.end(), std::back_inserter(v),FindExactMatch(dataset));
+    }
+    else if (use_substring == true){
+      vector<string> all_trees_v = hdf5lignum.getDataSetNames(hdf5lignum.getTreeGroupName());
+      std::copy_if(all_trees_v.begin(),all_trees_v.end(), std::back_inserter(v),FindSubString(substring));
+    }
+    else{
+      string tree_group=hdf5lignum.getTreeGroupName();
+      v = hdf5lignum.getDataSetNames(tree_group);
+    }
     std::copy(v.begin(),v.end(),std::ostream_iterator<string>(std::cout, "\n"));
     cout << "Total of " << v.size() << " trees" <<endl;
     return EXIT_SUCCESS;

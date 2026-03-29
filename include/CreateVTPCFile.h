@@ -10,11 +10,11 @@ using namespace lignumxml;
 namespace lignumvtk{
 
   ///\brief Find HDF5 dataset path with substring
-  class FindSubstring{
+  class FindSubString{
   public:
     ///\brief Constructor
     ///\param path HDF5 dataset path
-    FindSubstring(const string& path):substring(path){}
+    FindSubString(const string& path):substring(path){}
     ///\brief Find the first occurence of \p substring in \p path
     ///\param path HDF5 dataset path
     ///\return true if \p substring is in \p path, false otherwise

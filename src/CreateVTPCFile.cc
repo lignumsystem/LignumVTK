@@ -52,7 +52,6 @@ namespace lignumvtk{
       cout << "No HDF5 datasets for trees for year " << year << endl;
       return EXIT_FAILURE;
     }
-    
     std::string lignum_string =  hdf5lignum.getLignumTreeString(v[0]);
     QDomDocument qdoc("LMODEL");
     QString qt_xmlstring(lignum_string.c_str());
@@ -92,7 +91,7 @@ namespace lignumvtk{
       std::copy_if(v.begin(),v.end(), std::back_inserter(valid_paths),FindExactMatch(dataset_path));
     }
     else{
-      std::copy_if(v.begin(),v.end(), std::back_inserter(valid_paths),FindSubstring(dataset_path));
+      std::copy_if(v.begin(),v.end(), std::back_inserter(valid_paths),FindSubString(dataset_path));
     }
     if (valid_paths.size() == 0){
       cout << "No HDF5 datasets for trees for path: " << dataset_path << endl;
