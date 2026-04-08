@@ -15,7 +15,7 @@ int Usage()
 {
   cout << "Usage:" <<endl;
   cout << "./lignumvtk [-h | -help]" <<endl;
-  cout << "./lignumvtk -input|-i file.h5 [-list] [-output|-o file.vtpc] [-year -number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number>" << endl;
+  cout << "./lignumvtk -input|-i file.h5 [-list] [-output|-o file.vtpc] [-year -number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number> [-sides <number>]" << endl;
   cout << "./lignumvtk -input file.xml -output file.vtpc" << endl;
   cout << "Examples:" <<endl;
   cout << "Read Lignum XML file and produce VTK/VTPC file" << endl; 
@@ -28,8 +28,8 @@ int Usage()
   cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset /TreeXML/60/Tree_8" << endl;
   cout << "Read Lignum HDF5 file and produce VTK/VTPC file for all trees for all years match Tree_13" <<endl;
   cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_13" << endl;
-  cout << "Set spline accuracy to 10, higher value means more spline points" <<endl;
-  cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_13 -spline 10" << endl;
+  cout << "Set spline segments to 10 and rectangular tube sides to 20, higher values mean more spline points and tube sides" <<endl;
+  cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_13 -spline 10 -sides 20" << endl;
   return EXIT_SUCCESS;
 }
   
@@ -39,12 +39,21 @@ int main(int argc,char* argv[])
   if (argc < 2||CheckCommandLine(argc,argv,"-help")||CheckCommandLine(argc,argv,"-h")){
     return Usage();
   }
-  
+
   std::string resolution;
-  int spline_resolution = lignumvtk::SPLINE_RESOLUTION;
+  int spline_resolution = lignumvtk::SPLINE_SEGMENT_RESOLUTION;
   if (ParseCommandLine(argc,argv,"-spline",resolution)){
     spline_resolution = std::stoi(resolution);
+    cout << "Using " << spline_resolution << " spline segments between two (tree segment) points" <<endl;
   }
+
+  std::string nsides;
+  if (ParseCommandLine(argc,argv,"-sides",nsides)){
+    int n = std::stoi(nsides);
+    TUBE_NUMBER_OF_SIDES = n;
+    cout << "Using " << TUBE_NUMBER_OF_SIDES << " rectangular tube sides" << endl;
+  }
+
   bool list_content = false;
   if (CheckCommandLine(argc,argv,"-list")){
     list_content = true;

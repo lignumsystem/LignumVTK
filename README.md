@@ -46,7 +46,8 @@ an HDF5 file containing the tree datasets in XML format.
 ### Command line 
 The `lignumvtk` command line is:
 
-	./lignumvtk -input|-i path/to/file.[h5|xml] [-list] [-output|-o path/to/file.vtpc] [-year <number>] [-dataset <string>] [-substring <string>] [-spline <number>]
+	./lignumvtk -input|-i path/to/file.[h5|xml] [-list] [-output|-o path/to/file.vtpc] [-year <number>] \
+	[-dataset <string>] [-substring <string>] [-spline <number>] [-sides] -number
 	
 ### Examples 
 Example 1: List datasets for trees in Lignum HDF5 file:
@@ -74,10 +75,11 @@ Example 6: Create VTK/VTPC file for trees for all years matching the string Tree
 
 	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11
 	
-Example 7: Adjust the spline accuracy to 10. Line segments denoting tree segments 
-are divided into 10 spline segments:
+Example 7: Adjust the spline accuracy to 10, i.e. line segments denoting tree segments 
+are divided into 10 spline segments. Adjust side accuracy to 20, i.e. the VTK tube will
+have 20 rectangular sides to represent tree segment cylinders:
 
-	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11 -spline 10
+	./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_11 -spline 10 -sides 20
 
 In general, the argument string for *-dataset* finds exact match for the dataset name, 
 the option *-substring* uses the argument string to search the complete dataset path
@@ -88,22 +90,27 @@ output file to save the actual 3D geometry models in a set of reasonably sized f
 Upload the main *.vtpc* output file in ParaView and finish by post-editing trees manually 
 in ParaView's graphics pipelines for final visualization.
 
-> [!NOTE]
-> During reconstruction of trees warning messages regarding missing function files can appear. This is due to 
-> hard coded default file names for tree simulations and does not prevent the creation of VTK/VTPC files.
-> If disturbing create dummy files to remove the warning messages.
-
-> [!NOTE] 
-> The creation of the VTK/VTPC files can take a while, possibly several minutes 
-> depending the number of trees and their dataset sizes. 
+> [!WARNING]
+> The default values for the `-spline` option 20 and for the `-sides` option 30 respectively
+> should be applicable for a single Lignum tree but for a forest stand it may be necessary 
+> reduce these numbers in compliance with the available memory and to shorten the rendering time.
 
 > [!CAUTION]
 > Unduly generic dataset path argument to the -substring option can retrieve significant number of tree datasets,
 > possibly all of them.
 
+> [!NOTE]
+> During reconstruction of trees warning messages related to missing function files can appear. This is due to 
+> hard coded default file names for tree simulations and does not prevent the creation of VTK/VTPC files.
+> If disturbing create dummy files in the working directory to remove the warning messages.
+
+> [!NOTE] 
+> The creation of the VTK/VTPC files can take a while, possibly several minutes 
+> depending the number of trees and their dataset sizes. 
+
 > [!TIP]
-> It may be preferable to save VTK 3D data models under one directory. This directory can be excluded for example
-> from Doxygen search paths.
+> It may be useful to save 3D geometry data models under separate directories. 
+> These directories can be excluded for example from Time Machine backup plans. 
 
 ## ParaView settings
 ParaView can visualize single trees produced by `lignumvtk` with default rendering values 
@@ -119,8 +126,8 @@ when computing the graphics pipeline.
 
 ## Blender
 Another 3D computer graphics creation suite is [Blender](https://www.blender.org). ParaView can export its 
-3D geometry models in file formats supported by Blender. Use *.ply* or *.x3d* formats or employ add-ons 
-like SciBlend for Blender. 
+3D geometry models in file formats supported by Blender. Use *.obj*, *.ply* or *.x3d* formats or employ 
+add-ons like SciBlend for Blender. 
 
 ## Software documentation
 LignumVTK files are commented for Doxygen, the Terminal command line example for `zsh` and `bash`:

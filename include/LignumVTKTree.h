@@ -143,12 +143,17 @@ namespace lignumvtk{
   ///\note For VTK the minimum value is 1.
   const double LINE_WIDTH = 1.0;
   ///\ingroup VTKconstants
-  ///\brief Spline resolution, number of spline segments between line points.
-  ///\note This is not constant but can be set from command line
-  const int SPLINE_RESOLUTION = 20;
+  ///\brief Spline resolution, number of spline segments between two line points.
+  ///\note Spine segment resolution can be set from command line.
+  ///\attention Higher value allows better resolution but memory use can explode.
+  const int SPLINE_SEGMENT_RESOLUTION = 20;
   ///\ingroup VTKconstants
   ///\brief Spline resolution, number of tube rectangular sides.
-  const int TUBE_NUMBER_OF_SIDES = 30;
+  ///
+  ///\note Tube number of sides can be set from command line.
+  ///For a single tree and close views try value 30 but for a forest stand no more than 10.
+  ///\attention Higher value allows better resolution but memory use can explode,
+  static int TUBE_NUMBER_OF_SIDES = 30;
   ///\ingroup VTKconstants
   ///\brief Technical minimum segment radius for visualization 
   ///\sa CollectTSData::operator()
@@ -584,5 +589,6 @@ namespace lignumvtk{
     int resolution;///< Spline resolution, number of spline segments
   };
 }
-#include <LignumVTKTreeI.h>
 #endif
+#include <LignumVTKTreeI.h>
+
