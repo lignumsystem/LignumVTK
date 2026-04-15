@@ -13,22 +13,22 @@ using namespace lignumvtk;
 ///\brief Print command line usage information 
 int Usage()
 {
-  cout << "Usage:" <<endl;
-  cout << "./lignumvtk [-h | -help]" <<endl;
-  cout << "./lignumvtk -input|-i file.h5 [-list] [-output|-o file.vtpc] [-year -number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number> [-sides <number>]" << endl;
+  cout << "Usage:" << endl;
+  cout << "./lignumvtk [-h | -help]" << endl;
+  cout << "./lignumvtk -input|-i file.h5 [-list] [-output|-o file.vtpc] [-year <number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number> [-sides <number>]" << endl;
   cout << "./lignumvtk -input file.xml -output file.vtpc" << endl;
-  cout << "Examples:" <<endl;
+  cout << "Examples:" << endl;
   cout << "Read Lignum XML file and produce VTK/VTPC file" << endl; 
   cout << "  ./lignumvtk -input File.xml -output VTKFile.vtpc" << endl;
-  cout << "Read Lignum HDF5 file and list tree dataset paths" <<endl; 
+  cout << "Read Lignum HDF5 file and list tree dataset paths" << endl; 
   cout << "  ./lignumvtk -input File.h5 -list" << endl;
-  cout << "Read Lignum HDF5 file and produce VTK/VTPC files for growth year 20" <<endl;
+  cout << "Read Lignum HDF5 file and produce VTK/VTPC files for growth year 20" << endl;
   cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -year 20" << endl;
-  cout << "Read Lignum HDF5 file and produce VTK/VTPC file for Tree_8 in year 60" <<endl;
+  cout << "Read Lignum HDF5 file and produce VTK/VTPC file for Tree_8 in year 60" << endl;
   cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset /TreeXML/60/Tree_8" << endl;
   cout << "Read Lignum HDF5 file and produce VTK/VTPC file for all trees for all years match Tree_13" <<endl;
   cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_13" << endl;
-  cout << "Set spline segments to 10 and rectangular tube sides to 20, higher values mean more spline points and tube sides" <<endl;
+  cout << "Set spline segments to 10 and rectangular tube sides to 20, higher values mean more spline points and tube sides" << endl;
   cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_13 -spline 10 -sides 20" << endl;
   return EXIT_SUCCESS;
 }
@@ -117,15 +117,15 @@ int main(int argc,char* argv[])
       v = hdf5lignum.getDataSetNames(growth_year);
     }
     else if (use_dataset == true){
-      vector<string> all_trees_v = hdf5lignum.getDataSetNames(hdf5lignum.getTreeGroupName());
+      vector<string> all_trees_v = hdf5lignum.getDataSetNames(hdf5lignum.getMainGroupName());
       std::copy_if(all_trees_v.begin(),all_trees_v.end(), std::back_inserter(v),FindExactMatch(dataset));
     }
     else if (use_substring == true){
-      vector<string> all_trees_v = hdf5lignum.getDataSetNames(hdf5lignum.getTreeGroupName());
+      vector<string> all_trees_v = hdf5lignum.getDataSetNames(hdf5lignum.getMainGroupName());
       std::copy_if(all_trees_v.begin(),all_trees_v.end(), std::back_inserter(v),FindSubString(substring));
     }
     else{
-      string tree_group=hdf5lignum.getTreeGroupName();
+      string tree_group=hdf5lignum.getMainGroupName();
       v = hdf5lignum.getDataSetNames(tree_group);
     }
     std::copy(v.begin(),v.end(),std::ostream_iterator<string>(std::cout, "\n"));
