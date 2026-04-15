@@ -84,7 +84,7 @@ namespace lignumvtk{
     LignumToVTK lignumvtkcf(spline_resolution);
     HDF5ToLignum hdf5lignum;
     hdf5lignum.openFile(input_file);
-    string tree_group=hdf5lignum.getTreeGroupName();
+    string tree_group=hdf5lignum.getMainGroupName();
     vector<string> v = hdf5lignum.getDataSetNames(tree_group);
     vector<string> valid_paths;
     if (exact_match == true){

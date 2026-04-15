@@ -1,5 +1,5 @@
-///\file LignumVTKTree.h
-///Convert Lignum tree to VTK/VTPC file format for Paraview 
+/// \file LignumVTKTree.h
+/// \brief Convert Lignum tree to VTK/VTPC file format for Paraview 
 #ifndef LIGNUMVTK_TREE_H
 #define LIGNUMVTK_TREE_H
 #include <cassert>
