@@ -1,18 +1,15 @@
 # LignumVTK
-Create VTK/VTPC files for ParaView. ParaView is a 3D builder, post-processing and visualization engine for scientific data
-with computer geometry models.
+Create VTK/VTPC and VTK/VTS files for ParaView visualization. ParaView is a 3D builder, post-processing 
+and visualization engine for scientific data.
 
-The design principle is that the binary `lignumvtk` creates VTK geometric objects and attributes 
-for the Lignum tree models but the final visualization will be done in ParaView by implementing 
-appropriate graphics pipelines. This post-processing should be feasible to accomplish 
-without programming and knowledge about VTK library. 
+The design principle is that the binaries `lignumvtk` and `vsvtk` create VTK geometric objects and their 
+attributes  representing Lignum tree models and voxel spaces for the final visualization 
+to be done with ParaView graphics pipelines. This post-processing should be feasible to accomplish 
+without programming knowledge about VTK library. 
 
 > [!NOTE]
-> LignumVTK is work under progress. Currently kite shaped leaves are supported for hardwoods. 
-> Ellipse and triangle leaves will be implemented when needed.
-
-## VTK Examples
-[VTK Examples](https://examples.vtk.org/site/) were the pivotal source of information in the `lignumvtk` implementation. 
+> LignumVTK is work under progress. lignumvtk supports kite shaped leaves. Ellipse and triangle leaves 
+> will be implemented when needed.
 
 ## Building LignumVTK
 ### Prerequisites 
@@ -35,9 +32,13 @@ Use CMake to compile `lignumvtk`:
 	cmake .. -DCMAKE_BUILD_TYPE=Release
 	make install
 
-The `lignumvtk` binary should be available in the LignumVTK directory. See CMakeLists.txt for details.
+The `lignumvtk` and `vsvtk` binaries are installed in the LignumVTK directory. 
+See the CMakeLists.txt file for details.
 
-## Usage
+## VTK Examples
+[VTK Examples](https://examples.vtk.org/site/) has been the pivotal source of information in LignumVTK.
+
+## lignumvtk
 The `lignumvtk` program can produce VTK/VTPC[^vtpc] files from Lignum XML and HDF5 files. Note that `lignumvtk` can implicitely 
 recognize between conifers and hardwood trees. After simulations such as in LignumForest the results can be found in two HDF5 files,
 one for aggregated data and one for the trees in XML format. The input data for `lignumvtk` is either an XML tree file or 
@@ -104,13 +105,27 @@ in ParaView's graphics pipelines for final visualization.
 > hard coded default file names for tree simulations and does not prevent the creation of VTK/VTPC files.
 > If disturbing create dummy files in the working directory to remove the warning messages.
 
-> [!NOTE] 
-> The creation of the VTK/VTPC files can take a while, possibly several minutes 
-> depending the number of trees and their dataset sizes. 
 
-> [!TIP]
-> It may be useful to save 3D geometry data models under separate directories. 
-> These directories can be excluded for example from Time Machine backup plans. 
+## vsvtk
+The `vsvtk` program can produce VTK/VTS[^vts] file from HDF5 voxel space data files.
+More precisely voxel space data, as a 4D matrix in an HDF5 file, is rebuilt, converted
+to a VTK structured grid with hexahedra voxel (grid) elements and saved as VTK/VTS file.
+
+### Command line
+The `vsvtk` command line is:
+
+	./vsvtk -input|-i file.h5 [-list] [-output|-o file.vts] [-dataset <path_string>] [-side <integer>]
+	
+### Examples
+Example 1: List voxel space datasets:
+
+	./vsvtk -i File.h5 -list
+	
+Example 2: Read voxel space dataset and create VTK/VTS file:
+	
+	./vsvtk -i File.h5 -dataset /VoxelSpace/VoxelSpaceData60 -o VSFile.vts
+
+The `vsvtk` program can create one voxel space VTK/VTS file at a time. 
 
 ## ParaView settings
 ParaView can visualize single trees produced by `lignumvtk` with default rendering values 
@@ -124,11 +139,6 @@ These two options decrease memory requirments at the expense of rendering qualit
 If ParaView crashes during a rendering process it may indicate failed memory request 
 when computing the graphics pipeline. 
 
-## Blender
-Another 3D computer graphics creation suite is [Blender](https://www.blender.org). ParaView can export its 
-3D geometry models in file formats supported by Blender. Use *.obj*, *.ply* or *.x3d* formats or employ 
-add-ons like SciBlend for Blender. 
-
 ## Software documentation
 LignumVTK files are commented for Doxygen, the Terminal command line example for `zsh` and `bash`:
 
@@ -138,29 +148,32 @@ Open the HTML index file, for example on macOS Terminal type:
 
 	open DoxygenDoc/html/index.html
 
+## Notes
+> [!NOTE] 
+> The creation of the VTK/VTPC files can take a while, possibly several minutes 
+> depending the number of trees and their dataset sizes. 
+
+> [!TIP]
+> It may be useful to save VTK 3D geometry data models under separate directories. 
+
+## Blender
+Another 3D computer graphics creation suite is [Blender](https://www.blender.org). ParaView can export its 
+3D geometry models in file formats supported by Blender. Use *.obj*, *.ply* or *.x3d* formats or employ 
+add-ons like SciBlend for Blender. 
+
 ### lignumvtk.py
 Initial trial to use vtk library to visualize tree roots with Lignum and ParaView. The tree roots are produced in 
 the project FineRoots. The `lignumvtk.py` program creates VTK/VTM file that can be imported to ParaView.
-
 lignumvtk.py is a python3 program that requires numpy and vtk python packages. Install these with `pip`.
 
-#### Usage
+[^vtpc]: VTK Partitioned Data Set Collection file format metadata header file.
 
-	python lignumvtk.py -h
-	Usage: lignumvtk.py [options]
-	Options:
-
-	-h, --help        show this help message and exit
-	-i F1, --fxml=F1  Read Lignum xml file
-	-o F2, --fvtp=F2  VTP output file
-	-c, --cylinder    Use segment base radius as segment top radius (pure
-                      cylinder)
-[^vtpc]: VTK Partitioned Data Set Collection format metadata header file.
+[^vts]: VTK Structured Grid file format.
 
 [^lod]: Level of Detail (LOD) refers to the dynamic complexity of a 3D model representation. 
-The increasing LOD threshold value tend to render objects in full and lower value will give better interactivity. 
 
 [^ot]: The Outline Threshold value determines if an object is approximated as a bounding box only.
+
 
 
 
