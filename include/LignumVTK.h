@@ -5,6 +5,7 @@
 #include <vtkInformation.h>
 #include <vtkNamedColors.h>
 #include <vtkCollection.h>
+#include <vtkFloatArray.h>
 #include <vtkDoubleArray.h>
 #include <vtkPoints.h>
 #include <vtkPointData.h>
@@ -21,17 +22,17 @@
 #include <vtkTubeFilter.h>
 #include <vtkActor.h>
 #include <vtkDataAssembly.h>
+#include <vtkStructuredGrid.h>
 #include <vtkPartitionedDataSet.h>
 #include <vtkPartitionedDataSetCollection.h>
 #include <vtkXMLPartitionedDataSetCollectionWriter.h>
 #include <vtkMultiBlockDataSet.h>
 #include <vtkXMLMultiBlockDataWriter.h>
-
+#include <vtkXMLStructuredGridWriter.h>
 #include <vtkGlyph3DMapper.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 #include <vtkInteractorStyle3D.h>
-
 
 #endif
