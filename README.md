@@ -107,23 +107,24 @@ in ParaView's graphics pipelines for final visualization.
 
 
 ## vsvtk
-The `vsvtk` program can produce VTK/VTS[^vts] file from HDF5 voxel space data files.
-More precisely voxel space data, as a 4D matrix in an HDF5 file, is rebuilt, converted
+The `vsvtk` program can produce VTK/VTS[^vts] file from HDF5 voxel space dataset file.
+More precisely voxel space data, as a 4D matrix, in an HDF5 file is rebuilt, converted
 to a VTK structured grid with hexahedra voxel (grid) elements and saved as VTK/VTS file.
+Default hexahedra edge size is the voxel edge size used in the simulation.
 
 ### Command line
 The `vsvtk` command line is:
 
-	./vsvtk -input|-i file.h5 [-list] [-output|-o file.vts] [-dataset <path_string>] [-side <integer>]
+	./vsvtk -input|-i file.h5 [-list] [-output|-o file.vts] [-dataset <path_string>] [-edge <number>]
 	
 ### Examples
 Example 1: List voxel space datasets:
 
 	./vsvtk -i File.h5 -list
 	
-Example 2: Read voxel space dataset and create VTK/VTS file:
+Example 2: Read voxel space dataset from a HDF5 file and create VTK/VTS file. Set hexahedra edge size to 3 for visualization:
 	
-	./vsvtk -i File.h5 -dataset /VoxelSpace/VoxelSpaceData60 -o VSFile.vts
+	./vsvtk -i File.h5 -dataset /VoxelSpace/VoxelSpaceData60 -o VSFile.vts -edge 3
 
 The `vsvtk` program can create one voxel space VTK/VTS file at a time. 
 

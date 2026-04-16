@@ -21,20 +21,30 @@ namespace lignumvtk{
   ///\sa LignumForest::TXMLGROUP
   const string TXMLGROUP= "/TreeXML/";
   ///\brief VoxelSpace main group
-  ///\sa LignumForest::VOXELSPACEGROUP
-  const string VOXELSPACEGROUP("/VoxelSpace/");
+  ///\sa LignumForest::VOXELSPACEMAINGROUP
+  const string VOXELSPACEMAINGROUP("/");
   ///\brief Attribute name for voxel edge sizes
   ///\sa LignumForest::VB_EDGE_SIZE_NAME
   const string VB_EDGE_SIZE_NAME("VoxelEdgeSizeXYZ");
-  
-  ///\brief Helper function for H5Ovisit to collect HDF5 dataset paths
+  ///\brief Attribute name for VoxelSpace data column;
+  const string VOXELBOX_DATA_ATTRIBUTE_NAME("VBDATAColumnNames");
+  ///\brief Callback function for H5Ovisit to collect HDF5 dataset paths
   ///\param loc_id HDF5 group id
   ///\param [out] name HDF5 dataset name
   ///\param [out] info  HDF5 gropu or dataset information
   ///\param [in,out] data User data 
-  herr_t InsertDataSet(hid_t loc_id, const char* name, const H5O_info_t* info, void* data);
-
-  ///\brief Collect dataset names
+  herr_t InsertDataSet(hid_t loc_id, const char* name, const H5O_info_t* info, void* user_data);
+  ///\brief Collect attribute names into vector \p user_data
+  ///
+  ///Callback function for H5::DataSet::iterAttrs()
+  ///\param loc The dataset containing \p attr_name
+  ///\param attr_name Attribute name
+  ///\param user_data vector<string>* to collect attribute names
+  ///\pre At least one dataset must be available
+  ///\retval [out] user_data vector<string> of attribute names if any 
+  void AttributeNameCollector(H5::H5Object &loc, const std::string attr_name, void *user_data);
+  
+  ///\brief Dataset names collection
   ///
   ///Helper class for InsertDataSet.
   ///\sa lignumvtk::InsertDataSet
@@ -69,6 +79,7 @@ namespace lignumvtk{
     ///\param name HDF5 path
     ///\return Vector of HDF5 paths
     vector<std::string>& getDataSetNames(const string& name);
+    vector<string> readAttributeNames(); 
     ///\brief Read dataset scalar attribute
     ///\param[in] dset_name Dataset name
     ///\param[in] attr_name Attribute name
@@ -123,7 +134,7 @@ namespace lignumvtk{
   public:
     ///\brief Root group name for Voxel Spaces
     ///\retval VOXELSPACEGROUP The main group for VoxelSpaces
-    const string getMainGroupName()const override{return VOXELSPACEGROUP;}
+    const string getMainGroupName()const override{return VOXELSPACEMAINGROUP;}
     ///\brief Read one VoxelSpace from dataset and return data to construct vtkStructuredGrid.
     ///
     ///Read and return VoxelSpace data as well as number of voxels in each (x,y,z) dimensions

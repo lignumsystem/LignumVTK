@@ -1,9 +1,9 @@
 #include <HDF5ToLignum.h>
 
 namespace lignumvtk{
-  herr_t InsertDataSet(hid_t loc_id, const char* name, const H5O_info_t* info, void* operator_data)
+  herr_t InsertDataSet(hid_t loc_id, const char* name, const H5O_info_t* info, void* user_data)
   {
-    auto dataset_names = static_cast<DataSetNames*>(operator_data);
+    auto dataset_names = static_cast<DataSetNames*>(user_data);
     if(info->type == H5O_TYPE_DATASET){
       std::string prefix = dataset_names->prefix;
       dataset_names->names.push_back(prefix+std::string(name));
@@ -11,6 +11,12 @@ namespace lignumvtk{
     return 0;
   }
 
+  void AttributeNameCollector(H5::H5Object &loc, const std::string attr_name, void *user_data)
+  {
+    auto attribute_names = static_cast<vector<string>*>(user_data);
+    attribute_names->push_back(attr_name);
+  }
+  
   HDF5Base& HDF5Base::openFile(const string& name)
   {
     hdf5_file.openFile(name,H5F_ACC_RDONLY);
@@ -69,7 +75,19 @@ namespace lignumvtk{
     g.close();
     return dataset_names.names;
   }
-
+  
+  vector<string> HDF5Base::readAttributeNames()
+  {
+    vector<string> v;
+    if (dataset_names.names.size() > 0){
+      const std::string dset_name = dataset_names.names[0];
+      H5::DataSet dset = hdf5_file.openDataSet(dset_name);
+      unsigned int index = 0;
+      dset.iterateAttrs(AttributeNameCollector,&index,&v);
+    }
+    return v;
+  }
+  
   int HDF5Base::readDataSetAttribute(const string& dset_name, const string& attr_name,double& attr_value)
   {
     try{
