@@ -90,7 +90,7 @@ int main(int argc, char* argv[])
   cxxadt::TMatrix4D<double> vs_data(std::get<0>(t_grid),std::get<1>(t_grid),
 				    std::get<2>(t_grid),std::get<3>(t_grid),vsdset);
   vector<string> col_names;
-  hdf5vs.readDataSetAttribute(dataset_name,"VBDATAColumnNames",col_names);
+  hdf5vs.readDataSetAttribute(dataset_name,lignumvtk::VOXELBOX_DATA_ATTRIBUTE_NAME,col_names);
   if (voxel_edge == 0.0){
     voxel_edge = std::get<0>(v_size);
   }
