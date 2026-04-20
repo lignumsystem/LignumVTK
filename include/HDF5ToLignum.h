@@ -30,19 +30,20 @@ namespace lignumvtk{
   const string VOXELBOX_DATA_ATTRIBUTE_NAME("VBDATAColumnNames");
   ///\brief Callback function for H5Ovisit to collect HDF5 dataset paths
   ///\param loc_id HDF5 group id
-  ///\param [out] name HDF5 dataset name
-  ///\param [out] info  HDF5 gropu or dataset information
-  ///\param [in,out] data User data 
-  herr_t InsertDataSet(hid_t loc_id, const char* name, const H5O_info_t* info, void* user_data);
+  ///\param[out] name HDF5 dataset name
+  ///\param[out] info  HDF5 group or dataset information
+  ///\param[in,out] data User data, HDF5Base::dataset_names of dataset names
+  ///\retval 0 Always zero. Exception are catch by caller function.
+  ///\sa HDF5Base::getDataSetNames()
+  herr_t InsertDataSet(hid_t loc_id, const char* name, const H5O_info_t* info, void* data);
   ///\brief Collect attribute names into vector \p user_data
   ///
   ///Callback function for H5::DataSet::iterAttrs()
-  ///\param loc The dataset containing \p attr_name
+  ///\param loc The HDF5 dataset containing \p attr_name
   ///\param attr_name Attribute name
-  ///\param user_data vector<string>* to collect attribute names
+  ///\param[out] user_data vector<string>* of attribute names if any 
   ///\pre At least one dataset must be available
-  ///\retval [out] user_data vector<string> of attribute names if any 
-  void AttributeNameCollector(H5::H5Object &loc, const std::string attr_name, void *user_data);
+  void AttributeNameCollector(H5::H5Object& loc, const std::string attr_name, void* user_data);
   
   ///\brief Dataset names collection
   ///
@@ -54,9 +55,9 @@ namespace lignumvtk{
     std::string prefix;///< Prefix for the dataset path name 
   };
 
-  ///\brief Query dataset paths  from HDF5 file.
+  ///\brief Query datasets in HDF5 file.
   ///
-  ///Query dataset paths.
+  ///Query dataset paths, datasets and dataset attributes.
   class HDF5Base{
   public:
     ///\brief Open HDF5 file
@@ -83,7 +84,7 @@ namespace lignumvtk{
     ///\brief Read dataset scalar attribute
     ///\param[in] dset_name Dataset name
     ///\param[in] attr_name Attribute name
-    ///\param[out] value Attribute value
+    ///\param[out] attr_value Attribute value
     ///\retval -1 Error
     ///\retval 0 Normal return
     ///\exception DataSetIException

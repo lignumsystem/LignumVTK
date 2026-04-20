@@ -178,8 +178,15 @@ namespace lignumvtk{
   LignumToVTK::LignumToVTK(int r)
     :resolution(r)
   {
+    //Default view
     dataset_assembly->SetRootNodeName(ROOT_TREE_NODE.c_str());
+    //Default assembly
     dataset_collection->SetDataAssembly(dataset_assembly);
+    //View for three units: foliage, segment and heartwood
+    dataset_assembly_component_view->SetRootNodeName(ROOT_TREE_NODE.c_str());
+    dataset_assembly_component_view->AddNode(TREE_SEGMENT_FOLIAGE_BLOCK.c_str(),0);
+    dataset_assembly_component_view->AddNode(TREE_SEGMENT_RH_BLOCK.c_str(),0);
+    dataset_assembly_component_view->AddNode(TREE_SEGMENT_R_BLOCK.c_str(),0);
   }
   
   TSDataVector& LignumToVTK::treeToPetioleData(LignumVTKTree& t, TSDataVector& v)
@@ -375,7 +382,7 @@ namespace lignumvtk{
     return partitions;
   }
 
-  LignumToVTK& LignumToVTK::writePartitionedDataSetCollection(const string& file_name)
+  LignumToVTK& LignumToVTK::writePartitionedDataSetCollection(const string& file_name,int component_view)
   {
     std::string::size_type n;
     cout << "PartitionedDataSetCollection file: " << file_name.c_str() << endl;
@@ -385,6 +392,9 @@ namespace lignumvtk{
     n = extension.find(VTPC_EXTENSION);
     if (std::string::npos == n){
       cout << "File name extension should be: " << std::string(ext) <<endl;
+    }
+    if (component_view){
+      dataset_collection->SetDataAssembly(dataset_assembly_component_view);
     }
     this->collection_writer->SetFileName(file_name.c_str());
     this->collection_writer->SetInputDataObject(this->dataset_collection);

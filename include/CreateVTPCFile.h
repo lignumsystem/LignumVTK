@@ -68,9 +68,10 @@ namespace lignumvtk{
   ///\param input_file Lignum XM file
   ///\param output_file VTK/VTPC file
   ///\param spline_resolution Number of spline points for tubes, higher values means more spline points.
+  ///\param view Choose view for the partitioned dataset collection: tree view = 0, component view = 1.
   ///Default value lignumvtk::SPLINE_RESOLUTION.
   ///\return EXIT_SUCCESS if VTK/VTPC file is created, EXIT_FAILURE otherwise
-  int CreateVTPCFileFromXML(const string& input_file,const string& output_file, int spline_resolution);
+  int CreateVTPCFileFromXML(const string& input_file,const string& output_file, int spline_resolution, int view);
   ///\brief Create VTK/VTPC file from Lignum HDF5 file.
   ///
   ///Create VTK/VTPC representation for all trees.
@@ -78,9 +79,10 @@ namespace lignumvtk{
   ///\param output_file VTK/VTPC file
   ///\param year Simulation year group in HDF5 file
   ///\param spline_resolution Number of spline points for tubes, higher values means more spline points.
+  ///\param view Choose view for the partitioned dataset collection: tree view = 0, component view = 1.
   ///Default value lignumvtk::SPLINE_RESOLUTION.
   ///\return EXIT_SUCCESS if VTK/VTPC file is created, EXIT_FAILURE otherwise
-  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file,int year, int spline_resolution);
+  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file,int year, int spline_resolution,int view);
   ///\brief Create VTK/VTPC file from Lignum HDF5 file.
   ///
   ///Create VTK/VTPC representation for trees trees matching \p dataset_path string.
@@ -89,9 +91,10 @@ namespace lignumvtk{
   ///\param dataset_path HDF5 dataset path substring
   ///\param exact_match If true use \p dataset_path as path suffix, if false search \p dataset_path as path substring.
   ///\param spline_resolution Number of spline points for tubes, higher values means more spline points.
+  ///\param view Choose view for the partitioned dataset collection: tree view = 0, component view = 1.
   ///Default value lignumvtk::SPLINE_RESOLUTION.
   ///\return EXIT_SUCCESS if VTK/VTPC file is created, EXIT_FAILURE otherwise
   int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, const string& dataset_path, bool exact_match,
-			     int spline_resolution);  
+			     int spline_resolution,int view);  
 }
 #endif

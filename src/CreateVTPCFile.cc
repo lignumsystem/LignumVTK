@@ -2,7 +2,7 @@
 
 namespace lignumvtk{
 
-  int CreateVTPCFileFromXML(const string& input_file,const string& output_file, int spline_resolution)
+  int CreateVTPCFileFromXML(const string& input_file,const string& output_file, int spline_resolution, int view)
   {
     XMLDomTreeReader<VTKHwSegment,VTKBud,Kite> tree_hwreader;
     XMLDomTreeReader<VTKCfSegment,VTKCfBud> tree_cfreader;
@@ -23,7 +23,7 @@ namespace lignumvtk{
       cout << "Create conifer VTK data sets" <<endl;
       lignumvtk.createConiferTreeVTKDataSets(lignum_cftree,LIGNUM_CONIFER_ID,false);
       cout << "Write file" <<endl;
-      lignumvtk.writePartitionedDataSetCollection(output_file);
+      lignumvtk.writePartitionedDataSetCollection(output_file,view);
       return EXIT_SUCCESS;
     }
     //Check for leaf  type
@@ -37,11 +37,11 @@ namespace lignumvtk{
     cout << "Create broadleaved VTK data sets" <<endl;
     lignumvtk.createBroadLeafTreeVTKDataSets(lignum_hwtree,false);
     cout << "Write file" <<endl;
-    lignumvtk.writePartitionedDataSetCollection(output_file);
+    lignumvtk.writePartitionedDataSetCollection(output_file,view);
     return EXIT_SUCCESS;
   }
 
-  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, int year, int spline_resolution)
+  int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, int year, int spline_resolution,int view)
   {
     LignumVTKXML vtk_xml;
     LignumToVTK lignumvtkcf(spline_resolution);
@@ -73,12 +73,12 @@ namespace lignumvtk{
       lignumvtkcf.createConiferTreeVTKDataSets(lignum_cft,v[i],false);
     }
     cout << "Write file" <<endl;
-    lignumvtkcf.writePartitionedDataSetCollection(output_file);    
+    lignumvtkcf.writePartitionedDataSetCollection(output_file,view);    
     return EXIT_SUCCESS;
   }
 
   int CreateVTPCFileFromHDF5(const string& input_file,const string& output_file, const string& dataset_path, bool exact_match,
-			     int spline_resolution)
+			     int spline_resolution,int view)
   {
     LignumVTKXML vtk_xml;
     LignumToVTK lignumvtkcf(spline_resolution);
@@ -119,7 +119,7 @@ namespace lignumvtk{
       lignumvtkcf.createConiferTreeVTKDataSets(lignum_cft,valid_paths[i],false);
     }
     cout << "Write file" <<endl;
-    lignumvtkcf.writePartitionedDataSetCollection(output_file);
+    lignumvtkcf.writePartitionedDataSetCollection(output_file,view);
     return EXIT_SUCCESS;
   }
 }

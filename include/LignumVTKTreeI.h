@@ -224,17 +224,28 @@ namespace lignumvtk{
     int foliage_dataset_index = addPartitionedDataSet(ta_foliage_radius_v,TREE_SEGMENT_FOLIAGE_BLOCK);
     int ts_rh_dataset_index = addPartitionedDataSet(ta_radius_rh_v,TREE_SEGMENT_RH_BLOCK);
     int ts_r_dataset_index = addPartitionedDataSet(ta_radius_v,TREE_SEGMENT_R_BLOCK);
-    //Update vtkDataAssembly for hierarchy information
+    //Update vtkDataAssembly view on the datasets for hierarchy information
     //Create the tree hierarchy
     const string valid_tree_id = dataset_assembly->MakeValidNodeName(tree_id.c_str());
+    //Create data assembly view where a tree is a collection of its segments and foliage 
+    //Zero (0) is the root of the tree and the tree becomes next node base on its id tag
     int tree_node_id = dataset_assembly->AddNode(valid_tree_id.c_str(),0);
+    //Three nodes for foliage and segments of the tree
     int foliage_node_id = dataset_assembly->AddNode(TREE_SEGMENT_FOLIAGE_BLOCK.c_str(),tree_node_id);
     int ts_rh_node_id = dataset_assembly->AddNode(TREE_SEGMENT_RH_BLOCK.c_str(),tree_node_id);
     int ts_r_node_id = dataset_assembly->AddNode(TREE_SEGMENT_R_BLOCK.c_str(),tree_node_id);
-    //Add dataset indices
+    //Set data assembly node indices to point to foliage and segment dataset indices 
     dataset_assembly->AddDataSetIndex(foliage_node_id,foliage_dataset_index);
     dataset_assembly->AddDataSetIndex(ts_rh_node_id,ts_rh_dataset_index);
     dataset_assembly->AddDataSetIndex(ts_r_node_id,ts_r_dataset_index);
+    ///Three part view to foliage, segments and heartwood 
+    int fol_id = dataset_assembly_component_view->FindFirstNodeWithName(TREE_SEGMENT_FOLIAGE_BLOCK.c_str());
+    int rh_id = dataset_assembly_component_view->FindFirstNodeWithName(TREE_SEGMENT_RH_BLOCK.c_str());
+    int r_id = dataset_assembly_component_view->FindFirstNodeWithName(TREE_SEGMENT_R_BLOCK.c_str());
+    dataset_assembly_component_view->AddDataSetIndex(fol_id,foliage_dataset_index);
+    dataset_assembly_component_view->AddDataSetIndex(rh_id,ts_rh_dataset_index);
+    dataset_assembly_component_view->AddDataSetIndex(r_id,ts_r_dataset_index);
+    //Deprecated
     if (add_to_renderer == true){
       addActorsToRenderer(ta_radius_v);
       addActorsToRenderer(ta_radius_rh_v);

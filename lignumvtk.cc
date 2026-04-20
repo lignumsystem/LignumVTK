@@ -15,21 +15,28 @@ int Usage()
 {
   cout << "Usage:" << endl;
   cout << "./lignumvtk [-h | -help]" << endl;
-  cout << "./lignumvtk -input|-i file.h5 [-list] [-output|-o file.vtpc] [-year <number>] [-dataset <path_string>] [-substring <path_string>] [-spline <number> [-sides <number>]" << endl;
-  cout << "./lignumvtk -input file.xml -output file.vtpc" << endl;
+  cout << "./lignumvtk -input|-i file.h5 [-list] [-output|-o file.vtpc] [-year <number>] [-dataset <path_string>]" << endl
+       << "[-substring <path_string>] [-spline <number>] [-sides <number>] [-view 0|1]" << endl;
+  cout << "Default values:" <<endl;
+  cout << "-spline " << lignumvtk::SPLINE_SEGMENT_RESOLUTION << endl;
+  cout << "-sides  " << lignumvtk::TUBE_NUMBER_OF_SIDES << endl;
+  cout << "-view   " << 0 << endl;
+  cout << "----------" << endl;
   cout << "Examples:" << endl;
   cout << "Read Lignum XML file and produce VTK/VTPC file" << endl; 
-  cout << "  ./lignumvtk -input File.xml -output VTKFile.vtpc" << endl;
+  cout << "  ./lignumvtk -input File.xml -output File.vtpc" << endl;
   cout << "Read Lignum HDF5 file and list tree dataset paths" << endl; 
   cout << "  ./lignumvtk -input File.h5 -list" << endl;
   cout << "Read Lignum HDF5 file and produce VTK/VTPC files for growth year 20" << endl;
-  cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -year 20" << endl;
+  cout << "./lignumvtk -input File.h5 -output File.vtpc -year 20" << endl;
   cout << "Read Lignum HDF5 file and produce VTK/VTPC file for Tree_8 in year 60" << endl;
-  cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -dataset /TreeXML/60/Tree_8" << endl;
-  cout << "Read Lignum HDF5 file and produce VTK/VTPC file for all trees for all years match Tree_13" <<endl;
-  cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_13" << endl;
-  cout << "Set spline segments to 10 and rectangular tube sides to 20, higher values mean more spline points and tube sides" << endl;
-  cout << "./lignumvtk -input File.h5 -output VTKFile.vtpc -substring Tree_13 -spline 10 -sides 20" << endl;
+  cout << "./lignumvtk -input File.h5 -output File.vtpc -dataset /TreeXML/60/Tree_8" << endl;
+  cout << "Read Lignum HDF5 file and produce VTK/VTPC file for all trees for all years that match Tree_13" <<endl;
+  cout << "./lignumvtk -input File.h5 -output File.vtpc -substring Tree_13" << endl;
+  cout << "Set spline segments to 5 and rectangular tube sides to 10" << endl;
+  cout << "./lignumvtk -input File.h5 -output File.vtpc -substring Tree_13 -spline 5 -sides 10" << endl;
+  cout << "Create component view" << endl;
+  cout << "./lignumvtk -input File.h5 -output File.vtpc -year 20 -view 1" <<endl; 
   return EXIT_SUCCESS;
 }
   
@@ -103,6 +110,11 @@ int main(int argc,char* argv[])
     use_substring = true;
   }
 
+  std::string view;
+  int dataset_view = 0;
+  if (ParseCommandLine(argc,argv,"-view",view)){
+    dataset_view = std::stoi(view);
+  }
   //Command line parsed, do the following:
   //Case 1: List the content of the HDF5 tree files  
   if (list_content == true){
@@ -140,19 +152,19 @@ int main(int argc,char* argv[])
   }
   //Case 2: The input file is a single xml file
   if (is_xml){
-    retval = CreateVTPCFileFromXML(input_file,output_file,spline_resolution);
+    retval = CreateVTPCFileFromXML(input_file,output_file,spline_resolution,dataset_view);
   }
   //Case 3: The HDF5 datasets from a given year are used
   else if (use_year == true){
-    retval = CreateVTPCFileFromHDF5(input_file,output_file,growth_year,spline_resolution);
+    retval = CreateVTPCFileFromHDF5(input_file,output_file,growth_year,spline_resolution,dataset_view);
   }
   //Case 4: The HDF5 Dataset name or path is used
   else if (use_dataset == true){
-    retval = CreateVTPCFileFromHDF5(input_file,output_file,dataset,true,spline_resolution);
+    retval = CreateVTPCFileFromHDF5(input_file,output_file,dataset,true,spline_resolution,dataset_view);
   }
   //Case 5: The search substring is used to pick HDF5 datasets
   else if (use_substring ==true){
-    retval =  CreateVTPCFileFromHDF5(input_file,output_file,substring,false,spline_resolution);
+    retval =  CreateVTPCFileFromHDF5(input_file,output_file,substring,false,spline_resolution,dataset_view);
   }
   else{
     cout << "Define input XML file or define year or dataset name for HDF5 file" << endl;
