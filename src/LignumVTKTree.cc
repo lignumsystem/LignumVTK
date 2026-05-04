@@ -175,19 +175,11 @@ namespace lignumvtk{
     return v;
   }
 
-  LignumToVTK::LignumToVTK(int r)
-    :resolution(r)
+  LignumToVTK::LignumToVTK(int res)
+    :resolution(res)
   {
-    //Default view
-    dataset_assembly->SetRootNodeName(ROOT_TREE_NODE.c_str());
-    //Default assembly
-    dataset_collection->SetDataAssembly(dataset_assembly);
-    //View for three units: foliage, segment and heartwood
-    dataset_assembly_component_view->SetRootNodeName(ROOT_TREE_NODE.c_str());
-    dataset_assembly_component_view->AddNode(TREE_SEGMENT_FOLIAGE_BLOCK.c_str(),0);
-    dataset_assembly_component_view->AddNode(TREE_SEGMENT_RH_BLOCK.c_str(),0);
-    dataset_assembly_component_view->AddNode(TREE_SEGMENT_R_BLOCK.c_str(),0);
   }
+  
   
   TSDataVector& LignumToVTK::treeToPetioleData(LignumVTKTree& t, TSDataVector& v)
   {
@@ -442,5 +434,32 @@ namespace lignumvtk{
     cout << "Write file done" <<endl;
     return *this;
   }
-  
+
+  CfLignumToVTK::CfLignumToVTK(double resolution)
+    :LignumToVTK(resolution)
+  {
+     //Default view
+    dataset_assembly->SetRootNodeName(ROOT_TREE_NODE.c_str());
+    //Default assembly
+    dataset_collection->SetDataAssembly(dataset_assembly);
+    //Alternative view for three units: foliage, segment and heartwood
+    dataset_assembly_component_view->SetRootNodeName(ROOT_TREE_NODE.c_str());
+    dataset_assembly_component_view->AddNode(TREE_SEGMENT_FOLIAGE_BLOCK.c_str(),0);
+    dataset_assembly_component_view->AddNode(TREE_SEGMENT_RH_BLOCK.c_str(),0);
+    dataset_assembly_component_view->AddNode(TREE_SEGMENT_R_BLOCK.c_str(),0);
+  }
+
+  HwLignumToVTK::HwLignumToVTK(double resolution)
+    :LignumToVTK(resolution)
+  {
+    //Default view
+    dataset_assembly->SetRootNodeName(ROOT_TREE_NODE.c_str());
+    //Default assembly
+    dataset_collection->SetDataAssembly(dataset_assembly);
+    //Alternative view for three units: Leaf, petiole and segment
+    dataset_assembly_component_view->SetRootNodeName(ROOT_TREE_NODE.c_str());
+    dataset_assembly_component_view->AddNode(TREE_SEGMENT_LEAF_BLOCK.c_str(),0);
+    dataset_assembly_component_view->AddNode(TREE_SEGMENT_PETIOLE_BLOCK.c_str(),0);
+    dataset_assembly_component_view->AddNode(TREE_SEGMENT_R_BLOCK.c_str(),0);
+  }
 }				     

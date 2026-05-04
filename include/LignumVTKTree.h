@@ -84,11 +84,19 @@ namespace lignumvtk{
   };
   ///\defgroup VTKTypes Type definitions
   ///Type aliases for VTK datatypes
-
+  ///
   ///\ingroup VTKTypes
-  ///\brief Lignum tree
+  ///\brief Assembly types for conifers and broadleaves.
+  ///\sa LignumToVT::LignumToVTK()
+  enum class VTK_ASSEMBLY_TYPE{CONIFER_ASSEMBLY,BROADLEAF_ASSEMBLY};
+  ///\ingroup VTKTypes
+  ///\name Lignum trees
+  ///@{
+  ///\brief Lignum broadleaf trees 
   typedef Tree<VTKHwSegment,VTKBud> LignumVTKTree;
+  ///\bref Lignum conifer trees
   typedef Tree<VTKCfSegment,VTKCfBud> LignumVTKCfTree;
+  ///@}
   ///\ingroup VTKTypes
   ///\brief Data collection from tree segments and leaves
   typedef TreeSegmentDataCollection TSData;
@@ -205,16 +213,20 @@ namespace lignumvtk{
   const std::string TREE_SEGMENT_FOLIAGE_BLOCK="TreeSegmentRFoliageBlock";
   ///\ingroup VTKconstants
   ///\brief VTK DataSet block name for leaves
-  const std::string LEAF_BLOCK="LeafBlock";
+  const std::string TREE_SEGMENT_LEAF_BLOCK="LeafBlock";
   ///\ingroup VTKconstants
   ///\brief VTK DataSet block name for petioles
-  const std::string PETIOLE_BLOCK="PetioleBlock";
+  const std::string TREE_SEGMENT_PETIOLE_BLOCK="PetioleBlock";
   ///\ingroup VTKconstants
   ///\brief Root node name in LignumToVTK::dataset_assembly
   const std::string ROOT_TREE_NODE="Trees";
   ///\ingroup VTKconstants
   ///\brief Default conifer tree id
   const std::string LIGNUM_CONIFER_ID="ConiferTree";
+  ///\ingroup VTKconstants
+  ///\brief Default broadleaf tree id
+  const std::string LIGNUM_BROADLEAF_ID="BroadLeafTree";
+  
   ///\brief Data to be collected from tree segments.
   ///
   ///Points collected will be used to construct VTK geometric objects representing tree including
@@ -414,37 +426,10 @@ namespace lignumvtk{
   public:
     ///\brief Constructor
     ///
-    ///LignumToVTK::dataset_assembly, LignumToVTK::dataset_assembly_three_parts
-    ///and LignumVTK::data_collection initialized for use.
-    ///\param r Spline segment lengthwise resolution
-    LignumToVTK(int r);
-    ///\brief Create VTK geometric representation of a broad leaf Lignum tree.
-    ///
-    ///Each axis will be represented as VTK tube, each leaf as a VTK triangular strip
-    ///and each petiole as VTK line. These are grouped in different data sets so that final
-    ///editing for visualization is easier. For tree segments and leaves designated simulation data
-    ///can be added as scalar values for tubes and triangular strips respectively.
-    ///\param t Tree
-    ///\param add_to_renderer Add vtkActors to VTK built-in renderer
-    ///\retval *this The LignumVTK object
-    ///\note Current implementation is for Kite shaped leaves. Implement Triangle and Ellipse leaves
-    ///if necessary.
-    template <typename TREE>
-    LignumToVTK& createBroadLeafTreeVTKDataSets(TREE& t, bool add_to_renderer=false);
-    ///\brief Create VTK geometric representation of a conifer Lignum tree.
-    ///
-    ///Each axis will be represented as three VTK spline tubes for foliage, sapwood and heartwood.
-    ///These are grouped in different data sets. Designated simulation data is added as scalar values
-    ///for the VTK spline tubes.
-    ///
-    ///VTK data assembly creates a view on the datasets that is shown in ParaView. This is for
-    ///easier and logical selection of datasets for visualization.
-    ///\param t Tree
-    ///\param tree_id Tree id tag for vtkAssembly
-    ///\param add_to_renderer Add vtkActors to VTK built-in renderer
-    ///\retval *this The LignumToVTK object
-    template<typename TREE>
-    LignumToVTK& createConiferTreeVTKDataSets(TREE& t,const string& tree_id,bool add_to_renderer=false);
+    ///LignumToVTK::dataset_assembly, LignumToVTK::dataset_assembly_component_view
+    ///and LignumVTK::dataset_collection initialized for use.
+    ///\param resolution Spline segment lengthwise resolution
+    LignumToVTK(int resolution);
     ///\brief Write VTK partitioned data sets to a file
     ///
     ///Before writing data \p view selects data assembly to use. Default is tree view where datasets
@@ -601,7 +586,7 @@ namespace lignumvtk{
     ///\sa createBroadLeafTreeVTKDataSets
     ///\sa writePartitionedDataSetCollection
     LignumToVTK& addMultiBlockDataSet(VTKActorVector& v);
-  private:
+  protected:
     vtkNew<vtkPartitionedDataSetCollection> dataset_collection;///< Partitioned data set for VTK geometry models
     ///\brief Tree view hierarchy between items in \p dataset_collection
     ///
@@ -617,7 +602,61 @@ namespace lignumvtk{
     vtkNew<vtkXMLMultiBlockDataWriter> writer;///< File output for VTK MultiBlock data sets
     int resolution;///< Spline resolution, number of spline segments
   };
-}
+
+  ///\brief Produce conifer Lignum tree VTK/VTPC files for ParaView.
+  ///\remark Creates also VTK actors and mappers.
+  ///\todo VTK actors and mappers are not needed when writing VTK files for ParaView renderer. 
+  class CfLignumToVTK: public LignumToVTK{
+  public:
+    ///\brief Constructor
+    ///
+    ///Create data assembly views for conifer datasets. 
+    ///\param resolution Spline length resolution
+    CfLignumToVTK(double resolution);
+    ///\brief Create VTK geometric representation of a conifer Lignum tree.
+    ///
+    ///Each axis will be represented as three VTK spline tubes for foliage, sapwood and heartwood.
+    ///These are grouped in different data sets. Designated simulation data is added as scalar values
+    ///for the VTK spline tubes.
+    ///
+    ///VTK data assemblies store two views on the datasets one of which is chosen and shown in ParaView.
+    ///This is for easier and logical selection of datasets for visualization.
+    ///\param t Tree
+    ///\param tree_id Tree id tag for vtkAssembly
+    ///\param add_to_renderer Add vtkActors to VTK built-in renderer
+    ///\retval *this The LignumToVTK object
+    template<typename TREE>
+    CfLignumToVTK& createConiferTreeVTKDataSets(TREE& t,const string& tree_id,bool add_to_renderer=false);
+  };
+  ///\brief Produce broadleaf Lignum tree VTK/VTPC files for ParaView.
+  ///\remark Creates also VTK actors and mappers.
+  ///\todo VTK actors and mappers are not needed when writing VTK files for ParaView renderer. 
+  class HwLignumToVTK: public LignumToVTK{
+  public:
+    ///\brief Constructor
+    ///
+    ///Create data assembly views for broadleaf datasets.
+    ///\param resolution Spline length resolution
+    HwLignumToVTK(double resolution);
+    ///\brief Create VTK geometric representation of a broad leaf Lignum tree.
+    ///
+    ///Each axis will be represented as VTK tube, each leaf as a VTK triangular strip
+    ///and each petiole as VTK line. These are grouped in different data sets.
+    ///For tree segments and leaves designated simulation data can be added as scalar values
+    ///for tubes and triangular strips respectively.
+    ///
+    ///VTK data assemblies store two views on the datasets one of which is chosen and shown in ParaView.
+    ///This is for easier and logical selection of datasets for visualization.
+    ///\param t Tree
+    ///\param add_to_renderer Add vtkActors to VTK built-in renderer
+    ///\retval *this The LignumVTK object
+    ///\note Current implementation is for Kite shaped leaves. Implement Triangle and Ellipse leaves
+    ///if necessary.
+    template <typename TREE>
+    HwLignumToVTK& createBroadLeafTreeVTKDataSets(TREE& t, const string& tree_id, bool add_to_renderer=false);
+  };
+    
+}				
 #endif
 #include <LignumVTKTreeI.h>
 

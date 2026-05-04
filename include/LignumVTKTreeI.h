@@ -141,7 +141,7 @@ namespace lignumvtk{
   }
 
   template<typename TREE>
-  LignumToVTK& LignumToVTK::createBroadLeafTreeVTKDataSets(TREE& t, bool add_to_renderer)
+  HwLignumToVTK& HwLignumToVTK::createBroadLeafTreeVTKDataSets(TREE& t, const string& tree_id, bool add_to_renderer)
   {
     //Data collection from the tree
     TSDataVector tsv;
@@ -166,9 +166,30 @@ namespace lignumvtk{
     lineav = createLineActors(pv,lineav);
 
     //Add datasets to dataset collection
-    addPartitionedDataSet(tav,TREE_SEGMENT_R_BLOCK);
-    addPartitionedDataSet(lav,LEAF_BLOCK);
-    addPartitionedDataSet(lineav,PETIOLE_BLOCK);
+    int foliage_dataset_index = addPartitionedDataSet(lav,TREE_SEGMENT_LEAF_BLOCK);
+    int petiole_dataset_index = addPartitionedDataSet(lineav,TREE_SEGMENT_PETIOLE_BLOCK);
+    int ts_r_dataset_index = addPartitionedDataSet(tav,TREE_SEGMENT_R_BLOCK);
+    //Update vtkDataAssembly views on the datasets for hierarchy information
+    //Create the tree hierarchy
+    const string valid_tree_id = dataset_assembly->MakeValidNodeName(tree_id.c_str());
+    //Create data assembly view where a tree is a collection of its segments and foliage 
+    //Zero (0) is the root of the tree and the tree becomes next node base on its id tag
+    int tree_node_id = dataset_assembly->AddNode(valid_tree_id.c_str(),0);
+    //Three nodes for foliage, segments and petioles of the tree
+    int foliage_node_id = dataset_assembly->AddNode(TREE_SEGMENT_LEAF_BLOCK.c_str(),tree_node_id);
+    int petiole_node_id = dataset_assembly->AddNode(TREE_SEGMENT_PETIOLE_BLOCK.c_str(),tree_node_id);
+    int ts_r_node_id = dataset_assembly->AddNode(TREE_SEGMENT_R_BLOCK.c_str(),tree_node_id);
+    //Set data assembly node indices to point to foliage, segment and petiole dataset indices 
+    dataset_assembly->AddDataSetIndex(foliage_node_id,foliage_dataset_index);
+    dataset_assembly->AddDataSetIndex(petiole_node_id,petiole_dataset_index);
+    dataset_assembly->AddDataSetIndex(ts_r_node_id,ts_r_dataset_index);
+    ///Create three part view to foliage, segments and petiole
+    int fol_id = dataset_assembly_component_view->FindFirstNodeWithName(TREE_SEGMENT_LEAF_BLOCK.c_str());
+    int petiole_id = dataset_assembly_component_view->FindFirstNodeWithName(TREE_SEGMENT_PETIOLE_BLOCK.c_str());
+    int r_id = dataset_assembly_component_view->FindFirstNodeWithName(TREE_SEGMENT_R_BLOCK.c_str());
+    dataset_assembly_component_view->AddDataSetIndex(fol_id,foliage_dataset_index);
+    dataset_assembly_component_view->AddDataSetIndex(petiole_id,petiole_dataset_index);
+    dataset_assembly_component_view->AddDataSetIndex(r_id,ts_r_dataset_index);
     if (add_to_renderer == true){
       addActorsToRenderer(tav);
       addActorsToRenderer(lav);
@@ -204,7 +225,7 @@ namespace lignumvtk{
   }
 
   template<typename TREE>
-  LignumToVTK& LignumToVTK::createConiferTreeVTKDataSets(TREE& t,const string& tree_id, bool add_to_renderer)
+  CfLignumToVTK& CfLignumToVTK::createConiferTreeVTKDataSets(TREE& t,const string& tree_id, bool add_to_renderer)
   {
     TSDataVector tsv;
     tsv = treeToCfTSData(t,tsv);
