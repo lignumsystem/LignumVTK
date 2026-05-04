@@ -6,18 +6,25 @@
 # make install
 #--------------------------------------------
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-#add_definitions(-DFMT_USE_CONSTEVAL=0)
+
 #Set VTK_DIR to point to directory where VTKConfig.cmake or vtk-config.cmake is located (compiling from source)
 #Leave commented (do not set) if VTK is installed with package management system (MacPorts for example)
 #set(VTK_DIR ../../VTK/build)
 project(LignumVTK DESCRIPTION "Create VTK files from Lignum XML files")
+#set(CMAKE_CXX_COMPILER /opt/local/bin/clang++-mp-21)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 include(ExternalProject)
 include(CMakePrintHelpers)
 find_package(HDF5 COMPONENTS C CXX HL REQUIRED)
+#Use one of Qt4, Qt5 or Qt6 for XML parsing
+#Qt4 is obsolete and only for macOS with Intel processors
+#find_package(Qt4 COMPONENTS QtOpenGL QtXml QtGui QtCore REQUIRED)
+#Qt5 package
 find_package(Qt5 COMPONENTS Xml Core  REQUIRED)
+#Qt6 package
+#find_package(Qt6 COMPONENTS Xml Core  REQUIRED)
 find_package(VTK REQUIRED COMPONENTS 
   CommonColor
   CommonComputationalGeometry
@@ -35,10 +42,12 @@ find_package(VTK REQUIRED COMPONENTS
   IOParallelXML
 )
 
-include(CMakePrintHelpers)
 cmake_print_variables(CMAKE_CXX_COMPILER)
 cmake_print_variables(CMAKE_CXX_COMPILER_ID) 
-cmake_print_variables(VTK_DIR)
+cmake_print_variables(CMAKE_CXX_STANDARD)
+cmake_print_variables(CMAKE_CXX_FLAGS)
+cmake_print_variables(CMAKE_OSX_DEPLOYMENT_TARGET)
+#cmake_print_variables(VTK_LIBRARIES)
 
 if (NOT VTK_FOUND)
   message(FATAL_ERROR "LignumVTK: Unable to find the VTK build folder.")
@@ -47,8 +56,6 @@ endif()
 ExternalProject_Add(lignum-core
 SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..
 DOWNLOAD_COMMAND "")
-
-#cmake_print_variables(VTK_LIBRARIES)
 
 #The '*.cmake' files for dependencies are preproduced with 'cmake' configuration
 #for 'lignum-core' (see lignum-core/CMakeLists.txt).  
@@ -88,8 +95,6 @@ target_include_directories(vsvtk PUBLIC
   ${CMAKE_CURRENT_LIST_DIR}/../lignum-tls/include
 )
 
-target_compile_options(lignumvtk PUBLIC -Wno-c++17-extensions)
-target_compile_options(vsvtk PUBLIC -Wno-c++17-extensions)
 target_link_libraries(lignumvtk PRIVATE ${VTK_LIBRARIES} HDF5::HDF5  Qt5::Xml Qt5::Core sky LGM cxxadt)
 target_link_libraries(vsvtk PRIVATE ${VTK_LIBRARIES} HDF5::HDF5  Qt5::Xml Qt5::Core sky LGM cxxadt)
 add_dependencies(lignumvtk lignum-core)
