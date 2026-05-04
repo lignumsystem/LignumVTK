@@ -1,6 +1,7 @@
 #ifndef VOXELSPACETOVTK_H
 #define VOXELSPACETOVTK_H
 #include <cassert>
+#include <iostream>
 #include <filesystem>
 #include <string>
 #include <LignumVTK.h>

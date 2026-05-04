@@ -66,7 +66,7 @@ namespace lignumvtk{
 	  for (int d = 0; d < v_attr_cell.size(); d++){
 	    double cell_value = static_cast<double>(vsm[i][j][k][d]);
 	    if (std::isnan(cell_value)){
-	      cout << "NaN value for cell " << cell_id << endl;
+	      std::cout << "NaN value for cell " << cell_id << endl;
 	      v_attr_cell[d]->SetValue(cell_id,0.0);
 	    }
 	    else{
@@ -92,7 +92,7 @@ namespace lignumvtk{
 	  for (int d = 0; d < v_attr_point.size(); d++){
 	    double point_value = static_cast<double>(vsm[i][j][k][d]);
 	    if (std::isnan(point_value)){
-	      cout << "NaN value for point " << point_id << endl;
+	      std::cout << "NaN value for point " << point_id << endl;
 	      v_attr_point[d]->SetValue(point_id,0.0);
 	    }
 	    else{
@@ -118,16 +118,16 @@ namespace lignumvtk{
     std::string extension("."+std::string(ext));
     std::string::size_type n = file_name.rfind(extension);
     if (n == std::string::npos){
-      cout << "File name extension should be " << std::string(ext) << endl;
+      std::cout << "File name extension should be " << std::string(ext) << endl;
     }
     writer->SetFileName(file_name.c_str());
     writer->SetInputDataObject(this->sgrid);
     writer->SetDataModeToAscii(); 
     cout << "Updating writer" <<endl;
     writer->Update();
-    cout << "Writing data" <<endl;
+    std::cout << "Writing data" <<endl;
     writer->Write();
-    cout << "Write file done" <<endl;
+    std::cout << "Write file done" <<endl;
     return *this;
   }
 }
