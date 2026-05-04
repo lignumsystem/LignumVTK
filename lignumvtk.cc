@@ -8,9 +8,10 @@
 #include <LignumVTKXML.h>
 #include <LignumVTKTree.h>
 #include <CreateVTPCFile.h>
+/// \file lignumvtk.cc
+/// \brief Main program for `lignumvtk`
 
-using namespace lignumvtk;
-///\brief Print command line usage information 
+///\brief `lignumvtk` command line
 int Usage()
 {
   cout << "Usage:" << endl;
@@ -40,7 +41,8 @@ int Usage()
   return EXIT_SUCCESS;
 }
   
-///\brief Read xml or HDF5 file and create VTK/VTPC files for ParaView    
+///\brief Read xml or HDF5 file and create VTK/VTPC files for ParaView
+///\sa Usage()
 int main(int argc,char* argv[])
 {
   if (argc < 2||CheckCommandLine(argc,argv,"-help")||CheckCommandLine(argc,argv,"-h")){
@@ -57,8 +59,8 @@ int main(int argc,char* argv[])
   std::string nsides;
   if (ParseCommandLine(argc,argv,"-sides",nsides)){
     int n = std::stoi(nsides);
-    TUBE_NUMBER_OF_SIDES = n;
-    cout << "Using " << TUBE_NUMBER_OF_SIDES << " rectangular tube sides" << endl;
+    lignumvtk::TUBE_NUMBER_OF_SIDES = n;
+    cout << "Using " << lignumvtk::TUBE_NUMBER_OF_SIDES << " rectangular tube sides" << endl;
   }
 
   bool list_content = false;
@@ -122,7 +124,7 @@ int main(int argc,char* argv[])
       cout << "The HDF5 input file " << input_file << ": to list datasets the input file should have the suffix \".h5\"" <<endl;
       return EXIT_FAILURE;
     }
-    HDF5ToLignum hdf5lignum;
+    lignumvtk::HDF5ToLignum hdf5lignum;
     vector<string> v;
     hdf5lignum.openFile(input_file);
     if (use_year == true){
@@ -130,11 +132,11 @@ int main(int argc,char* argv[])
     }
     else if (use_dataset == true){
       vector<string> all_trees_v = hdf5lignum.getDataSetNames(hdf5lignum.getMainGroupName());
-      std::copy_if(all_trees_v.begin(),all_trees_v.end(), std::back_inserter(v),FindExactMatch(dataset));
+      std::copy_if(all_trees_v.begin(),all_trees_v.end(), std::back_inserter(v),lignumvtk::FindExactMatch(dataset));
     }
     else if (use_substring == true){
       vector<string> all_trees_v = hdf5lignum.getDataSetNames(hdf5lignum.getMainGroupName());
-      std::copy_if(all_trees_v.begin(),all_trees_v.end(), std::back_inserter(v),FindSubString(substring));
+      std::copy_if(all_trees_v.begin(),all_trees_v.end(), std::back_inserter(v),lignumvtk::FindSubString(substring));
     }
     else{
       string tree_group=hdf5lignum.getMainGroupName();
@@ -152,19 +154,19 @@ int main(int argc,char* argv[])
   }
   //Case 2: The input file is a single xml file
   if (is_xml){
-    retval = CreateVTPCFileFromXML(input_file,output_file,spline_resolution,dataset_view);
+    retval = lignumvtk::CreateVTPCFileFromXML(input_file,output_file,spline_resolution,dataset_view);
   }
   //Case 3: The HDF5 datasets from a given year are used
   else if (use_year == true){
-    retval = CreateVTPCFileFromHDF5(input_file,output_file,growth_year,spline_resolution,dataset_view);
+    retval = lignumvtk::CreateVTPCFileFromHDF5(input_file,output_file,growth_year,spline_resolution,dataset_view);
   }
   //Case 4: The HDF5 Dataset name or path is used
   else if (use_dataset == true){
-    retval = CreateVTPCFileFromHDF5(input_file,output_file,dataset,true,spline_resolution,dataset_view);
+    retval = lignumvtk::CreateVTPCFileFromHDF5(input_file,output_file,dataset,true,spline_resolution,dataset_view);
   }
   //Case 5: The search substring is used to pick HDF5 datasets
   else if (use_substring ==true){
-    retval =  CreateVTPCFileFromHDF5(input_file,output_file,substring,false,spline_resolution,dataset_view);
+    retval =  lignumvtk::CreateVTPCFileFromHDF5(input_file,output_file,substring,false,spline_resolution,dataset_view);
   }
   else{
     cout << "Define input XML file or define year or dataset name for HDF5 file" << endl;
