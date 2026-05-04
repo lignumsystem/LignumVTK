@@ -10,7 +10,10 @@
 #include <LignumVTKTree.h>
 #include <VoxelSpaceToVTK.h>
 #include <CreateVTPCFile.h>
+/// \file vsvtk.cc
+/// \brief Main file for `vsvtk`
 
+///\brief `vsvtk` command line
 int Usage()
 {
   cout << "Usage:" << endl;
@@ -23,7 +26,9 @@ int Usage()
   cout << "  ./vsvtk -i File.h5 -o VTSFile.vts -edge 3" << endl;
   return EXIT_SUCCESS;
 }
-     
+
+///\brief Read HDF5 voxel space file and create VTK/VTS file for a single voxel space.
+///\sa Usage()
 int main(int argc, char* argv[])
 {
   if (argc < 2||CheckCommandLine(argc,argv,"-help")||CheckCommandLine(argc,argv,"-h")){
