@@ -10,14 +10,8 @@ is to extract qualitative insight from simulation results.
 
 ## Building LignumVTK
 ### Prerequisites 
-Download *LignumVTK* and *lignum-core* from GitHub. Install the VTK library package.
-Using MacPorts type:
-
-	sudo port install vtk
-
-Download [ParaView](https://www.paraview.org). For macOS be careful to download for the right 
-processor architecture. MacPorts version reports poor port health, i.e. it is likely not 
-in working order. 
+Download *lignum-core* and *LignumVTK* from GitHub. Software installed as in 
+README for lignum-core.
 
 ### CMake
 Use CMake to compile `lignumvtk` and `vsvtk`:
@@ -31,12 +25,19 @@ The `lignumvtk` and `vsvtk` binaries are installed in the LignumVTK directory.
 See the CMakeLists.txt file for details.
 
 ## Trees and forest stands
-The `lignumvtk` program can produce VTK/VTPC[^vtpc] files from Lignum XML and HDF5 files.
-Input data for `lignumvtk` is either a single XML tree file or an HDF5 file containing 
-the tree datasets in XML format. Trees are reconstructed and converted to VTK spline tube segments for
-wooden parts and conifer foliage, and triangle strips for Kite shaped hardwood leaves. 
-Attributes are assigned from Lignum trees to describe relevant properties in visualization. 
-`lignumvtk` can implicitely recognize between conifers and hardwood trees.
+The `lignumvtk` program processes either XML tree files or HDF5 files containing 
+the XML formatted tree datasets to produce VTK/VTPC[^vtpc] output. 
+It can automatically distinguish between conifer and hardwood tree types.
+
+Trees are reconstructed and converted to VTK spline tube segments for wooden parts 
+and conifer foliage, and VTK triangle strips for kite shaped hardwood leaves. 
+Visualization properties are defined using spline tube and triangle strip attributes 
+from Lignum trees.
+
+The main VTK/VTPC output file (.vtpc extension) is a metadata file that specifies names and 
+locations of the 3D geometry model files. These files are stored in a directory automatically 
+created and named after the main output file upon saving. To visualize them, open
+the main file in ParaView and set up the graphics pipeline.
 
 ### Command line 
 The `lignumvtk` command line is:
@@ -59,11 +60,11 @@ The `lignumvtk` command line is:
 
 	./lignumvtk -input File.h5 -output File.vtpc -year 20
 	
-**Example 4**: Create VTK/VTPC file for the dataset Tree_8 in /TreeXML/60/Tree_8:
+**Example 4**: Create VTK/VTPC file for the dataset /TreeXML/60/Tree_8:
 
 	./lignumvtk -input File.h5 -output File.vtpc -dataset /TreeXML/60/Tree_8
 	
-**Example 5**: Create VTK/VTPC file for Tree_8 for all growth years saved in HDF5 file:
+**Example 5**: Create VTK/VTPC file for Tree_8 for all growth years in HDF5 file:
 
 	./lignumvtk -input File.h5 -output File.vtpc -dataset Tree_8
 	
@@ -71,7 +72,7 @@ The `lignumvtk` command line is:
 
 	./lignumvtk -input File.h5 -output File.vtpc -substring Tree_11
 	
-**Example 7**: Divide tree segments into 10 spline segments. Assign 20 rectangular sides 
+**Example 7**: Divide each tree segment into 10 spline segments. Assign 20 rectangular sides 
 to spline tubes approximating tube cylinders.
 
 	./lignumvtk -input File.h5 -output File.vtpc -substring Tree_11 -spline 10 -sides 20
@@ -80,41 +81,34 @@ to spline tubes approximating tube cylinders.
 
 		./lignumvtk -input File.h5 -output File.vtpc -dataset Tree_8 -view 1
 		
-The option *-dataset* uses exact match to find the dataset, the option *-substring* searches 
-dataset paths for substring match. The options *-year*, *-dataset* and *-substring* are mutually exclusive.
-The options *-spline* and *-sides* determine the spline tube segment length and roundness.
+In summary, the option *-dataset* uses exact match to find the dataset, the option *-substring* searches 
+dataset paths with substring matches and the option *-year* based on simulation year.
+The options *-year*, *-dataset* and *-substring* are mutually exclusive.
+The options *-spline* and *-sides* set the spline tube segment length and roundness.
 
-The option *-view* decides how VTK datasets are assembled for ParaView. Default is 
-tree view (*-view 0*) where spline segment tubes and foliage are assembled in trees 
-where they belong. Component view (*-view 1*) groups these geometry models into foliage, 
-segment and heartwood data. The former allows easy selection of trees for closer inspection, 
-the latter is intended to visualize forest stands. 
-
-The main VTK/VTPC output file (suffix *.vtpc*) is a meta file telling the location and names 
-of the actual 3D geometry model files. The location is the directory named after the 
-main output file and created automatically when saving the file. Open the main output file 
-in ParaView and create ParaView's graphics pipeline for visualization.
-
-> [!IMPORTANT]
-> The default values for the options `-spline` and `-sides` should be applicable 
-> for a single Lignum tree but for a forest stand it may be necessary 
-> reduce these numbers in compliance with the available memory and to shorten the rendering time.
+The option *-view* assembles VTK datasets for ParaView. The default is tree view (*-view 0*), which organizes 
+spline segments and foliage by individual trees. Alternatively, component view (*-view 1*) groups geometry 
+by type: foliage, segments, and heartwood. The former enables detailed inspection of specific trees,
+whereas the latter focuses on forest stand visualization. 
 
 > [!CAUTION]
-> Unduly generic dataset path argument to the `-substring` option can retrieve 
-> significant number of tree datasets, possibly all of them.
+> Using an overly broad path argument to the `-substring` option can inadvertently return
+> all dataset paths.
+
+> [!IMPORTANT]
+> The default values for the options `-spline` and `-sides` should be feasible
+> for a single Lignum tree. With forest stands reduce the values to fit 
+> within the available memory.
 
 > [!NOTE]
-> During reconstruction of trees warning messages related to missing function files can appear. This is due to 
-> default file names for tree simulations and does not prevent the creation of VTK/VTPC files.
-> If disturbing create dummy files in the working directory to remove the warning messages.
+> Warning messages regarding missing function files may appear during tree reconstruction. 
+> These functions were used in simulations and do not prevent the generation of VTK/VTPC files.
 
 ## Voxel spaces
-The `vsvtk` program can produce VTK/VTS[^vts] file from HDF5 voxel space dataset file.
-Voxel space and voxel data 4D matrix representation is rebuilt, converted
-to a VTK structured grid with hexahedra (voxel) elements coupled with voxel data 
-as attributes and saved as VTK/VTS file. Default hexahedron edge size is the voxel edge size 
-used in a simulation.
+The `vsvtk` program processes HDF5 voxel space datasets to produce VTK/VTS[^vts] output.
+It reconstructs voxel space and voxel data 4D matrix representation, converting it
+to a VTK structured grid where hexahedral elements are mapped to their corresponding
+voxel attributes. Default hexahedron edge size is the voxel edge size used in a simulation.
 
 ### Command line
 The `vsvtk` command line is:
@@ -131,25 +125,24 @@ Set hexahedron (voxel) edge size to 3:
 	
 	./vsvtk -i File.h5 -dataset /VoxelSpaceData60 -o File.vts -edge 3
 
-The `vsvtk` program can create  VTK/VTS file for one voxel space dataset at a time. 
-Open the VTK/VTS file in ParaView and create ParaView's graphics pipeline for visualization.
+The `vsvtk` program converts one voxel space dataset at a time into VTK/VTS format. 
+Open the resulting file in ParaView to configure the graphics pipeline.
 
 ## ParaView settings
-The 3D computer graphics geometry models may require a fair amount of computer memory. 
-ParaView can visualize single trees and forest stands produced by `lignumvtk` in MacBooks 
-using its default rendering options although the rendering process may take a while. 
+The 3D computer geometry models may require a fair amount of memory. ParaView can 
+visualize `lignumvtk`-produced trees and forest stands with default settings, though 
+rendering may take some time.
 
-Change ParaView rendering options from Preferences via RenderView tab.
-Lower the values for LOD and Outline Threshold if needed before opening a VTK file. 
-These two options decrease memory requirments at the expense of rendering quality. 
+Change ParaView rendering options from Preferences via RenderView tab. If needed, lower 
+the LOD[^lod] and Outline Threshold[^ot] values before opening a VTK file to reduce
+memory usage at the cost of rendering quality.
 
-If ParaView crashes during a rendering process it can indicate failed memory request 
-when computing the graphics pipeline. However, before that happens modern macOS versions 
-can usually intervene and display the Force-Quit window presenting processes
-having caused problems.
+If ParaView exits unexpectedly during rendering, it is often due to a failed memory request. 
+However, modern macOS versions may intervene first, displaying a Force-Quit window that 
+identifies the problematic processes.
 
 ## Software documentation
-LignumVTK c++ source files have Doxygen documentation:
+Produce the Doxygen documentation:
 
 	doxygen Doxyfile 2> error.txt
 	
@@ -163,27 +156,26 @@ File formats supported by both ParaView and Blender are Alembic (*.abc*), Wavefr
 Stanford PLY (*.ply*) and STL (*.stl*) each with their pros and cons. Add-ons like SciBlend 
 for Blender are also available for file transfer. 
 
-### lignumvtk.py
-`lignumvtk.py` is an initial trial to use *vtk* library but mentioned here because it was used
-to visualize tree roots with Lignum and ParaView. The tree roots for Lignum model are produced in 
-the project FineRoots. The `lignumvtk.py` program reads Lignum XML files and creates VTK/VTM files
-for ParaView. `lignumvtk.py` is a Python 3 program that requires *numpy* and *vtk* Python packages. 
-Install these with `pip`.
+## lignumvtk.py
+`lignumvtk.py` served as an initial trial of the *vtk* library, documented here for its role
+in visualizing tree roots. The tree roots for the LIGNUM model are produced in 
+the project FineRoots. The `lignumvtk.py` program processes tree root XML files and creates VTK/VTM files
+for ParaView. `lignumvtk.py` is a Python 3 program and requires *numpy* and *vtk* Python packages. 
 
 ## Notes
+> [!CAUTION]
+> The total size of VTK data files can quickly add up. Pay attention to available disk space.
+> It may be useful to save VTK files under separate directory structure for straightforward removals. 
+
 > [!NOTE] 
-> The creation of the VTK/VTPC tree files can take a while, possibly several minutes 
-> depending the number of trees and their dataset sizes. 
+> The creation of the VTK/VTPC files, as well as ParaView rendering, can take
+> several minutes depending on the number of trees and their VTK dataset sizes. 
 
 > [!NOTE]
-> As the total size of VTK data files can quickly add up pay attention to available disk space.
-> It may be useful to save VTK files under separate directory structure for easy removals. 
+> LignumVTK is a work in progress. `lignumvtk` supports kite-shaped leaves with plans
+> to implement elliptical and triangle shapes as needed.
 
-> [!NOTE]
-> LignumVTK is work under progress. `lignumvtk` supports kite shaped leaves. Ellipse and triangle leaves 
-> will be implemented when needed.
-
-### VTK Examples
+## VTK Examples
 [VTK Examples](https://examples.vtk.org/site/) has been pivotal source of information for LignumVTK
 implementation.
 
@@ -191,6 +183,6 @@ implementation.
 
 [^vts]: VTK Structured Grid file format.
 
-[^lod]: Level of Detail (LOD) refers to the dynamic complexity of a 3D model representation. 
+[^lod]: [Level of Detail](https://en.wikipedia.org/wiki/Level_of_detail_(computer_graphics): dynamic 3D model representation. 
 
-[^ot]: The Outline Threshold value determines if an object is approximated as a bounding box only.
+[^ot]: Outline Threshold: object is approximated with bounding boxes only.
