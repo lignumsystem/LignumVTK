@@ -7,19 +7,28 @@
 #--------------------------------------------
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
-#Set VTK_DIR to point to directory where VTKConfig.cmake or vtk-config.cmake is located (compiling from source)
+#Set VTK_DIR to point to directory where VTKConfig.cmake or vtk-config.cmake is located when compiling from source.
 #Leave commented (do not set) if VTK is installed with package management system (MacPorts for example)
 #set(VTK_DIR ../../VTK/build)
 project(LignumVTK DESCRIPTION "Create VTK files from Lignum XML files")
-#set(CMAKE_CXX_COMPILER /opt/local/bin/clang++-mp-21)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 include(ExternalProject)
 include(CMakePrintHelpers)
+
+#Using "add_subdirectory" aligns with modern CMake as it supports namespaced targets
+#and there is no need to use explicit directory paths.
+#Also, the maintenance is easier - to refer to "lignum-core" relative to LignumForest
+#change the first argument "../" to point to "lignum-core" CMakeLists.txt location.
+#"lignum-core_build" is the local build directory for lignum-core,
+#located inside the LignumVTK build directory.
+add_subdirectory(../ lignum-core_build)
+
 find_package(HDF5 COMPONENTS C CXX HL REQUIRED)
+
 #Use one of Qt4, Qt5 or Qt6 for XML parsing
-#Qt4 is obsolete and only for macOS with Intel processors
+#Qt4 is obsolete in macOS Tahoe and available only for macOS with Intel processors
 #find_package(Qt4 COMPONENTS QtOpenGL QtXml QtGui QtCore REQUIRED)
 #Qt5 package
 find_package(Qt5 COMPONENTS Xml Core  REQUIRED)
@@ -41,28 +50,17 @@ find_package(VTK REQUIRED COMPONENTS
   IOXML
   IOParallelXML
 )
+if (NOT VTK_FOUND)
+  message(FATAL_ERROR "LignumVTK: Unable to find VTK.")
+endif()
 
 cmake_print_variables(CMAKE_CXX_COMPILER)
 cmake_print_variables(CMAKE_CXX_COMPILER_ID) 
 cmake_print_variables(CMAKE_CXX_STANDARD)
 cmake_print_variables(CMAKE_CXX_FLAGS)
 cmake_print_variables(CMAKE_OSX_DEPLOYMENT_TARGET)
-#cmake_print_variables(VTK_LIBRARIES)
+cmake_print_variables(VTK_LIBRARIES)
 
-if (NOT VTK_FOUND)
-  message(FATAL_ERROR "LignumVTK: Unable to find the VTK build folder.")
-endif()
-
-ExternalProject_Add(lignum-core
-SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..
-DOWNLOAD_COMMAND "")
-
-#The '*.cmake' files for dependencies are preproduced with 'cmake' configuration
-#for 'lignum-core' (see lignum-core/CMakeLists.txt).  
-include(../c++adt/lib/cxxadt.cmake)
-include(../Firmament/lib/sky.cmake)
-include(../stl-lignum/lib/LGM.cmake)
-include(../stl-voxelspace/lib/voxel.cmake)
 set(SOURCE_FILES_LGM lignumvtk.cc
   src/LignumVTKTree.cc
   src/LignumVTKXML.cc
@@ -78,9 +76,12 @@ set(SOURCE_FILES_VS vsvtk.cc
   src/VoxelSpaceToVTK.cc
 )
 
-# Prevent a "command line is too long" failure in Windows.
+#Two examples from VTK CMakeLists.txt
+#Prevent a "command line is too long" failure in Windows.
 #set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
 #add_executable(ParametricSpline MACOSX_BUNDLE ${SOURCE_FILES})
+
+#Targets for trees and voxel space 
 add_executable(lignumvtk ${SOURCE_FILES_LGM})
 add_executable(vsvtk ${SOURCE_FILES_VS})
 
@@ -95,17 +96,19 @@ target_include_directories(vsvtk PUBLIC
   ${CMAKE_CURRENT_LIST_DIR}/../lignum-tls/include
 )
 
-target_link_libraries(lignumvtk PRIVATE ${VTK_LIBRARIES} HDF5::HDF5  Qt5::Xml Qt5::Core sky LGM cxxadt)
-target_link_libraries(vsvtk PRIVATE ${VTK_LIBRARIES} HDF5::HDF5  Qt5::Xml Qt5::Core sky LGM cxxadt)
-add_dependencies(lignumvtk lignum-core)
-add_dependencies(vsvtk lignum-core)
+target_link_libraries(lignumvtk PRIVATE ${VTK_LIBRARIES} HDF5::HDF5  Qt5::Xml Qt5::Core sky::sky LGM::LGM cxxadt::cxxadt)
+target_link_libraries(vsvtk PRIVATE ${VTK_LIBRARIES} HDF5::HDF5  Qt5::Xml Qt5::Core sky::sky LGM::LGM cxxadt::cxxadt)
 
-# vtk_module_autoinit is needed
-#The VTK render window is nonresponsive if vtk_module_autoinit is not done
+
+#The CMake command vtk_module_autoinit is used in VTK9+ to automatically trigger
+#static code construction and object factory registration required by certain VTK modules.
+#For example the VTK render window may become unresponsive and mappers-related
+#runtime errors - such as  "Error: no override found for..." - may appear.
 vtk_module_autoinit(
   TARGETS lignumvtk vsvtk
   MODULES ${VTK_LIBRARIES}
 )
+
 add_custom_command(TARGET lignumvtk
   COMMAND echo "Compilation for lignumvtk  done"
   POST_BUILD
