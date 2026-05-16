@@ -10,8 +10,8 @@ is to extract qualitative insight from simulation results.
 
 ## Building LignumVTK
 ### Prerequisites 
-Download *lignum-core* and *LignumVTK* from GitHub. Software installed as in 
-README for lignum-core.
+Download *lignum-core* and *LignumVTK* from GitHub. Install the dependencies specified in the 
+lignum-core [README](https://github.com/lignumsystem/lignum-core/blob/master/README.md).
 
 ### CMake
 Use CMake to compile `lignumvtk` and `vsvtk`:
