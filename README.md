@@ -183,6 +183,6 @@ implementation.
 
 [^vts]: VTK Structured Grid file format.
 
-[^lod]: [Level of Detail](https://en.wikipedia.org/wiki/Level_of_detail_(computer_graphics): dynamic 3D model representation. 
+[^lod]: [Level of Detail](https://en.wikipedia.org/wiki/Level_of_detail_(computer_graphics)): dynamic 3D model representation. 
 
 [^ot]: Outline Threshold: object is approximated with bounding boxes only.
