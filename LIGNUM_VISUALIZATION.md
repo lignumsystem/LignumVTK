@@ -198,3 +198,7 @@ the camera is positioned above the canopy looking down — the Hosek/Wilkie mode
 
 The visualization steps use default values for rendering. Experiment with different settings,
 or search Google for additional tips. 
+
+[^lod]: [Level of Detail](https://en.wikipedia.org/wiki/Level_of_detail_(computer_graphics)): dynamic 3D model representation. 
+
+[^ot]: Outline Threshold: object is approximated with bounding boxes only.
