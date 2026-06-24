@@ -8,6 +8,9 @@ and their attributes for the final visualization with ParaView graphics pipeline
 requires neither programming skills nor knowledge of VTK library. Primary purpose of the visualization
 is to extract qualitative insight from simulation results.
 
+For visualizing tree models and voxels spaces read the contributing guide
+[Lignum visualization](LignumVisualization.md).
+
 ## Building LignumVTK
 ### Prerequisites 
 Download *lignum-core* and *LignumVTK* from GitHub. Install the dependencies specified in the 
@@ -128,19 +131,6 @@ Set hexahedron (voxel) edge size to 3:
 The `vsvtk` program converts one voxel space dataset at a time into VTK/VTS format. 
 Open the resulting file in ParaView to configure the graphics pipeline.
 
-## ParaView settings
-The 3D computer geometry models may require a fair amount of memory. ParaView can 
-visualize `lignumvtk`-produced trees and forest stands with default settings, though 
-rendering may take some time.
-
-Change ParaView rendering options from Preferences via RenderView tab. If needed, lower 
-the LOD[^lod] and Outline Threshold[^ot] values before opening a VTK file to reduce
-memory usage at the cost of rendering quality.
-
-If ParaView exits unexpectedly during rendering, it is often due to a failed memory request. 
-However, modern macOS versions may intervene first, displaying a Force-Quit window that 
-identifies the problematic processes.
-
 ## Software documentation
 Produce the Doxygen documentation:
 
@@ -153,8 +143,8 @@ Open the HTML index file (macOS Terminal):
 ## Blender
 Another 3D computer graphics creation suite is [Blender](https://www.blender.org).
 File formats supported by both ParaView and Blender are Alembic (*.abc*), Wavefront OBJ (*.obj*),
-Stanford PLY (*.ply*) and STL (*.stl*) each with their pros and cons. Add-ons like SciBlend 
-for Blender are also available for file transfer. 
+Stanford PLY (*.ply*), STL (*.stl*) and Graphics Library Transmission Format (*.gltf*). 
+Add-ons like SciBlend for Blender are also available for file transfer. 
 
 ## lignumvtk.py
 `lignumvtk.py` served as an initial trial of the *vtk* library, documented here for its role
