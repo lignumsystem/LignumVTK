@@ -9,7 +9,7 @@ requires neither programming skills nor knowledge of VTK library. Primary purpos
 is to extract qualitative insight from simulation results.
 
 For visualizing tree models and voxels spaces read the contributing guide
-[Lignum visualization](LIGNUMVISUALIZATION.md).
+[Lignum visualization](LIGNUM_VISUALIZATION.md).
 
 ## Building LignumVTK
 ### Prerequisites 
