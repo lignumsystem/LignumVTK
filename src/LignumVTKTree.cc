@@ -300,7 +300,7 @@ namespace lignumvtk{
       vtkPolyData* polydata = fs->GetOutput();
       polydata->GetPointData()->AddArray(tube_radius);
       polydata->GetPointData()->SetActiveScalars(scalar_name.c_str());
-      //Add scalars of interest only to one polydata representing radius to foliage limit 
+      //Add scalars of interest only to one polydata representing radius to foliage limit
       if (scalar_name == TUBE_FOLIAGE_RADIUS_SCALAR){
 	polydata->GetPointData()->AddArray(wfarray);
 	polydata->GetPointData()->AddArray(qinarray);
