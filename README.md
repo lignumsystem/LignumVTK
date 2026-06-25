@@ -8,7 +8,7 @@ and their attributes for the final visualization with ParaView graphics pipeline
 requires neither programming skills nor knowledge of VTK library. Primary purpose of the visualization
 is to extract qualitative insight from simulation results.
 
-For visualizing tree models and voxels spaces read the contributing guide
+For visualizing tree models and voxel spaces read the contributing guide
 [Lignum visualization](LIGNUM_VISUALIZATION.md).
 
 ## Building LignumVTK
@@ -139,12 +139,6 @@ Produce the Doxygen documentation:
 Open the HTML index file (macOS Terminal):
 
 	open DoxygenDoc/html/index.html
-
-## Blender
-Another 3D computer graphics creation suite is [Blender](https://www.blender.org).
-File formats supported by both ParaView and Blender are Alembic (*.abc*), Wavefront OBJ (*.obj*),
-Stanford PLY (*.ply*), STL (*.stl*) and Graphics Library Transmission Format (*.gltf*). 
-Add-ons like SciBlend for Blender are also available for file transfer. 
 
 ## lignumvtk.py
 `lignumvtk.py` served as an initial trial of the *vtk* library, documented here for its role

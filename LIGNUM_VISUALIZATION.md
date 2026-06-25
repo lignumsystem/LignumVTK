@@ -1,12 +1,16 @@
 # LIGNUM visualization
-While ParaView and Blender are both open-source, they serve different purposes. 
-ParaView specializes in scientific data analysis and visualization, whereas Blender is a
-3D creation suite designed for animation, visual effects, and photorealistic rendering.
+While [ParaView](https://www.paraview.org/) and [Blender](https://www.blender.org) are
+both open-source, they serve different purposes. ParaView specializes in scientific data
+analysis and visualization, whereas Blender is a 3D creation suite designed for animation,
+visual effects, and photorealistic rendering.
 
 The two applications are frequently paired together. First, Paraview is used for 
 qualitative and quantitative data analysis. Then, Blender builds the final presentation
 visuals using its physically based rendering engines to introduce informative contextual
 objects like environmental lighting, shadows, and background elements.
+
+Both ParaView and Blender support common 3D file formats. This guide uses
+glTF for scene exchange between the two applications.
 
 ## ParaView settings
 The 3D computer geometry models may require a fair amount of memory. ParaView can 
@@ -98,7 +102,7 @@ windows called *Areas*, which can be resized, split, or combined to fit the work
     and final render, respectively.
 	
 + **Properties Editor (Below Outliner):**
-  + **Mission Control (Left):** Long vertical tabbed system to control settings for the whole scene.
+  + **Mission Control (Left):** Long narrow vertical tabbed system to select Key Tab settings.
   + **Key Tabs (Right):** Control settings, content depends on the selection in the Mission Control.
   
 + **Animation Hub (Bottom):** Displays controls to playback animations.
@@ -154,33 +158,35 @@ Follow these steps to visualize single trees or forest stands:
 + Adjust tree orientation for the camera view.
 + Apply the Extract Block filter to generate separate datasets for the stem, heartwood and foliage.
 + Apply Merge Block filters to datasets to generate unstructured grids.
-+ Apply the Threshold filter to foliage to isolate positive values.
++ Apply the Threshold filter to foliage to isolate positive values (exclude zeros).
 + Assign appropriate colors or colormaps to stem, heartwood and foliage.
 + Ensure Representation is Surface.
 + Save the state of the work.
 + Visualize trees.
-+ Choose Datasets and apply Export Scene for glTF export. 
++ Choose Datasets (folaige, stem, heartwood) and apply Export Scene for glTF export. 
 
 An efficient graphics pipeline must minimize 3D data payload to maximize rendering performance. 
 For example, if internal heartwood structures are not of interest and are occluded without 
 transparancy settings during a visual inspection, you should strip this data entirely before rendering
-or exporting the file.
+or exporting the glTF file.
 
 ParaView renders automatically when you modify the colormap or representation.
 You can change this behavior by deselecting *Render views automatically* at the bottom
 of the colormap editor. Once disabled, trigger rendering manually using the active
 Render Views button.
 
-## Blender visualization for LIGNUM trees
-Follow these minimum number of steps to visualize single trees or forest stands:
+Be careful in selecting the datasets to be exported. Only selected datasets will be saved to glTF file.
 
-+ Open the glTF file exported from ParaView.
+## Blender visualization for LIGNUM trees
+Follow these steps to visualize single trees or forest stands:
+
++ Import the glTF file exported from ParaView.
 + Use the Workbench renderer.
-+ Adjust tree orientation in the 3D Viewport.
-+ Align active camera to the view from View and Align View:
++ Adjust the tree or tree stand orientation in the 3D Viewport.
++ Align the active camera to the view from View and Align View:
   + Yellow frame denotes the rendering area.
   + Optionally change camera to vertical position from Output by flipping Resolution.
-+ Change to the Cycles renderer.
++ Change to the Cycles renderer for the best quality.
 + Setup Sky Texture as the light source.
 + Render trees.
 
@@ -190,14 +196,54 @@ because the glTF format defaults - like many CAD/3D file formats - to a right-ha
 To fix this, simply rotate the trees by -90 degrees. While Blender defaults to quaternions,
 switching to XYZ Euler rotation is often more intuitive.
 
-Successful rendering in Blender requires a 3D object, a light source, and a camera pointed at the object.
+Minimal rendering in Blender requires three core components: a 3D model, a light source, and a camera
+pointed at it. Note that shadows require material representing forest floor.
+Add for example simple Plane (Mesh) to the scene.
+
 Instead of moving a single camera for different views, position multiple cameras throughout the scene.
-When using the Nishita sky model, the camera must point strictly above the horizon. Otherwise,
-Cycles fails to calculate the natural blue daylight correctly. For overhead views of a forest stand — where
-the camera is positioned above the canopy looking down — the Hosek/Wilkie model yields better results.
+
+When using the Nishita sky model, the camera must point strictly above the horizon. 
+Otherwise, Cycles fails to calculate the natural blue daylight correctly. For overhead views
+of a forest stand — where the camera is positioned above the canopy looking down — the Hosek/Wilkie
+model yields better results.
 
 The visualization steps use default values for rendering. Experiment with different settings,
 or search Google for additional tips. 
+
+## ParaView visualization for voxel space
+Follow these steps to visualize a voxel space:
+
++ Open the `vsvtk`-generated VTK/VTS file.
++ Adjust the voxel space orientation.
++ Select foliage data (LGAWf) using the Properties panel (deselecting others).
++ Apply Threshold filter to foliage to isolate positive values (exclude zeros)
++ Assign appropriate colors or colormap to foliage.
++ Apply Resample To Image filter to create evenly spaced voxel grid.
+  + Properties panel: increase Sampling Dimensions for example to 300 for each X, Y and Z dimensions.
++ Select the dataset and Export Scene to a glTF file.
+
+Select Surface as Representation for better visualization.
+
+## Blender visualization for voxel space
+Follow these steps to visualize a voxel space:
+
++ Import the glTF file exported from ParaView.
++ Adjust the voxel space orientation.
++ Convert the Mesh into Blender voxels:
+  + Select the voxel space.
+  + Locate Modifier Properties (blue wrench icon).
+  + From Add Modifier select Remesh.
+  + Reduce voxel size (Voxel tab) and adjust Octree depth (Block tab) until desired result.
++ Create transparent voxel material:
+  + Locate Material properties (Red checkered sphere icon).
+  + Surface should show Principled BSDF shader.
+  + Lower the Alpha value (e.g. 0.4) to make transparent voxels.
++ Align the active camera to the view.
++ Use Cycles renderer.
++ Setup Sky Texture as the light source.
++ Render the voxel space.
+
+Cap the Octree depth to 8. Each additional level increases the node count exponentially.
 
 [^lod]: [Level of Detail](https://en.wikipedia.org/wiki/Level_of_detail_(computer_graphics)): dynamic 3D model representation. 
 
