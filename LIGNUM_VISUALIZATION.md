@@ -22,26 +22,27 @@ the LOD[^lod] and Outline Threshold[^ot] values before opening a VTK file to red
 memory usage at the cost of rendering quality.
 
 If ParaView exits unexpectedly during rendering, it is often due to a failed memory request. 
-However, modern macOS versions may intervene first, displaying a Force-Quit window that 
+However, modern macOS versions may intervene first, displaying the Force-Quit window that 
 identifies the problematic processes.
 
 ## ParaView user interface overview
-The ParaView user interface enables users to build graphical *pipelines* 
-for data processing, adjust model parameters, and visually explore 3D datasets.
-The main workspace organizes these tasks around interconnected 
-*panels* and *views*.
+ParaView enables users to build data-flow visualization *pipelines* for data import,
+make structural changes in datasets, adjust model parameters, and visually explore 3D datasets.
+The main workspace organizes these tasks around interconnected *panels* and *views*.
 
 ### The core user interface components 
 
 + **Menu bar and toolbars:** Positioned at the top, these provide quick access
-  to common tasks like applying *filters* and configuring *views*.
+  to common tasks like *File* operations, applying *Filters*, and configuring
+  *Views*[^panel].
 
-+ **Pipeline browser:** Located left and below toolbars, this panel manages and edits
-  the graphics pipeline, shows opened files, active data sources and applied filters.
-  
++ **Pipeline browser:** Located left below the toolbars, this panel manages
+  the visualization pipeline by displaying open files, active datasets, and applied filters.
+  Toggle the eye icon to control dataset visibility and selection during rendering.
+    
 + **Properties panel:** Located below the pipeline browser to display and
    adjust settings for active pipeline items. The highlighted *Apply* button 
-   indicates you can commit the pending changes.
+   indicates you can commit the pending changes and render active datasets.
 
 + **Information panel:** Paired with Properties panel, it displays for example basic
   statistics, data ranges, and data type for the active pipeline item.
@@ -54,18 +55,19 @@ The main workspace organizes these tasks around interconnected
   from the *View* menu.  Located to the right of the Viewport, it allows you
   to select and edit the colormap for the pipeline data.
 
-The highly dynamic user interface automatically adapts to the active pipeline object. 
-For example, the *Filter* menu highlights active filters while dimming the rest, 
+The highly dynamic user interface automatically adapts to the active pipeline objects. 
+For example, the *Filter* menu highlights applicable options while dimming the rest, 
 and the *Properties* panel updates to display only the attributes relevant to the selected 
 pipeline object.
 
 ### The core filters for LIGNUM
 
-+ **Extract Block:** Selects specific sections (foliage, sapwood, heartwood) 
-  from a Partitioned Dataset Collection into a separate pipeline entry.
++ **Extract Block:** Selects specific sections (trees, foliage, sapwood, heartwood) 
+  from the imported VTK/VTPC tree file (Partitioned Dataset Collection) to
+  a separate pipeline entry.
   
-+ **Threshold:** Selects portions of an input dataset whose scalar values (foliage mass)
-  fall within a specific, user-defined range.
++ **Threshold:** Selects portions of an input dataset whose scalar values
+  (e.g. foliage mass) fall within a specific, user-defined range.
 
 + **Merge Block:** Combines distinct datasets in a Partitioned Dataset Collection 
   into a single unified dataset.
@@ -89,7 +91,7 @@ windows called *Areas*, which can be resized, split, or combined to fit the work
 + **3D Viewport (Center):**
   + **Viewport Header** The View menu and Align View set the active camera for rendering. 
     The Add menu inserts new objects into the model — specifically cameras and lights — while separate
-	controls adjust the viewport shading modes.
+	controls adjust the viewport rendering modes.
   + **The Stage:** The large main window where you create, interact and delete your
     3D objects, lights, and cameras.
   + **Toolbar (Left):** Contains object transformation tools.
@@ -107,13 +109,17 @@ windows called *Areas*, which can be resized, split, or combined to fit the work
   
 + **Animation Hub (Bottom):** Displays controls to playback animations.
 
-Blender for macOS bypasses Apple's Human Interface Guidelines, implementing its own Windows-like user
++ **Status bar (Bottom):** Located outside the user's primary view and easily overlooked. 
+  It also displays error messages.
+
+Blender for macOS bypasses Apple's Human Interface Guidelines, implementing Windows-like user
 interface controls rather than adopting standard macOS toolbar architectures.
 
 ### Blender renderers
 Blender includes three native render engines built directly into the software,
-each optimized for different purposes: Workbench for layout and previews, 
-EEVEE for real-time speed, and Cycles for photorealism.
+accessible via the Mission Control:Render tab. Each renderer is optimized for 
+different purposes: Workbench for layout and previews, EEVEE for real-time speed,
+and Cycles for photorealism.
 
 + **Cycles:** True physically based renderer. Traces millions of simulated light photons
 as they bounce across a scene, calculating true real-world physics for lighting, reflections,
@@ -126,14 +132,14 @@ and refractions.
    Does not calculate realistic lighting or complex texturing.
    
 ### Blender sky models
-Blender features four built-in analytical sky models, accessible via the World tab.
+Blender features four built-in analytical sky models, accessible via the MissionContorl:World tab.
 Set Color of the emitted light to Sky texture in the Surface section.
 
 + **Nishita multiple scattering:** The most physically accurate model. It accounts
   for light bouncing multiple times through the atmosphere creating realistic outdoor
   illumination for different times of the day. Contains built-in sun model.
 
-+ **Nishita single scattering:** Simplified modelling as it calculates single light bounce. 
++ **Nishita single scattering:** Simplified Nishita modelling as it calculates single light bounce. 
 
 + **Hosek/Wilkie:** Provides realistic ambient daylight lighting. Requires explicit
   sun object as the light source for shadows.
@@ -141,9 +147,10 @@ Set Color of the emitted light to Sky texture in the Surface section.
 + **Preetham:** The oldest model from 1999. Works well for basic daylight.
 
 ### Blender camera
-Blender features a mathematical digital SLR camera model, allowing users to control focal length,
-lens type, aperture, and depth of field. It also replicates physical camera sensors,
-which enables precise exposure adjustments by matching lighting to realistic ISO values.
+Blender features a mathematical digital SLR camera model, allowing users
+to control lens type, focal length, aperture, and depth of field. It also
+replicates physical camera sensors, which enables precise exposure adjustments
+by matching lighting to realistic camera ISO values.
 
 ## Graphics Library Transmission Format
 Graphics Library Transmission Format (glTF) is an open standard designed for
@@ -160,45 +167,48 @@ Follow these steps to visualize single trees or forest stands:
 + Apply Merge Block filters to datasets to generate unstructured grids.
 + Apply the Threshold filter to foliage to isolate positive values (exclude zeros).
 + Assign appropriate colors or colormaps to stem, heartwood and foliage.
-+ Ensure Representation is Surface.
-+ Save the state of the work.
-+ Visualize trees.
-+ Choose Datasets (folaige, stem, heartwood) and apply Export Scene for glTF export. 
++ Save the State of the work.
++ Choose Datasets (foliage, stem, heartwood) and apply Export Scene for glTF export. 
 
-An efficient graphics pipeline must minimize 3D data payload to maximize rendering performance. 
-For example, if internal heartwood structures are not of interest and are occluded without 
-transparancy settings during a visual inspection, you should strip this data entirely before rendering
-or exporting the glTF file.
-
-ParaView renders automatically when you modify the colormap or representation.
+Select Surface as Respresentation for better rendering quality. 
+ParaView renders automatically when you modify the colormap or Representation.
 You can change this behavior by deselecting *Render views automatically* at the bottom
 of the colormap editor. Once disabled, trigger rendering manually using the active
 Render Views button.
 
-Be careful in selecting the datasets to be exported. Only selected datasets will be saved to glTF file.
+An efficient visualization pipeline minimizes 3D data payload to maximize rendering performance. 
+For example, if internal heartwood structures are not of interest and are occluded without 
+transparancy settings during a visual inspection, you should strip this data entirely before
+rendering or exporting the glTF file.
+
+Be careful in selecting datasets to be exported. Only the selected datasets will be saved
+to a glTF file.
 
 ## Blender visualization for LIGNUM trees
 Follow these steps to visualize single trees or forest stands:
 
 + Import the glTF file exported from ParaView.
 + Use the Workbench renderer.
-+ Adjust the tree or tree stand orientation in the 3D Viewport.
-+ Align the active camera to the view from View and Align View:
++ Orientate the trees in the 3D Viewport (Mission Control:Object).
++ Align the active camera to the view:
   + Yellow frame denotes the rendering area.
-  + Optionally change camera to vertical position from Output by flipping Resolution.
-+ Change to the Cycles renderer for the best quality.
+  + Optionally change the camera to vertical position by flipping Resolution (Mission Control:Output).
++ Change to the Cycles renderer.
 + Setup Sky Texture as the light source.
-+ Render trees.
++ Render the trees.
 
-Theoretically, both ParaView and Blender use a right-handed, Z-up coordinate system. 
+The separate Blender Render window may not show immediate progress. Depending on forest stand size
+and rendering quality, the complete process can take up to eight hours.
+
+Mathematically, both ParaView and Blender use a right-handed, Z-up coordinate system. 
 However, importing a glTF file into Blender rotates models by 90 degrees. This happens
-because the glTF format defaults - like many CAD/3D file formats - to a right-handed, Y-up system.
+because the glTF format defaults - like many 3D file formats - to a right-handed, Y-up system.
 To fix this, simply rotate the trees by -90 degrees. While Blender defaults to quaternions,
 switching to XYZ Euler rotation is often more intuitive.
 
 Minimal rendering in Blender requires three core components: a 3D model, a light source, and a camera
-pointed at it. Note that shadows require material representing forest floor.
-Add for example simple Plane (Mesh) to the scene.
+pointed at the model. Note that shadows require material representing forest floor.
+Add for example simple Plane to the scene (Add:Mesh:Plane).
 
 Instead of moving a single camera for different views, position multiple cameras throughout the scene.
 
@@ -207,44 +217,46 @@ Otherwise, Cycles fails to calculate the natural blue daylight correctly. For ov
 of a forest stand — where the camera is positioned above the canopy looking down — the Hosek/Wilkie
 model yields better results.
 
-The visualization steps use default values for rendering. Experiment with different settings,
-or search Google for additional tips. 
+Experiment with different rendering settings, or search Google for additional tips. 
 
 ## ParaView visualization for voxel space
 Follow these steps to visualize a voxel space:
 
-+ Open the `vsvtk`-generated VTK/VTS file.
++ Open the `vsvtk`-generated VTK/VTS voxel space file.
 + Adjust the voxel space orientation.
 + Select foliage data (LGAWf) using the Properties panel (deselecting others).
 + Apply Threshold filter to foliage to isolate positive values (exclude zeros)
-+ Assign appropriate colors or colormap to foliage.
++ Assign appropriate colormap to foliage.
 + Apply Resample To Image filter to create evenly spaced voxel grid.
   + Properties panel: increase Sampling Dimensions for example to 300 for each X, Y and Z dimensions.
-+ Select the dataset and Export Scene to a glTF file.
++ Select the (last) resampled dataset in the pipeline and Export Scene to a glTF file.
 
-Select Surface as Representation for better visualization.
+Select Surface as Representation for better rendering quality. Increased Sampling Dimensions
+has better compatibility with Blender.
 
 ## Blender visualization for voxel space
 Follow these steps to visualize a voxel space:
 
 + Import the glTF file exported from ParaView.
 + Adjust the voxel space orientation.
-+ Convert the Mesh into Blender voxels:
++ Convert the voxel space mesh into Blender voxels:
   + Select the voxel space.
-  + Locate Modifier Properties (blue wrench icon).
-  + From Add Modifier select Remesh.
-  + Reduce voxel size (Voxel tab) and adjust Octree depth (Block tab) until desired result.
+  + Locate Mission Control:Modifiers:
+	+ From Add Modifier select Remesh.
+	+ Reduce voxel size (Voxel tab) and adjust Octree depth (Block tab) until desired result.
 + Create transparent voxel material:
-  + Locate Material properties (Red checkered sphere icon).
-  + Surface should show Principled BSDF shader.
-  + Lower the Alpha value (e.g. 0.4) to make transparent voxels.
+  + Locate Mission Control:Material:
+	+ Surface should show Principled BSDF shader.
+	+ Lower the Alpha value (e.g. 0.4) to make transparent voxels.
 + Align the active camera to the view.
 + Use Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the voxel space.
 
-Cap the Octree depth to 8. Each additional level increases the node count exponentially.
+Cap the Octree depth to 8. Each additional level increases the node count exponentially ($8^{\mathit{depth}}$).
 
 [^lod]: [Level of Detail](https://en.wikipedia.org/wiki/Level_of_detail_(computer_graphics)): dynamic 3D model representation. 
 
 [^ot]: Outline Threshold: object is approximated with bounding boxes only.
+
+[^panel]: The View menu should be rebranded Panels to avoid confusion with Viewport views. 
