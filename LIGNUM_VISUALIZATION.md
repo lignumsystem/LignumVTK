@@ -84,13 +84,13 @@ windows called *Areas*, which can be resized, split, or combined to fit the work
 
 + **Top Bar and Menus:** 
   + **Main Menu:** Located in the top-left corner, this menu bar provides standard application
-    functions from File to Help. Notably, the Render menu starts the final model rendering. 
-  + **Workspaces:** Moving to the right from the main menu, the tabs from Layout to Scripting adjust
+    functions from *File* to *Help*. Notably, the *Render* menu starts the final model rendering. 
+  + **Workspaces:** Moving to the right from the main menu, the tabs from *Layout* to *Scripting* adjust
     the Blender's workspace for specific tasks.
 
 + **3D Viewport (Center):**
-  + **Viewport Header** The View menu and Align View set the active camera for rendering. 
-    The Add menu inserts new objects into the model — specifically cameras and lights — while separate
+  + **Viewport Header** The *View* menu and *Align View* set the active camera for rendering. 
+    The *Add* menu inserts new objects into the model — specifically cameras and lights — while separate
 	controls adjust the viewport rendering modes.
   + **The Stage:** The large main window where you create, interact and delete your
     3D objects, lights, and cameras.
