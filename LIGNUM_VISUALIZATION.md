@@ -57,7 +57,7 @@ The main workspace organizes these tasks around interconnected *panels* and *vie
 
 The highly dynamic user interface automatically adapts to the active pipeline objects. 
 For example, the *Filter* menu highlights applicable options while dimming the rest, 
-and the *Properties* panel updates to display only the attributes relevant to the selected 
+and the Properties panel updates to display only the attributes relevant to the selected 
 pipeline object.
 
 ### The core filters for LIGNUM
@@ -77,7 +77,7 @@ pipeline object.
   *volume rendering* to see inside 3D fields, like foliage distribution.
     
 ## Blender user interface overview
-The default Blender user interface is organized into a modular grid of rectangular
+The Blender user interface is organized into a modular grid of rectangular
 windows called *Areas*, which can be resized, split, or combined to fit the workflow.
 
 ### The core user interface components
@@ -117,7 +117,7 @@ interface controls rather than adopting standard macOS toolbar architectures.
 
 ### Blender renderers
 Blender includes three native render engines built directly into the software,
-accessible via the Mission Control:Render tab. Each renderer is optimized for 
+accessible via the *Mission Control:Render* tab. Each renderer is optimized for 
 different purposes: Workbench for layout and previews, EEVEE for real-time speed,
 and Cycles for photorealism.
 
@@ -132,7 +132,7 @@ and refractions.
    Does not calculate realistic lighting or complex texturing.
    
 ### Blender sky models
-Blender features four built-in analytical sky models, accessible via the MissionContorl:World tab.
+Blender features four built-in analytical sky models, accessible via the *Mission Contorl:World* tab.
 Set Color of the emitted light to Sky texture in the Surface section.
 
 + **Nishita multiple scattering:** The most physically accurate model. It accounts
@@ -156,7 +156,8 @@ by matching lighting to realistic camera ISO values.
 Graphics Library Transmission Format (glTF) is an open standard designed for
 the efficient transmission, loading, and rendering of 3D models and scenes across
 various authoring applications. It is optimized for compact file sizes and seamless
-compatibility with all modern graphics APIs.
+compatibility with all modern graphics APIs. The conventional file extension for
+this format is *.gltf*.
 
 ## Paraview visualization for LIGNUM trees
 Follow these steps to visualize single trees or forest stands:
@@ -174,7 +175,7 @@ Select Surface as Respresentation for better rendering quality.
 ParaView renders automatically when you modify the colormap or Representation.
 You can change this behavior by deselecting *Render views automatically* at the bottom
 of the colormap editor. Once disabled, trigger rendering manually using the active
-Render Views button.
+*Render Views* button.
 
 An efficient visualization pipeline minimizes 3D data payload to maximize rendering performance. 
 For example, if internal heartwood structures are not of interest and are occluded without 
@@ -241,11 +242,11 @@ Follow these steps to visualize a voxel space:
 + Adjust the voxel space orientation.
 + Convert the voxel space mesh into Blender voxels:
   + Select the voxel space.
-  + Locate Mission Control:Modifiers:
+  + Locate *Mission Control:Modifiers* tab:
 	+ From Add Modifier select Remesh.
 	+ Reduce voxel size (Voxel tab) and adjust Octree depth (Block tab) until desired result.
 + Create transparent voxel material:
-  + Locate Mission Control:Material:
+  + Locate *Mission Control:Material* tab:
 	+ Surface should show Principled BSDF shader.
 	+ Lower the Alpha value (e.g. 0.4) to make transparent voxels.
 + Align the active camera to the view.
