@@ -133,7 +133,7 @@ and refractions.
    
 ### Blender sky models
 Blender features four built-in analytical sky models, accessible via the *Mission Contorl:World* tab.
-Set Color of the emitted light to Sky texture in the Surface section.
+In the Surface section, click the *yellow dot* next to Color and select Sky Texture.
 
 + **Nishita multiple scattering:** The most physically accurate model. It accounts
   for light bouncing multiple times through the atmosphere creating realistic outdoor
