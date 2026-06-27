@@ -198,8 +198,9 @@ Follow these steps to visualize single trees or forest stands:
 + Setup Sky Texture as the light source.
 + Render the trees.
 
-The separate Blender Render window may not show immediate progress. Depending on forest stand size
-and rendering quality, the complete process can take up to eight hours.
+Blender's separate render window may not display progress for the first few minutes.
+Forest stand size and rendering quality dictate the complete process time, which can
+take up to eight hours. View the progess bar for estimated times.
 
 Mathematically, both ParaView and Blender use a right-handed, Z-up coordinate system. 
 However, importing a glTF file into Blender rotates models by 90 degrees. This happens
