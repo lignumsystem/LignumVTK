@@ -171,9 +171,10 @@ Follow these steps to visualize single trees or forest stands:
 + Save the State of the work.
 + Choose Datasets (foliage, stem, heartwood) and apply Export Scene for glTF export. 
 
-Select Surface as Representation for better rendering quality. 
+You may have Outline as default Representation. Select Surface for better rendering quality. 
+
 ParaView renders automatically when you modify the colormap or Representation.
-You can change this behavior by deselecting *Render views automatically* at the bottom
+You can change this behavior by deselecting *Render views automatically* button at the bottom
 of the colormap editor. Once disabled, trigger rendering manually using the active
 *Render Views* button.
 
