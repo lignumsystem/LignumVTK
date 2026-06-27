@@ -208,7 +208,7 @@ To fix this, simply rotate the trees by -90 degrees. While Blender defaults to q
 switching to XYZ Euler rotation is often more intuitive.
 
 Minimal rendering in Blender requires three core components: a 3D model, a light source, and a camera
-pointed at the model. Note that shadows require a surface to catch them. For example, Add a simple
+pointed at the model. Note that shadows require a surface to catch them. For example, add a simple
 plane to represent the forest floor (via the *Add:Mesh:Plane* menu sequence).
 
 Instead of moving a single camera for different views, position multiple cameras throughout the scene.
