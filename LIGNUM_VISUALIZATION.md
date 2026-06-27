@@ -33,8 +33,8 @@ The main workspace organizes these tasks around interconnected *panels* and *vie
 ### The core user interface components 
 
 + **Menu bar and toolbars:** Positioned at the top, these provide quick access
-  to common tasks like *File* operations, applying *Filters*, and configuring
-  *Views*[^panel].
+  to common tasks like *File* operations, applying *Filters*, configuring
+  *Views*[^panel] and selecting visual *Representation*.
 
 + **Pipeline browser:** Located left below the toolbars, this panel manages
   the visualization pipeline by displaying open files, active datasets, and applied filters.
