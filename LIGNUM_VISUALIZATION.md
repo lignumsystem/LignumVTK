@@ -172,7 +172,7 @@ Follow these steps to visualize single trees or forest stands:
 + Apply the Threshold filter to foliage to isolate positive values (exclude zeros).
 + Assign appropriate colors or colormaps to stem, heartwood and foliage.
 + File operations:
-  + *Save State* of the work.
+  + *Save State* of the project.
   + Select datasets (foliage, stem, heartwood) and apply *Export Scene* for glTF export. 
 
 You may have Outline as default Representation. Select Surface for better rendering quality. 
@@ -201,7 +201,7 @@ Follow these steps to visualize single trees or forest stands:
 + Change to the Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the trees.
-+ Save the work in Blender format.
++ Save the project in Blender format (*.blend*).
   
 Blender's separate render window may not display progress for the first few minutes.
 Forest stand size and rendering quality dictate the complete process time, which can
@@ -237,8 +237,8 @@ Follow these steps to visualize a voxel space:
 + Apply Resample To Image filter to create evenly spaced voxel grid.
   + Properties panel: increase Sampling Dimensions for example to 300 for each X, Y and Z dimensions.
 + File operations:
-  + *Save State* of the work.
-  + Select the (last) resampled dataset in the pipeline and *Export Scene* to a glTF file.
+  + *Save State* of the project.
+  + Select the (last) resampled dataset in the pipeline and apply *Export Scene* for glTF export.
 
 Select Surface as Representation for better rendering quality. Increased Sampling Dimensions
 has better compatibility with Blender.
@@ -261,7 +261,7 @@ Follow these steps to visualize a voxel space:
 + Use Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the voxel space.
-+ Save the work in Blender format.
++ Save the project in Blender format (*.blend*).
 
 Cap the Octree depth to 8. Each additional level increases the node count exponentially ($8^{\mathit{depth}}$).
 
