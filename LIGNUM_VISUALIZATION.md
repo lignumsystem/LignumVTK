@@ -13,7 +13,8 @@ Both ParaView and Blender support common 3D file formats. This guide uses
 glTF for scene exchange between the two applications.
 
 > [!IMPORTANT]
-> The ParaView download page does not automatically detect macOS Silicon architecture.
+> The ParaView download page does not automatically detect macOS Silicon.
+> Make the correct manual selection.
 
 ## ParaView settings
 The 3D computer geometry models may require a fair amount of memory. ParaView can 
