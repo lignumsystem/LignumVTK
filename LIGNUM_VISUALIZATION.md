@@ -12,6 +12,9 @@ objects like environmental lighting, shadows, and background elements.
 Both ParaView and Blender support common 3D file formats. This guide uses
 glTF for scene exchange between the two applications.
 
+> [!IMPORTANT]
+> The ParaView download page does not automatically detect macOS Silicon architecture.
+
 ## ParaView settings
 The 3D computer geometry models may require a fair amount of memory. ParaView can 
 visualize `lignumvtk`-produced trees and forest stands with default settings, though 
