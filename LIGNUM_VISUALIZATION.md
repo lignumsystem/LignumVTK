@@ -77,8 +77,8 @@ pipeline object.
   *volume rendering* to see inside 3D fields, like foliage distribution.
     
 ## Blender user interface overview
-The Blender user interface is organized into a modular grid of rectangular
-windows called *Areas*, which can be resized, split, or combined to fit the workflow.
+Blender organizes user interface into a modular grid of rectangular windows called *Areas*,
+which can be resized, split, or combined to fit the workflow.
 
 ### The core user interface components
 
