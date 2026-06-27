@@ -174,9 +174,8 @@ Follow these steps to visualize single trees or forest stands:
 You may have Outline as default Representation. Select Surface for better rendering quality. 
 
 ParaView renders automatically when you modify the colormap or Representation.
-You can change this behavior by deselecting *Render views automatically* button at the bottom
-of the colormap editor. Once disabled, trigger rendering manually using the active
-*Render Views* button.
+To change this, deselect *Render views automatically* button at the bottom
+of the colormap editor. You can then trigger rendering manually using the *Render Views* button.
 
 An efficient visualization pipeline minimizes 3D data payload to maximize rendering performance. 
 For example, if internal heartwood structures are not of interest and are occluded without 
