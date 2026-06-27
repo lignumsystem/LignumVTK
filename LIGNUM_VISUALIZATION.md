@@ -242,11 +242,11 @@ Follow these steps to visualize a voxel space:
 + Adjust the voxel space orientation.
 + Convert the voxel space mesh into Blender voxels:
   + Select the voxel space.
-  + Locate *Mission Control:Modifiers* tab:
+  + Locate the *Mission Control:Modifiers* tab:
 	+ From Add Modifier select Remesh.
 	+ Reduce voxel size (Voxel tab) and adjust Octree depth (Block tab) until desired result.
 + Create transparent voxel material:
-  + Locate *Mission Control:Material* tab:
+  + Locate the *Mission Control:Material* tab:
 	+ Surface should show Principled BSDF shader.
 	+ Lower the Alpha value (e.g. 0.4) to make transparent voxels.
 + Align the active camera to the view.
