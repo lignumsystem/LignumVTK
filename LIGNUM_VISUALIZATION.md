@@ -194,10 +194,10 @@ Follow these steps to visualize single trees or forest stands:
 
 + Import the glTF file exported from ParaView.
 + Use the Workbench renderer.
-+ Orientate the trees in the 3D Viewport (Mission Control:Object).
++ Orientate the trees in the 3D Viewport (*Mission Control:Object*).
 + Align the active camera to the view:
   + Yellow frame denotes the rendering area.
-  + Optionally change the camera to vertical position by flipping Resolution (Mission Control:Output).
+  + Optionally change the camera to vertical position by flipping Resolution (*Mission Control:Output*).
 + Change to the Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the trees.
