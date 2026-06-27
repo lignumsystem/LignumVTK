@@ -171,8 +171,9 @@ Follow these steps to visualize single trees or forest stands:
 + Apply Merge Block filters to datasets to generate unstructured grids.
 + Apply the Threshold filter to foliage to isolate positive values (exclude zeros).
 + Assign appropriate colors or colormaps to stem, heartwood and foliage.
-+ Save the State of the work.
-+ Choose Datasets (foliage, stem, heartwood) and apply Export Scene for glTF export. 
++ File operations:
+  + *Save State* of the work.
+  + Select datasets (foliage, stem, heartwood) and apply *Export Scene* for glTF export. 
 
 You may have Outline as default Representation. Select Surface for better rendering quality. 
 
@@ -200,7 +201,8 @@ Follow these steps to visualize single trees or forest stands:
 + Change to the Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the trees.
-
++ Save the work in Blender format.
+  
 Blender's separate render window may not display progress for the first few minutes.
 Forest stand size and rendering quality dictate the complete process time, which can
 take up to eight hours. View the progess bar for estimated times.
@@ -234,7 +236,9 @@ Follow these steps to visualize a voxel space:
 + Assign appropriate colormap to foliage.
 + Apply Resample To Image filter to create evenly spaced voxel grid.
   + Properties panel: increase Sampling Dimensions for example to 300 for each X, Y and Z dimensions.
-+ Select the (last) resampled dataset in the pipeline and Export Scene to a glTF file.
++ File operations:
+  + *Save State* of the work.
+  + Select the (last) resampled dataset in the pipeline and *Export Scene* to a glTF file.
 
 Select Surface as Representation for better rendering quality. Increased Sampling Dimensions
 has better compatibility with Blender.
@@ -257,6 +261,7 @@ Follow these steps to visualize a voxel space:
 + Use Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the voxel space.
++ Save the work in Blender format.
 
 Cap the Octree depth to 8. Each additional level increases the node count exponentially ($8^{\mathit{depth}}$).
 
