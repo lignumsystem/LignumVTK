@@ -153,7 +153,7 @@ In the Surface section, click the *yellow dot* next to Color and select Sky Text
 ### Blender camera
 Blender features a mathematical digital SLR camera model, allowing users
 to control lens type, focal length, aperture, and depth of field. It also
-replicates physical camera sensors, which enables precise exposure adjustments
+replicates physical camera sensors, which enables precise *Exposure* adjustments
 by matching lighting to realistic camera ISO values.
 
 ## Graphics Library Transmission Format
