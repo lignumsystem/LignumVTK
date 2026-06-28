@@ -223,9 +223,8 @@ Instead of moving a single camera for different views, position multiple cameras
 When using the Nishita sky model, the camera must point strictly above the horizon. 
 Otherwise, Cycles fails to calculate the natural blue daylight correctly. For overhead views
 of a forest stand — where the camera is positioned above the canopy looking down — the Hosek/Wilkie
-model yields better results.
-
-Experiment with different rendering settings, or search Google for additional tips. 
+model yields better results. The Nishita sky often overexposes default Blender settings.
+Lower the value for sun strength, or search online for optimal configurations. 
 
 ## ParaView visualization for voxel space
 Follow these steps to visualize a voxel space:
