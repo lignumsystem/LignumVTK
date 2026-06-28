@@ -166,7 +166,7 @@ this format is *.gltf*.
 ## Paraview visualization for LIGNUM trees
 Follow these steps to visualize single trees or forest stands:
 
-+ Open the `vtklignum` generated VTK/VTPC file.
++ Open the `lignumvtk` generated VTK/VTPC file.
 + Adjust tree orientation for the camera view.
 + Apply the Extract Block filter to generate separate datasets for the stem, heartwood and foliage.
 + Apply Merge Block filters to datasets to generate unstructured grids.
