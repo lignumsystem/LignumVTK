@@ -92,9 +92,10 @@ which can be resized, split, or combined to fit the workflow.
     the Blender's workspace for specific tasks.
 
 + **3D Viewport (Center):**
-  + **Viewport Header** The *View* menu and *Align View* set the active camera for rendering. 
-    The *Add* menu inserts new objects into the model — specifically cameras and lights — while separate
-	controls adjust the viewport rendering modes.
+  + **Viewport Header** The *View:Align View:Align Active Camera to View* menu option moves and orients
+    the active rendering camera to match the current 3D viewport perspective. 
+    The *Add* menu inserts new objects into the model — specifically cameras and lights — while the separate
+	control tabs adjust the viewport rendering modes.
   + **The Stage:** The large main window where you create, interact and delete your
     3D objects, lights, and cameras.
   + **Toolbar (Left):** Contains object transformation tools.
