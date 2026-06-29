@@ -94,19 +94,6 @@ spline segments and foliage by individual trees. Alternatively, component view (
 by type: foliage, segments, and heartwood. The former enables detailed inspection of specific trees,
 whereas the latter focuses on forest stand visualization. 
 
-> [!CAUTION]
-> Using an overly broad path argument to the `-substring` option can inadvertently return
-> all dataset paths.
-
-> [!IMPORTANT]
-> The default values for the options `-spline` and `-sides` should be feasible
-> for a single Lignum tree. With forest stands reduce the values to fit 
-> within the available memory.
-
-> [!NOTE]
-> Warning messages regarding missing function files may appear during tree reconstruction. 
-> These functions were used in simulations and do not prevent the generation of VTK/VTPC files.
-
 ## Voxel spaces
 The `vsvtk` program processes HDF5 voxel space datasets to produce VTK/VTS[^vts] output.
 It reconstructs voxel space and voxel data 4D matrix representation, converting it
@@ -141,23 +128,29 @@ Open the HTML index file (macOS Terminal):
 	open DoxygenDoc/html/index.html
 
 ## lignumvtk.py
-`lignumvtk.py` served as an initial trial of the *vtk* library, documented here for its role
+`lignumvtk.py` served as an initial trial of the *vtk* library, mentioned here for its role
 in visualizing tree roots. The tree roots for the LIGNUM model are produced in 
 the project FineRoots. The `lignumvtk.py` program processes tree root XML files and creates VTK/VTM files
 for ParaView. `lignumvtk.py` is a Python 3 program and requires *numpy* and *vtk* Python packages. 
 
 ## Notes
+LignumVTK is a work in progress. `lignumvtk` supports kite-shaped leaves with plans to implement
+elliptical and triangle shapes as needed.
+
+The creation of the VTK/VTPC files, as well as ParaView rendering, can take several minutes
+depending on the number of trees and their VTK dataset sizes. 
+
+Using an overly broad path argument to the `-substring` option for `lignumvtk` can inadvertently
+return all tree dataset paths. The default values for the options `-spline` and `-sides` should
+be feasible for a single Lignum tree. With forest stands reduce the values to fit within
+the available memory.
+
+Warning messages regarding missing function files may appear during tree reconstruction. 
+These functions were used in simulations and do not prevent the generation of VTK/VTPC files.
+
 > [!CAUTION]
 > The total size of VTK data files can quickly add up. Pay attention to available disk space.
 > It may be useful to save VTK files under separate directory structure for straightforward removals. 
-
-> [!NOTE] 
-> The creation of the VTK/VTPC files, as well as ParaView rendering, can take
-> several minutes depending on the number of trees and their VTK dataset sizes. 
-
-> [!NOTE]
-> LignumVTK is a work in progress. `lignumvtk` supports kite-shaped leaves with plans
-> to implement elliptical and triangle shapes as needed.
 
 ## VTK Examples
 [VTK Examples](https://examples.vtk.org/site/) has been pivotal source of information for LignumVTK
