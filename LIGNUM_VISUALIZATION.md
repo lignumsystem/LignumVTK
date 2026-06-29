@@ -16,13 +16,9 @@ glTF for scene exchange between the two applications.
 > The ParaView download page does not auto-detect macOS Silicon. Make the correct manual selection.
 
 ## ParaView settings
-The 3D computer geometry models may require a fair amount of memory. ParaView can 
-visualize `lignumvtk`-produced trees and forest stands with default settings, though 
-rendering may take some time.
-
-Change ParaView rendering options from Preferences via RenderView tab. If needed, lower 
-the LOD[^lod] and Outline Threshold[^ot] values before opening a VTK file to reduce
-memory usage at the cost of rendering quality.
+The 3D computer geometry models may require a fair amount of memory. Change ParaView rendering options
+from Preferences via RenderView tab. If needed, lower the LOD[^lod] and Outline Threshold[^ot] values
+before opening a VTK file to reduce memory usage at the cost of rendering quality.
 
 If ParaView exits unexpectedly during rendering, it is often due to a failed memory request. 
 However, modern macOS versions may intervene first, displaying the Force-Quit window that 
