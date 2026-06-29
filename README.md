@@ -136,8 +136,8 @@ for ParaView. `lignumvtk.py` is a Python 3 program and requires *numpy* and *vtk
 LignumVTK is a work in progress. `lignumvtk` supports kite-shaped leaves with plans to implement
 elliptical and triangle shapes as needed.
 
-The creation of the VTK/VTPC files, as well as ParaView rendering, can take several minutes
-depending on the number of trees and their VTK dataset sizes. 
+The creation of the VTK/VTPC files can take several minutes depending on the number of trees
+and their VTK dataset sizes. 
 
 Using an overly broad path argument to the `-substring` option for `lignumvtk` can inadvertently
 return all tree dataset paths. The default values for the options `-spline` and `-sides` should
