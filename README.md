@@ -35,12 +35,11 @@ It can automatically distinguish between conifer and hardwood tree types.
 Trees are reconstructed and converted to VTK spline tube segments for wooden parts 
 and conifer foliage, and VTK triangle strips for kite shaped hardwood leaves. 
 Visualization properties are defined using spline tube and triangle strip attributes 
-from Lignum trees.
+from LIGNUM trees.
 
-The main VTK/VTPC output file (.vtpc extension) is a metadata file that specifies names and 
-locations of the 3D geometry model files. These files are stored in a directory automatically 
-created and named after the main output file upon saving. To visualize them, open
-the main file in ParaView and set up the graphics pipeline.
+The main VTK/VTPC file (.vtpc) is a metadata file containing the names and locations
+of the 3D geometry models. Saving this file automatically creates a matching directory
+to store those models.
 
 ### Command line 
 The `lignumvtk` command line is:
