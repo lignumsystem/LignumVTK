@@ -114,8 +114,8 @@ Set hexahedron (voxel) edge size to 3:
 	
 	./vsvtk -i File.h5 -dataset /VoxelSpaceData60 -o File.vts -edge 3
 
-The `vsvtk` program converts one voxel space dataset at a time into VTK/VTS format. 
-Open the resulting file in ParaView to configure the graphics pipeline.
+The `vsvtk` program converts single voxel space datasets into VTK/VTS format. 
+Therefore, the argument string for `-dataset` requires a full path name.
 
 ## Software documentation
 Produce the Doxygen documentation:
