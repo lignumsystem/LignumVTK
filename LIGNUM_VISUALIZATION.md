@@ -132,8 +132,8 @@ and refractions.
 + **EEVEE:** Rasterization renderer. Uses modelling shortcuts to imitate complex lighting
   effects in real-time.
 
-+ **Workbench:** Designed for maximum performance during modeling and scene layout.
-   Does not calculate realistic lighting or complex texturing.
++ **Workbench:**  Optimized for fast modeling and scene layout; does not calculate realistic
+  lighting or texturing.
    
 ### Blender sky models
 Blender features four built-in analytical sky models, accessible via the *Mission Contorl:World* tab.
