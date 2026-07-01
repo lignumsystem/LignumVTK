@@ -133,18 +133,22 @@ and refractions.
    
 ### Blender sky models
 Blender features four built-in analytical sky models, accessible via the *Mission Contorl:World* tab.
-In the Surface section, click the *yellow dot* next to Color and select Sky Texture.
+In the Surface section, click the *yellow dot* next to Color and select Sky Texture. 
 
 + **Nishita multiple scattering:** The most physically accurate model. It accounts
   for light bouncing multiple times through the atmosphere creating realistic outdoor
-  illumination for different times of the day. Contains built-in sun model.
+  illumination for different times of the day. Contains built-in sun model. 
+  Nishita et al. 1993. Display of the Earth Taking into Account Atmospheric Scattering.
 
-+ **Nishita single scattering:** Simplified Nishita modelling as it calculates single light bounce. 
++ **Nishita single scattering:** The original Nishita model as it calculates single light bounce. 
 
 + **Hosek/Wilkie:** Provides realistic ambient daylight lighting. Requires explicit
-  sun object as the light source for shadows.
+  sun object as the light source for shadows. Hosek and Wilkie. 2012. An Analytic Model
+  for Full Spectral Sky-Dome Radiance and the 2013 follow-up Adding a Solar-Radiance Function
+  to the Hošek-Wilkie Skylight Model.  
   
-+ **Preetham:** The oldest model from 1999. Works well for basic daylight.
++ **Preetham:** Computationally lightweight and useful for fast viewport previews.
+  Works well for basic daylight. Preetham et. al. 1999. A Practical Analytic Model for Daylight.
 
 ### Blender camera
 Blender features a mathematical digital SLR camera model, allowing users
