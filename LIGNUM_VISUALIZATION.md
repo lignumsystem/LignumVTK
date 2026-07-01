@@ -143,7 +143,7 @@ In the Surface section, click the *yellow dot* next to Color and select Sky Text
 + **Nishita single scattering:** The original Nishita model as it calculates single light bounce. 
 
 + **Hosek/Wilkie:** Provides realistic ambient daylight lighting. Requires explicit
-  sun object as the light source for shadows. Hosek and Wilkie. 2012. An Analytic Model
+  sun object as the light source for shadows. Hošek and Wilkie. 2012. An Analytic Model
   for Full Spectral Sky-Dome Radiance and the 2013 follow-up Adding a Solar-Radiance Function
   to the Hošek-Wilkie Skylight Model.  
   
