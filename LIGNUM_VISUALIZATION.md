@@ -260,7 +260,7 @@ Follow these steps to visualize a voxel space:
   + Select the *Mission Control:Material* tab:
 	+ Surface should show Principled BSDF shader.
 	+ Lower the Alpha value (e.g. 0.4) to make transparent voxels.
-+ Align the active camera to the view.
++ Align the active camera to the view (*View:Align View:Align Active Camera to View*).
 + Use the Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the voxel space.
