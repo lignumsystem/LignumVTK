@@ -142,7 +142,7 @@ In the Surface section, click the *yellow dot* next to Color and select Sky Text
 
 + **Nishita single scattering:** The original Nishita model as it calculates single light bounce. 
 
-+ **Hosek/Wilkie:** Provides realistic ambient daylight lighting. Requires explicit
++ **Hošek-Wilkie:** Provides realistic ambient daylight lighting. Requires explicit
   sun object as the light source for shadows. Hošek and Wilkie. 2012. An Analytic Model
   for Full Spectral Sky-Dome Radiance and the 2013 follow-up Adding a Solar-Radiance Function
   to the Hošek-Wilkie Skylight Model.  
@@ -225,7 +225,7 @@ Instead of moving a single camera for different views, position multiple cameras
 
 When using the Nishita sky model, the rendering camera must point strictly above the horizon. 
 Otherwise, Cycles fails to calculate the natural blue daylight correctly. For overhead views
-of a forest stand — where the camera is positioned above the canopy looking down — the Hosek/Wilkie
+of a forest stand — where the camera is positioned above the canopy looking down — the Hošek-Wilkie
 model yields better results. The Nishita sky often overexposes default Blender settings.
 Lower the value for sun strength, or search online for optimal configurations. 
 
