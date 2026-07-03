@@ -168,10 +168,12 @@ Follow these steps to visualize single trees or forest stands:
 
 + Open the `lignumvtk`-generated VTK/VTPC file.
 + Adjust tree orientation for the camera view.
-+ Apply the Extract Block filter to generate separate datasets for the stem, heartwood and foliage.
-+ Apply Merge Block filters to datasets to generate unstructured grids.
-+ Apply the Threshold filter to foliage to isolate positive values (exclude zeros).
-+ Assign appropriate colors or colormaps to stem, heartwood and foliage.
++ Apply the Extract Block filter  to partition your data into distinct subsets for visualization.
+  + The availabe selection options depend on the structure of the `lignumvtk`-generated file.
+  + The primary goal is to isolate the stems, heartwood and foliage to apply informative color mapping.
++ Apply Merge Block filters to the new datasets to generate Unstructured Grids.
++ Apply the Threshold filter to foliage to isolate positive values (excluding zeros).
++ Assign appropriate solid colors or colormaps to stems, heartwood and foliage.
 + File operations:
   + *Save State* of the project.
   + Select datasets (foliage, stem, heartwood) and apply *Export Scene* for glTF export. 
