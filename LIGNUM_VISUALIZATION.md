@@ -88,7 +88,7 @@ which can be resized, split, or combined to fit the workflow.
     the Blender's workspace for specific tasks.
 
 + **3D Viewport (Center):**
-  + **Viewport Header** The *View:Align View:Align Active Camera to View* menu option moves and orients
+  + **Viewport Header** The *View > Align View > Align Active Camera to View* menu option moves and orients
     the active rendering camera to match the current 3D viewport perspective. 
     The *Add* menu inserts new objects into the model — specifically cameras and lights — while the separate
 	control tabs adjust the viewport rendering modes.
@@ -117,7 +117,7 @@ interface controls rather than adopting standard macOS toolbar architectures.
 
 ### Blender renderers
 Blender includes three native render engines built directly into the software,
-accessible via the *Mission Control:Render* tab. Each renderer is optimized for 
+accessible via the *Mission Control > Render* tab. Each renderer is optimized for 
 different purposes: Workbench for layout and previews, EEVEE for real-time speed,
 and Cycles for photorealism.
 
@@ -132,7 +132,7 @@ and refractions.
   lighting or texturing.
    
 ### Blender sky models
-Blender features four built-in analytical sky models, accessible via the *Mission Contorl:World* tab.
+Blender features four built-in analytical sky models, accessible via the *Mission Contorl > World* tab.
 In the Surface section, click the *yellow dot* next to Color and select Sky Texture. 
 
 + **Nishita multiple scattering:** The most physically accurate model. It accounts
@@ -198,10 +198,10 @@ Follow these steps to visualize single trees or forest stands:
 
 + Import the glTF file exported from ParaView.
 + Use the Workbench renderer.
-+ Orientate the trees in the 3D Viewport (*Mission Control:Object*).
-+ Align the active camera to the view (*View:Align View:Align Active Camera to View*):
++ Orientate the trees in the 3D Viewport (*Mission Control > Object*).
++ Align the active camera to the view (*View > Align View > Align Active Camera to View*):
   + Yellow frame denotes the rendering area.
-  + Optionally change the camera to vertical position by flipping Resolution (*Mission Control:Output*).
+  + Optionally change the camera to vertical position by flipping Resolution (*Mission Control > Output*).
 + Change to the Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the trees.
@@ -219,7 +219,7 @@ switching to XYZ Euler rotation is often more intuitive.
 
 Minimal rendering in Blender requires three core components: a 3D model, a light source, and a camera
 pointed at the model. Note that shadows require a surface to catch them. For example, add a simple
-plane to represent the forest floor (via the *Add:Mesh:Plane* menu sequence).
+plane to represent the forest floor (via the *Add > Mesh > Plane* menu sequence).
 
 Instead of moving a single camera for different views, position multiple cameras throughout the scene.
 
@@ -253,14 +253,14 @@ Follow these steps to visualize a voxel space:
 + Adjust the voxel space orientation.
 + Convert the voxel space mesh into Blender voxels:
   + Select the voxel space.
-  + Select the *Mission Control:Modifiers* tab:
+  + Select the *Mission Control > Modifiers* tab:
 	+ From Add Modifier select Remesh.
 	+ Reduce voxel size (Voxel tab) and adjust Octree depth (Block tab) until desired result.
 + Create transparent voxel material:
-  + Select the *Mission Control:Material* tab:
+  + Select the *Mission Control > Material* tab:
 	+ Surface should show Principled BSDF shader.
 	+ Lower the Alpha value (e.g. 0.4) to make transparent voxels.
-+ Align the active camera to the view (*View:Align View:Align Active Camera to View*).
++ Align the active camera to the view (*View > Align View > Align Active Camera to View*).
 + Use the Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the voxel space.
