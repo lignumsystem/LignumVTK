@@ -1,6 +1,7 @@
-# ImageMagick for academic journals
-Essential ImageMagick commands for preparing academic journal figures. 
-*[Brackets]* indicate optional command parameters.
+# ImageMagick: preparing figures for academic journals
+[ImageMagick](https://imagemagick.org/) is a command-line software for editing
+and manipulating digital images. This guide covers essential commands for preparing
+journal-ready images. Brackets [...] indicate optional parameters.
 
 >[!NOTE]
 >ImageMagick 7 replaces the legacy `convert` command with a standalone `magick` command.
