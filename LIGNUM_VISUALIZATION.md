@@ -247,8 +247,8 @@ A 3.5-inch single column is 1050 pixels wide[^cwidth]. Adjust the following sett
   + *View*: AgX and Filmic are for photorealistic rendering, Standard for color accuracy.
 + **Rendering engine:** Select Cycles for photorealistic rendering.
 
-To improve output quality, treat the target Resolution as a minimum and try multiplying it by two or three. 
-Perform final editing in ImageMagick to scale the image to its correct size and set the requested DPI value.
+To maximize final image quality, double or triple the target Resolution. Then, use ImageMagick to scale
+the image to its intended size and apply the required DPI.
 
 Photorealistic rendering in Blender is essential for lifelike tree visuals. However, because this
 rendering process mimics how camera film handles exposure, the final colors may shift away from
