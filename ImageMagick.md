@@ -122,10 +122,6 @@ The trailing *-colorspace* ensures the final file format compatibility.
 Grayscale conversion can sometimes affect text or line quality. Increase the contrast and sharpness:
 
     magick Figure.tiff -colorspace Gray -density 300 -units PixelsPerInch -level 10%,90% -sharpen 0x1 FigureBW.tiff
-    
-## ParaView
-ParaView does not have direct DPI settings, and the default save resolution is often too low for high-quality
-printing or digital scaling. Export large scale (2x or even 3x) screen shot and convert with ImageMagick.
 
 [^dpi]: Dots per inch.
 [^ppi]: Pixels per inch.
