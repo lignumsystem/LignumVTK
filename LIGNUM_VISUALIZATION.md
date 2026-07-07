@@ -195,9 +195,10 @@ Be careful in selecting datasets to be exported. Only the selected datasets will
 to a glTF file.
 
 ### Digital image file 
-ParaView does not have direct DPI settings for the Screenshot resolution, and the default save resolution
-is often too low for high-quality printing or digital scaling. Export large scale (2x or even 3x) screen
-shot and then scale down the final image to the correct size.
+ParaView does not have direct DPI settings for screenshot resolution, and the default save resolution
+is often too low for high-quality printing or digital scaling. To fix this, export a large-scale screenshot
+(2x or more). Then, scale down the final image to the correct size and set the requested DPI value
+in ImageMagick.
 
 ## Blender visualization for LIGNUM trees
 Follow these steps to visualize single trees or forest stands:
@@ -237,20 +238,17 @@ Lower the value for sun strength, or search online for optimal configurations.
 
 ### Digital image file 
 Blender allows you to adjust your rendering settings and color management to meet journal requirements.
-A common resolution requirement is 300 DPI. This means that a 3.5-inch single column and a 7.0-inch
-double column width must be 1050 and 2100 pixels, respectively. 
-
-Adjust the following rendering settings in Blender:
+A 3.5-inch single column is 1050 pixels wide[^cwidth]. Adjust the following settings in Blender:
 
 + **Resolution:** (*Mission Control > Output > Resolution*)
-  + Enter pixel values to match column width, maintain aspect ratio.
+  + Enter pixel values to match the journal column width, maintain aspect ratio.
 + **Color mangement:** (*Mission Control > Render > Color management*)
   + *Display*: Select sRGB color space (standard for digital images).
   + *View*: AgX and Filmic are for photorealistic rendering, Standard for color accuracy.
 + **Rendering engine:** Select Cycles for photorealistic rendering.
 
-To improve output quality, treat the pixel values in Resolution as minimums. 
-First, multiply them by two or three. Then scale down the final image to its correct size. 
+To improve output quality, treat the target Resolution as a minimum and try multiplying it by two or three. 
+Perform final editing in ImageMagick to scale the image to its correct size and set the requested DPI value.
 
 Photorealistic rendering in Blender is essential for lifelike tree visuals. However, because this
 rendering process mimics how camera film handles exposure, the final colors may shift away from
@@ -302,3 +300,5 @@ Cap the Octree depth to 8. Each additional level increases the node count expone
 [^ot]: Outline Threshold: object is approximated with bounding boxes only.
 
 [^panel]: The View menu should be rebranded Panels to avoid confusion with Viewport views. 
+
+[^cwidth]: See [IMAGE_MAGICK](IMAGE_MAGICK.md) for details.
