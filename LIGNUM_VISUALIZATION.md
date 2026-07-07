@@ -177,7 +177,7 @@ Follow these steps to visualize single trees or forest stands:
 + File operations:
   + *Save State* of the project.
   + Select datasets (foliage, stem, heartwood) and apply *Export Scene* for glTF export.
-  + *Save Screenshot* creates a digital image file for the rendered model.
+  + *Save Screenshot* captures the rendered trees as an image file.
 
 You may have Outline as default Representation. Select Surface for better rendering quality. 
 
@@ -211,7 +211,7 @@ Follow these steps to visualize single trees or forest stands:
 + Change to the Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the trees.
-  + Save rendered trees as digital image file (*Image > Save as*) 	
+  + Save the rendered trees as an image file (*Image > Save as*).
 + Save the project in Blender format (*.blend* file extension).
   
 Blender's separate render window may not display progress for the first few minutes.
@@ -237,7 +237,7 @@ model yields better results. The Nishita sky often overexposes default Blender s
 Lower the value for sun strength, or search online for optimal configurations. 
 
 ### Digital image file 
-Blender allows to adjust your render settings and color management to meet journal requirements.
+Blender allows to adjust your rendering settings and color management to meet journal requirements.
 Common resolution requirement is 300 DPI. This means 3.5 inch single column and 7.0 inch double column
 width must be 1050 pixels and 2100 pixels, respectively. 
 
@@ -248,11 +248,14 @@ Adjust the following rendering settings in Blender:
 + **Color mangement:** (*Mission Control > Render > Color management*)
   + *Display*: Select sRGB color space (standard for digital images).
   + *View*: AgX and Filmic are for photorealistic rendering, Standard for color accuracy.
-+ **Rendering engine:** Select Cycles or EEVEE.
++ **Rendering engine:** Select Cycles for photorealistic rendering.
 
-The pixel values for matching column widths in Resolution are minimums. Multiply them by 2x or 3x,
-and then scale down the final image to the correct size. Because Blender’s photorealistic
-rendering mimics how camera film handles exposure, colors may lose their exact scientific data meanings.
+To improve output quality, treat the pixel values in Resolution as minimums. 
+First, multiply them by two or three. Then scale down the final image to its correct size. 
+
+Photorealistic rendering in Blender is essential for lifelike tree visuals. However, because this
+rendering process mimics how camera film handles exposure, the final colors may shift away from
+their exact scientific data values. For color accuracy consult Blender manual or search online.
 
 ## ParaView visualization for voxel space
 Follow these steps to visualize a voxel space:
@@ -266,8 +269,9 @@ Follow these steps to visualize a voxel space:
   + Properties panel: increase Sampling Dimensions for example to 300 for each X, Y and Z dimensions.
 + File operations:
   + *Save State* of the project.
-  + Select the (last) resampled voxel space dataset in the pipeline and apply *Export Scene* for glTF export.
-
+  + Select the last resampled voxel space dataset in the pipeline and apply *Export Scene* for glTF export.
+  + *Save Screenshot* of the voxel space.
+    
 Select Surface as Representation for better rendering quality. Increased Sampling Dimensions
 has better compatibility with Blender.
 
@@ -289,7 +293,8 @@ Follow these steps to visualize a voxel space:
 + Use the Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the voxel space.
-+ Save the project in Blender format (*.blend*).
+  + Save the image file. 	
++ Save the project in Blender format.
 
 Cap the Octree depth to 8. Each additional level increases the node count exponentially ($8^{\mathit{depth}}$).
 
