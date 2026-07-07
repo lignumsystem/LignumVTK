@@ -250,7 +250,7 @@ Adjust the following rendering settings in Blender:
   + *View*: AgX and Filmic are for photorealistic rendering, Standard for color accuracy.
 + **Rendering engine:** Select Cycles or EEVEE.
 
-The pixel values for matching column widths in Resolution are *minimums*. Multiply them by 2x or 3x,
+The pixel values for matching column widths in Resolution are minimums. Multiply them by 2x or 3x,
 and then scale down to the correct size. Because Blender’s photorealistic
 rendering mimics how camera film handles exposure, colors may lose their exact scientific data meanings.
 
