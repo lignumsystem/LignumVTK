@@ -56,8 +56,8 @@ The general formula for image size is:
 
     WidthInPixels = Image size (inches) X DPI desired.
 
-For example for 7 inch wide two column image with 300 DPI requirment the width is 2100 pixels. 
-For 3.5 inch single column image the width is 1050 pixels:
+For instance, a 7-inch wide, two column image with 300 DPI requirement is 2100 pixels wide. 
+For a 3.5-inch single column image, the width is 1050 pixels:
 
     magick Figure.png  -density 300 -resize 2100x -units PixelsPerInch FigureOut.tiff #Two column image
     magick Figure.png  -density 300 -resize 1050x -units PixelsPerInch FigureOut.tiff #Single column image
