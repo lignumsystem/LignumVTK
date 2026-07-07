@@ -236,9 +236,9 @@ model yields better results. The Nishita sky often overexposes default Blender s
 Lower the value for sun strength, or search online for optimal configurations. 
 
 ### Digital image file 
-Blender allows to adjust your rendering settings and color management to meet journal requirements.
-Common resolution requirement is 300 DPI. This means 3.5 inch single column and 7.0 inch double column
-width must be 1050 pixels and 2100 pixels, respectively. 
+Blender allows you to adjust your rendering settings and color management to meet journal requirements.
+A common resolution requirement is 300 DPI. This means that a 3.5-inch single column and a 7.0-inch
+double column width must be 1050 and 2100 pixels, respectively. 
 
 Adjust the following rendering settings in Blender:
 
