@@ -226,9 +226,8 @@ switching to XYZ Euler rotation is often more intuitive.
 
 Minimal rendering in Blender requires three core components: a 3D model, a light source, and a camera
 pointed at the model. Note that shadows require a surface to catch them. For example, add a simple
-plane to represent the forest floor (via the *Add > Mesh > Plane* menu sequence).
-
-Instead of moving a single camera for different views, position multiple cameras throughout the scene.
+plane to represent the forest floor (via the *Add > Mesh > Plane* menu sequence). Instead of moving
+a single camera for different views, position multiple cameras throughout the scene.
 
 When using the Nishita sky model, the rendering camera must point strictly above the horizon. 
 Otherwise, Cycles fails to calculate the natural blue daylight correctly. For overhead views
@@ -255,7 +254,7 @@ First, multiply them by two or three. Then scale down the final image to its cor
 
 Photorealistic rendering in Blender is essential for lifelike tree visuals. However, because this
 rendering process mimics how camera film handles exposure, the final colors may shift away from
-their exact scientific data values. For color accuracy consult Blender manual or search online.
+their exact scientific data values. For color accuracy consult the Blender manual or search online.
 
 ## ParaView visualization for voxel space
 Follow these steps to visualize a voxel space:
