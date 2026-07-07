@@ -176,7 +176,8 @@ Follow these steps to visualize single trees or forest stands:
 + Assign appropriate solid colors or colormaps to stems, heartwood and foliage.
 + File operations:
   + *Save State* of the project.
-  + Select datasets (foliage, stem, heartwood) and apply *Export Scene* for glTF export. 
+  + Select datasets (foliage, stem, heartwood) and apply *Export Scene* for glTF export.
+  + *Save Screenshot* creates a digital image file for the rendered model.
 
 You may have Outline as default Representation. Select Surface for better rendering quality. 
 
@@ -193,6 +194,11 @@ rendering or exporting the glTF file.
 Be careful in selecting datasets to be exported. Only the selected datasets will be saved
 to a glTF file.
 
+### Digital image file 
+ParaView does not have direct DPI settings for the Screenshot resolution, and the default save resolution
+is often too low for high-quality printing or digital scaling. Export large scale (2x or even 3x) screen
+shot and then scale down to the correct size.
+
 ## Blender visualization for LIGNUM trees
 Follow these steps to visualize single trees or forest stands:
 
@@ -205,7 +211,8 @@ Follow these steps to visualize single trees or forest stands:
 + Change to the Cycles renderer.
 + Setup Sky Texture as the light source.
 + Render the trees.
-+ Save the project in Blender format (*.blend*).
+  + Save rendered trees as digital image file (*Image > Save as*) 	
++ Save the project in Blender format (*.blend* file extension).
   
 Blender's separate render window may not display progress for the first few minutes.
 Forest stand size and rendering quality dictate the complete process time, which can
@@ -229,6 +236,24 @@ of a forest stand — where the camera is positioned above the canopy looking do
 model yields better results. The Nishita sky often overexposes default Blender settings.
 Lower the value for sun strength, or search online for optimal configurations. 
 
+### Digital image file 
+Blender allows to optimize your render settings and color management to meet journal requirements.
+Common resolution requirement is 300 DPI. This means 3.5 inch single column and 7.0 inch double column
+width must be 1050 pixels and 2100 pixels, respectively. 
+
+Adjust the following rendering settings in Blender:
+
++ **Resolution:** (*Mission Control > Output > Resolution*)
+  + Enter pixel values to match column width, maintain aspect ratio.
++ **Color mangement:** (*Mission Control > Render > Color management*)
+  + *Display*: Select sRGB color space (standard for digital images).
+  + *View*: AgX and Filmic are for photorealistic rendering, Standard for color accuracy.
++ **Rendering engine:**: Select Cycles or EEVEE.
+
+The pixel values for matching column widths in Resolution are *minimums*. Multiply them by 2x or 3x,
+and then scale down to the correct size. Because Blender’s photorealistic
+rendering mimics how camera film handles exposure, colors may lose their exact scientific data meanings.
+
 ## ParaView visualization for voxel space
 Follow these steps to visualize a voxel space:
 
@@ -241,7 +266,7 @@ Follow these steps to visualize a voxel space:
   + Properties panel: increase Sampling Dimensions for example to 300 for each X, Y and Z dimensions.
 + File operations:
   + *Save State* of the project.
-  + Select the (last) resampled dataset in the pipeline and apply *Export Scene* for glTF export.
+  + Select the (last) resampled voxel space dataset in the pipeline and apply *Export Scene* for glTF export.
 
 Select Surface as Representation for better rendering quality. Increased Sampling Dimensions
 has better compatibility with Blender.
