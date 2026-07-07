@@ -197,7 +197,7 @@ to a glTF file.
 ### Digital image file 
 ParaView does not have direct DPI settings for the Screenshot resolution, and the default save resolution
 is often too low for high-quality printing or digital scaling. Export large scale (2x or even 3x) screen
-shot and then scale down to the correct size.
+shot and then scale down the final image to the correct size.
 
 ## Blender visualization for LIGNUM trees
 Follow these steps to visualize single trees or forest stands:
@@ -251,7 +251,7 @@ Adjust the following rendering settings in Blender:
 + **Rendering engine:** Select Cycles or EEVEE.
 
 The pixel values for matching column widths in Resolution are minimums. Multiply them by 2x or 3x,
-and then scale down to the correct size. Because Blender’s photorealistic
+and then scale down the final image to the correct size. Because Blender’s photorealistic
 rendering mimics how camera film handles exposure, colors may lose their exact scientific data meanings.
 
 ## ParaView visualization for voxel space
