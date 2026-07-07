@@ -8,8 +8,8 @@ and their attributes for the final visualization with ParaView graphics pipeline
 requires neither programming skills nor knowledge of VTK library. Primary purpose of the visualization
 is to extract qualitative insight from simulation results.
 
-For visualizing tree models and voxel spaces read the contributing guide
-[Lignum visualization](LIGNUM_VISUALIZATION.md).
+To visualize and produce journal figures for tree models and voxel spaces, read the
+[Lignum visualization](LIGNUM_VISUALIZATION.md) and [ImageMagick](IMAGE_MAGICK.md) contributing guides.
 
 ## Building LignumVTK
 ### Prerequisites 
