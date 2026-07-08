@@ -109,9 +109,9 @@ tables rather than generic equations to match how human eyes, computer monitors,
 In the conversion, the first *-profile* assigns the baseline color space, while the second triggers 
 the actual pixel transformation; the sRGB.icc profile is applied if the image lacks an embedded profile.
 
-To query the color profile in the image file:
+To query the color profile in the image file,run the following command:
 
-    magick identify -format "%[profile]" FigureOut_sRGB.tiff   
+    magick identify -format "%[profile:icc]\n" FigureOut_sRGB.tiff   
 
 ### Grayscale figures
 Verify the image metadata as with color images. The expected color space should be *Gray*. The following
