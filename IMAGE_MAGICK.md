@@ -93,10 +93,11 @@ ink and paper characteristics, designers use robust ICC profiles alongside stand
 consistency.
 
 Some programming libraries, such as *matplotlib* and *ggplot2*, export figures without color metadata;
-in such cases, the default sRGB color space is typically assumed. *This omission may violate a journal's formatting
-requirements*. Although journals specify their required color profiles, they rarely provide them. Authors can
-download ICC color profiles from the [ICC Profile Registry](https://registry.color.org/profile-registry/)
-or the [ECI Downloads](https://eci.org/doku.php_id=en_downloads.html)[^eci]. 
+in such cases, the default sRGB color space is typically assumed. *However, this omission may violate
+a journal's formatting requirements*. Although journals specify their required color profiles, they
+rarely provide them. Authors can download ICC color profiles from the 
+[ICC Profile Registry](https://registry.color.org/profile-registry/) or the 
+[ECI Downloads](https://eci.org/doku.php_id=en_downloads.html)[^eci]. 
 
 To set or convert a color profile, you *must* use ICC color profiles. This technique utilizes exact color lookup
 tables rather than generic equations to match how human eyes, computer monitors, and printers interpret colors.
