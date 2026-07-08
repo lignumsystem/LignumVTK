@@ -92,11 +92,11 @@ High-quality professional printing requires precise color management. Because fi
 ink and paper characteristics, designers use robust ICC profiles alongside standardized color spaces to ensure
 consistency.
 
-Some programming libraries, such as *matplotlib* and *ggplot2*, often export figures without color metadata. 
-While the default sRGB color space is typically assumed, this omission may violate a journal's formatting
-requirements. Although journals specify their required color profiles, they rarely provide them. Authors can download ICC color
-profiles from the [International Color Consortium Profile Registry](https://registry.color.org/profile-registry/)
-or the [European Color Initiative Downloads](https://eci.org/doku.php_id=en_downloads.html). 
+Some programming libraries, such as *matplotlib* and *ggplot2*, export figures without color metadata;
+in such cases, the default sRGB color space is typically assumed. *This omission may violate a journal's formatting
+requirements*. Although journals specify their required color profiles, they rarely provide them. Authors can
+download ICC color profiles from the [ICC Profile Registry](https://registry.color.org/profile-registry/)
+or the [ECI Downloads](https://eci.org/doku.php_id=en_downloads.html)[^eci]. 
 
 To set or convert a color profile, you *must* use ICC color profiles. This technique utilizes exact color lookup
 tables rather than generic equations to match how human eyes, computer monitors, and printers interpret colors.
@@ -130,3 +130,4 @@ Grayscale conversion can sometimes affect text or line quality. Increase the con
 [^dpi]: Dots per inch.
 [^ppi]: Pixels per inch.
 [^icc]: International Color Consortium.
+[^eci]: European Color Initiative.
