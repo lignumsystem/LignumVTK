@@ -1,11 +1,11 @@
 # ImageMagick: preparing figures for academic journals
-ImageMagick is a command-line utility for editing and manipulating digital images. This guide covers
-essential commands for preparing journal-ready figures that fulfill editorial requirements. 
+[ImageMagick](https://imagemagick.org/) is a command-line utility for editing and manipulating digital images.
+This guide covers essential commands for preparing journal-ready figures that meet editorial requirements. 
 Brackets [...] indicate optional parameters.
 
->[!NOTE]
->ImageMagick 7 replaces the legacy `convert` command with a standalone `magick` command.
->Otherwise it uses a `magick <subcommand>` syntax instead of the direct commands found in ImageMagick 6.
+> [!NOTE]
+> ImageMagick 7 replaces the legacy `convert` command with a standalone `magick` command.
+> Otherwise it uses a `magick <subcommand>` syntax instead of the direct commands found in ImageMagick 6.
 
 ## Basics
 To get command-line help use *-help* following the tool:
@@ -37,11 +37,11 @@ Rotate PNG file 90 degress with lossless (LZW) compression to TIFF:
 
     magick Figure.png -rotate 90 -compress Lossless FigureOut.tiff
 
->[!NOTE]
->Command-line order matters: place the input file first, options second, and the output file last.
->ImageMagick evaluates arguments strictly from left to right, so option order affects the outcome.
+> [!NOTE]
+> Command-line order matters: place the input file first, options second, and the output file last.
+> ImageMagick evaluates arguments strictly from left to right, so option order affects the outcome.
 
-## Image quality
+## Color digital images 
 ### Technical requirements
 Journals have strict formatting rules to ensure images remain crisp in both digital and print layouts. 
 The following technical requirements are common:
@@ -75,9 +75,9 @@ and the required color space:
 
 After completing these steps, the image is usually ready for submission. 
 
->[!IMPORTANT]
->Always inspect the converted output image for anomalies, paying close attention to text readability
->and line quality.
+> [!IMPORTANT]
+> Always inspect the converted output image for anomalies, paying close attention to text readability
+> and line quality.
 
 ### Setting color space
 Color spaces define the digital color environment for editing software and hardware. While a *color space* acts
@@ -113,7 +113,7 @@ To query the color profile in the image file, run the following command:
 
     magick identify -format "%[profile:icc]\n" FigureOut_sRGB.tiff   
 
-### Grayscale figures
+## Grayscale digital images
 Verify the image metadata as with color images. The expected color space should be *Gray*. The following
 command in ImageMagick produces grayscale image with 300 DPI:
 
@@ -122,8 +122,6 @@ command in ImageMagick produces grayscale image with 300 DPI:
 Control gray-shade saturation using *-grayscale*:
 
     magick Figure.tiff -grayscale Rec709Luma -colorspace Gray -density 300 -units PixelsPerInch FigureBW.tiff
-
-The trailing *-colorspace* ensures the final file format compatibility.
 
 Grayscale conversion can sometimes affect text or line quality. Increase the contrast and sharpness:
 

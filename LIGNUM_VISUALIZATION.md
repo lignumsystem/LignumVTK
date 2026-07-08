@@ -4,10 +4,10 @@ both open-source, they serve different purposes. ParaView specializes in scienti
 analysis and visualization, whereas Blender is a 3D creation suite designed for animation,
 visual effects, and photorealistic rendering.
 
-The two applications are frequently paired together. First, Paraview is used for 
-qualitative and quantitative data analysis. Then, Blender builds the final presentation
-visuals using its physically based rendering engines to introduce informative contextual
-objects like environmental lighting, shadows, and background elements.
+The two applications are frequently paired together. First, ParaView is used for qualitative
+and quantitative data analysis. Then, Blender generates photorealistic visuals using its
+physically based rendering engines, introducing informative contextual elements like
+environmental lighting, shadows, and backgrounds.
 
 Both ParaView and Blender support common 3D file formats. This guide uses
 glTF for scene exchange between the two applications.
@@ -238,17 +238,17 @@ Lower the value for sun strength, or search online for optimal configurations.
 
 ### Digital image file 
 Blender allows you to adjust your rendering settings and color management to meet journal requirements.
-A 3.5-inch single column is 1050 pixels wide[^cwidth]. Adjust the following settings in Blender:
+A 3.5-inch single column image is 1050 pixels wide[^cwidth]. Adjust the following settings in Blender:
 
 + **Resolution:** (*Mission Control > Output > Resolution*)
   + Enter pixel values to match the journal column width, maintain aspect ratio.
 + **Color mangement:** (*Mission Control > Render > Color management*)
   + *Display*: Select sRGB color space (standard for digital images).
-  + *View*: AgX and Filmic are for photorealistic rendering, Standard for color accuracy.
-+ **Rendering engine:** Select Cycles for photorealistic rendering.
+  + *View*: AgX and Filmic are for photorealistic rendering, Standard for better color accuracy.
++ **Rendering engine:** Select Cycles for the best quality.
 
 To maximize final image quality, double or triple the target Resolution. Then, use ImageMagick to scale
-the image to its intended size and apply the required DPI.
+down the image to its intended size and apply the required DPI.
 
 Photorealistic rendering in Blender is essential for lifelike tree visuals. However, because this
 rendering process mimics how camera film handles exposure, the final colors may shift away from
