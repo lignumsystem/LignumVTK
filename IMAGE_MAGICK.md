@@ -103,13 +103,13 @@ rarely provide them. Authors can download ICC color profiles from the
 To set or convert a color profile, you *must* use ICC color profiles. This technique utilizes exact color lookup
 tables rather than generic equations to match how human eyes, computer monitors, and printers interpret colors.
 
-    magick FigureOut.png -profile sRGB.icc FigureOut_sRGB.tiff                              #Set color profile to sRGB
-    magick FigureOut.png -profile sRGB.icc -profile USWebCoatedSWOP.icc FigureOut_cmyk.tiff #Color profile conversion to CMYK
+    magick Figure.png -profile sRGB.icc FigureOut_sRGB.tiff                              #Set color profile to sRGB
+    magick Figure.png -profile sRGB.icc -profile USWebCoatedSWOP.icc FigureOut_cmyk.tiff #Color profile conversion to CMYK
 
 In the conversion, the first *-profile* assigns the baseline color space, while the second triggers 
 the actual pixel transformation; the sRGB.icc profile is applied if the image lacks an embedded profile.
 
-To query the color profile in the image file,run the following command:
+To query the color profile in the image file, run the following command:
 
     magick identify -format "%[profile:icc]\n" FigureOut_sRGB.tiff   
 
