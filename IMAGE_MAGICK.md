@@ -115,18 +115,20 @@ To query the color profile in the image file, run the following command:
     magick identify -format "%[profile:icc]\n" FigureOut_sRGB.tiff   
 
 ## Grayscale digital images
-Verify the image metadata as with color images. The expected color space should be *Gray*. The following
-command in ImageMagick produces grayscale image with 300 DPI:
+The following command in produces two column grayscale image with 300 DPI:
 
-    magick Figure.tiff -colorspace Gray -density 300 -units PixelsPerInch FigureBW.tiff
+    magick Figure.tiff -resize 2100x -colorspace Gray -density 300 -units PixelsPerInch FigureBW.tiff
 
-Control gray-shade saturation using *-grayscale*:
+Choose gray-shade saturation algorithm using *-grayscale*:
 
-    magick Figure.tiff -grayscale Rec709Luma -colorspace Gray -density 300 -units PixelsPerInch FigureBW.tiff
+    magick Figure.tiff -resize 2100x -grayscale Rec709Luma -colorspace Gray -density 300 -units PixelsPerInch FigureBW.tiff
 
 Grayscale conversion can sometimes affect text or line quality. Increase the contrast and sharpness:
 
-    magick Figure.tiff -colorspace Gray -density 300 -units PixelsPerInch -level 10%,90% -sharpen 0x1 FigureBW.tiff
+    magick Figure.tiff -resize 2100x -colorspace Gray -density 300 -units PixelsPerInch -level 10%,90% -sharpen 0x1 FigureBW.tiff
+
+Verify the image metadata as with color images. The expected color space should be *Gray*. Once verified,
+the image is usually ready for submission. 
 
 [^dpi]: Dots per inch.
 [^ppi]: Pixels per inch.
