@@ -49,8 +49,8 @@ The following technical requirements are common:
 + **Column width:** 3.5-inch single column and 7-inch double column are common. 
 + **Resolution:** The usual image quality requirement is 300 DPI[^dpi].
 + **File Format:** Uncompressed TIFF is the golden standard for digital raster images, PDF for scalable vector graphics.
-+ **Color space:** Editors typically require the sRGB or Adobe RGB standards for digital publication,
-  whereas physical print editions utilize CMYK color space.
++ **Color space:** Editors typically require the *sRGB* or *Adobe RGB* for digital publication,
+  whereas physical print editions utilize *CMYK* color space.
   
 ### Setting image properties
 The general formula for image size is:
