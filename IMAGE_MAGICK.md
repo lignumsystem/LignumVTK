@@ -46,6 +46,7 @@ Rotate PNG file 90 degress with lossless (LZW) compression to TIFF:
 Journals have strict formatting rules to ensure images remain crisp in both digital and print layouts. 
 The following technical requirements are common:
 
++ **Column width:** 3.5-inch single column and 7-inch double column are common. 
 + **Resolution:** The usual image quality requirement is 300 DPI[^dpi].
 + **File Format:** Uncompressed TIFF is the golden standard for digital raster images, PDF for scalable vector graphics.
 + **Color space:** Editors typically require the sRGB or Adobe RGB standards for digital publication,
