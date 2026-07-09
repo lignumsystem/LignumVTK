@@ -67,14 +67,14 @@ The *-resize* options set the image width explicitly while maintaining the aspec
 journal requires 300 DPI, they are actually referring to 300 PPI[^ppi] in the digital image to ensure the image
 has enough pixel density for final printing.
 
-Journals usually check the image metadata. Verify the image confirms to the requested size, the 300 DPI resolution,
-and the required color space:
+Journals typically check the image metadata. Verify the image confirms to the requested size, resolution,
+and color space:
 
     magick identify -format "%w x %h pixels, %x DPI\n" FigureOut.tiff #Size and resolution
-    magick identify -format "%x x %y %U\n" FigureOut.tiff             #Units
+    magick identify -format "%x x %y %U\n" FigureOut.tiff             #Units: PixelsPerInch
     magick identify -format "%[colorspace]\n" FigureOut.tiff          #Color space
 
-After completing these steps, the image is usually ready for submission. 
+After completing these verification steps, the image is ready for submission. 
 
 > [!IMPORTANT]
 > Always inspect the converted output image for anomalies, paying close attention to text readability
@@ -127,8 +127,8 @@ Grayscale conversion can sometimes affect text or line quality. Increase the con
 
     magick Figure.tiff -resize 2100x -colorspace Gray -density 300 -units PixelsPerInch -level 10%,90% -sharpen 0x1 FigureBW.tiff
 
-Verify the image metadata as you would with color images. The expected color space should be *Gray*. Once it is
-verified, the image is usually ready for submission. 
+Verify the image metadata as you would with color images; the expected color space should be *Gray*. Once verified,
+the image is ready for submission. 
 
 [^dpi]: Dots per inch.
 [^ppi]: Pixels per inch.
