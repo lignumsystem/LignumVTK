@@ -115,7 +115,7 @@ To query the color profile in the image file, run the following command:
     magick identify -format "%[profile:icc]\n" FigureOut_sRGB.tiff   
 
 ## Grayscale digital images
-The following command produces two column grayscale image with 300 DPI:
+The following command produces two-column, grayscale image with 300 DPI:
 
     magick Figure.tiff -resize 2100x -colorspace Gray -density 300 -units PixelsPerInch FigureBW.tiff
 
