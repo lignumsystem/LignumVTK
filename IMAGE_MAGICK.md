@@ -90,7 +90,7 @@ coordinator, translating color profile data seamlessly between input devices, so
 and output hardware.
 
 High-quality professional printing requires precise color management. Because final outputs depend on specific
-ink and paper characteristics, designers use robust ICC profiles alongside standardized color spaces to ensure
+ink and paper characteristics, journal designers use robust ICC profiles alongside standardized color spaces to ensure
 consistency.
 
 Some programming libraries, such as *matplotlib* and *ggplot2*, export figures without color metadata;
