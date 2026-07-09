@@ -127,8 +127,8 @@ Grayscale conversion can sometimes affect text or line quality. Increase the con
 
     magick Figure.tiff -resize 2100x -colorspace Gray -density 300 -units PixelsPerInch -level 10%,90% -sharpen 0x1 FigureBW.tiff
 
-Verify the image metadata as with color images. The expected color space should be *Gray*. Once verified,
-the image is usually ready for submission. 
+Verify the image metadata as you would with color images. The expected color space should be *Gray*. Once it is
+verified, the image is usually ready for submission. 
 
 [^dpi]: Dots per inch.
 [^ppi]: Pixels per inch.
