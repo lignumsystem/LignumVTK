@@ -293,7 +293,28 @@ Follow these steps to visualize a voxel space:
   + Save the image file. 	
 + Save the project in Blender format.
 
-Cap the Octree depth to 8. Each additional level increases the node count exponentially ($8^{\mathit{depth}}$).
+Cap the Octree depth to 8. Each additional level increases the node count exponentially (8<sup>depth</sup>).
+
+## ParaView visualization of a CIE sky
+Follow these steps to visualize CIE sky models:
+
++ Open the `cievtk`-generated VTK/VTP CIE sky file
++ Orientate the CIE sky
++ Apply appropriate colormap
++ Render the CIE sky 
+
+For publications a projection of the CIE sky might be more appropriate.
+The *Python* directory contains the *lambert.py* script that implements
+Lambert Azimuthal Equal-Area Projection. This projection preserves the sector
+surface area when flattening a sphere to a circular disk.
+
+To apply *lambert.py*:
+
++ Create *ProgrammableFilter* in the pipeline and copy paste the file content
+  to the Script section. 
++ Render the CIE projection
+
+
 
 [^lod]: [Level of Detail](https://en.wikipedia.org/wiki/Level_of_detail_(computer_graphics)): dynamic 3D model representation. 
 

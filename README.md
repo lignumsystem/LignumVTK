@@ -1,5 +1,5 @@
 # LignumVTK
-`lignumvtk` and `vsvtk` programs create VTK files for [ParaView](https://www.paraview.org/). 
+`lignumvtk`, `vsvtk` and `cievtk` programs create VTK files for [ParaView](https://www.paraview.org/). 
 ParaView is a 2D and 3D computer geometry model builder, data analysis and  visualization software 
 for scientific data. The VTK library is the visualization toolkit ParaView relies on.
 
@@ -7,6 +7,9 @@ for scientific data. The VTK library is the visualization toolkit ParaView relie
 and their attributes for the final visualization with ParaView graphics pipelines. This post-processing 
 requires neither programming skills nor knowledge of VTK library. Primary purpose of the visualization
 is to extract qualitative insight from simulation results.
+
+`cievtk` creates CIE standard overcast skies mapping radiance values to VTK's geomtric objects for
+visualization.
 
 To visualize and produce journal figures for tree models and voxel spaces, read the
 [Lignum visualization](LIGNUM_VISUALIZATION.md) and [ImageMagick](IMAGE_MAGICK.md) contributing guides.
