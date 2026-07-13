@@ -76,6 +76,10 @@ set(SOURCE_FILES_VS vsvtk.cc
   src/VoxelSpaceToVTK.cc
 )
 
+set(SOURCE_FILES_CIE cievtk.cc
+  src/CIESky.cc
+)
+
 #Two examples from VTK CMakeLists.txt
 #Prevent a "command line is too long" failure in Windows.
 #set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
@@ -84,6 +88,7 @@ set(SOURCE_FILES_VS vsvtk.cc
 #Targets for trees and voxel space 
 add_executable(lignumvtk ${SOURCE_FILES_LGM})
 add_executable(vsvtk ${SOURCE_FILES_VS})
+add_executable(cievtk ${SOURCE_FILES_CIE})
 
 target_include_directories(lignumvtk PUBLIC
   include
@@ -95,17 +100,21 @@ target_include_directories(vsvtk PUBLIC
   ${CMAKE_CURRENT_LIST_DIR}/../XMLTree
   ${CMAKE_CURRENT_LIST_DIR}/../lignum-tls/include
 )
+target_include_directories(cievtk PUBLIC
+  include
+  ../c++adt/include
+)
 
 target_link_libraries(lignumvtk PRIVATE ${VTK_LIBRARIES} HDF5::HDF5  Qt5::Xml Qt5::Core sky::sky LGM::LGM cxxadt::cxxadt)
 target_link_libraries(vsvtk PRIVATE ${VTK_LIBRARIES} HDF5::HDF5  Qt5::Xml Qt5::Core sky::sky LGM::LGM cxxadt::cxxadt)
-
+target_link_libraries(cievtk PRIVATE ${VTK_LIBRARIES} cxxadt::cxxadt)
 
 #The CMake command vtk_module_autoinit is used in VTK9+ to automatically trigger
 #static code construction and object factory registration required by certain VTK modules.
 #For example the VTK render window may become unresponsive and mappers-related
 #runtime errors - such as  "Error: no override found for..." - may appear.
 vtk_module_autoinit(
-  TARGETS lignumvtk vsvtk
+  TARGETS lignumvtk vsvtk cievtk
   MODULES ${VTK_LIBRARIES}
 )
 
@@ -120,4 +129,10 @@ add_custom_command(TARGET vsvtk
   COMMENT "REMEMBER to type \"make install\" to install \"vsvtk\" into the LignumVTK working directory above."
 )
 
-install(TARGETS lignumvtk vsvtk DESTINATION "${CMAKE_CURRENT_LIST_DIR}")
+add_custom_command(TARGET cievtk
+  COMMAND echo "Compilation for cievtk  done"
+  POST_BUILD
+  COMMENT "REMEMBER to type \"make install\" to install \"cievtk\" into the LignumVTK working directory above."
+)
+
+install(TARGETS lignumvtk vsvtk cievtk DESTINATION "${CMAKE_CURRENT_LIST_DIR}")
