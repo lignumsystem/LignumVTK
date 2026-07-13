@@ -46,10 +46,11 @@ Rotate PNG file 90 degress with lossless (LZW) compression to TIFF:
 Journals have strict formatting rules to ensure images remain crisp in both digital and print layouts. 
 The following technical requirements are common:
 
++ **Column width:** 3.5-inch single column and 7-inch double column are common. 
 + **Resolution:** The usual image quality requirement is 300 DPI[^dpi].
 + **File Format:** Uncompressed TIFF is the golden standard for digital raster images, PDF for scalable vector graphics.
-+ **Color space:** Editors typically require the sRGB or Adobe RGB standards for digital publication,
-  whereas physical print editions utilize CMYK color space.
++ **Color space:** Editors typically require the *sRGB* or *Adobe RGB* for digital publication,
+  whereas physical print editions utilize *CMYK* color space.
   
 ### Setting image properties
 The general formula for image size is:
@@ -66,14 +67,14 @@ The *-resize* options set the image width explicitly while maintaining the aspec
 journal requires 300 DPI, they are actually referring to 300 PPI[^ppi] in the digital image to ensure the image
 has enough pixel density for final printing.
 
-Journals usually check the image metadata. Verify the image confirms to the requested size, the 300 DPI resolution,
-and the required color space:
+Journals typically check the image metadata. Verify the image confirms to the requested size, resolution,
+and color space:
 
     magick identify -format "%w x %h pixels, %x DPI\n" FigureOut.tiff #Size and resolution
-    magick identify -format "%x x %y %U\n" FigureOut.tiff             #Units
+    magick identify -format "%x x %y %U\n" FigureOut.tiff             #Units: PixelsPerInch
     magick identify -format "%[colorspace]\n" FigureOut.tiff          #Color space
 
-After completing these steps, the image is usually ready for submission. 
+After completing these verification steps, the image is ready for submission. 
 
 > [!IMPORTANT]
 > Always inspect the converted output image for anomalies, paying close attention to text readability
@@ -89,7 +90,7 @@ coordinator, translating color profile data seamlessly between input devices, so
 and output hardware.
 
 High-quality professional printing requires precise color management. Because final outputs depend on specific
-ink and paper characteristics, designers use robust ICC profiles alongside standardized color spaces to ensure
+ink and paper characteristics, journal designers use robust ICC profiles alongside standardized color spaces to ensure
 consistency.
 
 Some programming libraries, such as *matplotlib* and *ggplot2*, export figures without color metadata;
@@ -114,18 +115,20 @@ To query the color profile in the image file, run the following command:
     magick identify -format "%[profile:icc]\n" FigureOut_sRGB.tiff   
 
 ## Grayscale digital images
-Verify the image metadata as with color images. The expected color space should be *Gray*. The following
-command in ImageMagick produces grayscale image with 300 DPI:
+The following command produces two-column, grayscale image with 300 DPI:
 
-    magick Figure.tiff -colorspace Gray -density 300 -units PixelsPerInch FigureBW.tiff
+    magick Figure.tiff -resize 2100x -colorspace Gray -density 300 -units PixelsPerInch FigureBW.tiff
 
-Control gray-shade saturation using *-grayscale*:
+Choose the gray-shade saturation algorithm using *-grayscale*:
 
-    magick Figure.tiff -grayscale Rec709Luma -colorspace Gray -density 300 -units PixelsPerInch FigureBW.tiff
+    magick Figure.tiff -resize 2100x -grayscale Rec709Luma -colorspace Gray -density 300 -units PixelsPerInch FigureBW.tiff
 
 Grayscale conversion can sometimes affect text or line quality. Increase the contrast and sharpness:
 
-    magick Figure.tiff -colorspace Gray -density 300 -units PixelsPerInch -level 10%,90% -sharpen 0x1 FigureBW.tiff
+    magick Figure.tiff -resize 2100x -colorspace Gray -density 300 -units PixelsPerInch -level 10%,90% -sharpen 0x1 FigureBW.tiff
+
+Verify the image metadata as you would with color images; the expected color space should be *Gray*. Once verified,
+the image is ready for submission. 
 
 [^dpi]: Dots per inch.
 [^ppi]: Pixels per inch.
