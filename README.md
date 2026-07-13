@@ -45,7 +45,7 @@ of the 3D geometry models. Saving this file automatically creates a matching dir
 to store those models.
 
 ### Command line 
-The `lignumvtk` command line is:
+The `lignumvtk` command-line is:
 
 	./lignumvtk -help|-h
 	./lignumvtk -input|-i path/to/file.[h5|xml] [-list] [-output|-o path/to/file.vtpc] [-year <number>] \
@@ -103,7 +103,7 @@ to a VTK structured grid where hexahedral elements are mapped to their correspon
 voxel attributes. Default hexahedron edge size is the voxel edge size used in a simulation.
 
 ### Command line
-The `vsvtk` command line is:
+The `vsvtk` command-line is:
 
 	./vsvtk [-help|-h] -input|-i File.h5 [-list] [-output|-o File.vts] [-dataset <path_string>] [-edge <number>]
 	
@@ -119,6 +119,23 @@ Set hexahedron (voxel) edge size to 3:
 
 The `vsvtk` program converts single voxel space datasets into VTK/VTS format. 
 Therefore, the argument string for `-dataset` requires a full path name.
+
+## CIE sky
+The `cievtk` creates CIE standard overcast skies and produces VTK/VTP files.
+
+### Command line
+The `cievtk` command-line is:
+
+	./cievtk -azimuth|-a <number> -inclination|-i <number> -radiation|-r <number> -cie|-c 0|1 -output|-o <file.vtp>
+	-cie 0: CIE standard ovecast sky with equal step size for sectors
+	-cie 1: CIE standard ovecast sky with equal area size sectors
+	
+### Example
+Create a CIE sky with 8 azimuths, 9 inclinations, radiation 1200, and equal area hemisphere sectors.
+Output to the CIE.vtp file:
+
+	./cievtk -a 8 -i 9 -r 1200 -cie 1 -o CIE.vtp
+	
 
 ## Software documentation
 Produce the Doxygen documentation:
