@@ -6,6 +6,9 @@
 #include <string>
 #include <LignumVTK.h>
 #include <TMatrixN.h>
+///\file VoxelSpaceToVTK.h
+///\brief Transform VoxelSpace data for ParaView visualization
+
 namespace lignumvtk{
 
   ///\brief Transform VoxelSpace data to a VTK file for visualization

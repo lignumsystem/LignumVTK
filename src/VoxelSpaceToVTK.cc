@@ -114,6 +114,7 @@ namespace lignumvtk{
 
   VoxelSpaceToVTK& VoxelSpaceToVTK::writeStructuredGrid(const string& file_name)
   {
+    std::cout << "Writing voxel space to: " << file_name << endl;
     const char* ext = writer->GetDefaultFileExtension();
     std::string extension("."+std::string(ext));
     std::string::size_type n = file_name.rfind(extension);

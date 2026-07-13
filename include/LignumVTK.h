@@ -14,6 +14,7 @@
 #include <vtkCellData.h>
 #include <vtkLineSource.h>
 #include <vtkLine.h>
+#include <vtkQuad.h>
 #include <vtkTriangleStrip.h>
 #include <vtkCellArray.h>
 #include <vtkParametricSpline.h>
@@ -29,6 +30,7 @@
 #include <vtkMultiBlockDataSet.h>
 #include <vtkXMLMultiBlockDataWriter.h>
 #include <vtkXMLStructuredGridWriter.h>
+#include <vtkXMLPolyDataWriter.h>
 #include <vtkGlyph3DMapper.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>

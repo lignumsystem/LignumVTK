@@ -376,12 +376,11 @@ namespace lignumvtk{
 
   LignumToVTK& LignumToVTK::writePartitionedDataSetCollection(const string& file_name,int component_view)
   {
-    std::string::size_type n;
     cout << "PartitionedDataSetCollection file: " << file_name.c_str() << endl;
     const char* ext = this->collection_writer->GetDefaultFileExtension();
     //Simple extension check, c++17 std::filesystem::path is not yet available
     std::string extension("."+std::string(ext));
-    n = extension.find(VTPC_EXTENSION);
+    std::string::size_type n = file_name.rfind(extension);
     if (std::string::npos == n){
       cout << "File name extension should be: " << std::string(ext) <<endl;
     }

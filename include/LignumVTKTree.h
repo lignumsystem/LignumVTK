@@ -94,7 +94,7 @@ namespace lignumvtk{
   ///@{
   ///\brief Lignum broadleaf trees 
   typedef Tree<VTKHwSegment,VTKBud> LignumVTKTree;
-  ///\bref Lignum conifer trees
+  ///\brief Lignum conifer trees
   typedef Tree<VTKCfSegment,VTKCfBud> LignumVTKCfTree;
   ///@}
   ///\ingroup VTKTypes
@@ -199,6 +199,9 @@ namespace lignumvtk{
   ///\ingroup VTKconstants
   ///\brief VTK PartitionedDataSetCollection file extension
   const std::string VTPC_EXTENSION=".vtpc";
+  ///\ingroup VTKconstants
+  ///\brief VTK PolyData file extension
+  const std::string VTP_EXTENSION=".vtp";
   ///\ingroup VTKconstants
   ///\brief VTK MultiBlockDataSet file extension
   const std::string VTM_EXTENSION=".vtm";
@@ -648,9 +651,10 @@ namespace lignumvtk{
     ///VTK data assemblies store two views on the datasets one of which is chosen and shown in ParaView.
     ///This is for easier and logical selection of datasets for visualization.
     ///\param t Tree
+    ///\param tree_id Tree identification tag for vtkAssembly
     ///\param add_to_renderer Add vtkActors to VTK built-in renderer
     ///\retval *this The LignumVTK object
-    ///\note Current implementation is for Kite shaped leaves. Implement Triangle and Ellipse leaves
+    ///\note Current implementation is for cxxadt::Kite shaped leaves. Implement cxxadt::Triangle and cxxadt::Ellipse leaves
     ///if necessary.
     template <typename TREE>
     HwLignumToVTK& createBroadLeafTreeVTKDataSets(TREE& t, const string& tree_id, bool add_to_renderer=false);
