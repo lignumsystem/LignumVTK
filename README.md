@@ -27,7 +27,7 @@ Use CMake to compile `lignumvtk` and `vsvtk`:
 	cmake .. -DCMAKE_BUILD_TYPE=Release
 	make install
 
-The `lignumvtk` and `vsvtk` binaries are installed in the LignumVTK directory. 
+The `lignumvtk`, `vsvtk` and `cievtk` binaries are installed in the LignumVTK directory. 
 See the CMakeLists.txt file for details.
 
 ## Trees and forest stands
