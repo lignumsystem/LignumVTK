@@ -128,11 +128,11 @@ The `cievtk` command-line is:
 
 	./cievtk -azimuth|-a <number> -inclination|-i <number> -radiation|-r <number> -cie|-c 0|1 -output|-o <file.vtp>
 	-cie 0: CIE standard ovecast sky with equal step size for sectors
-	-cie 1: CIE standard ovecast sky with equal area size sectors
+	-cie 1: CIE standard ovecast sky with equal area sectors
 	
 ### Example
-Create a CIE sky with 8 azimuths, 9 inclinations, radiation 1200, and equal area hemisphere sectors.
-Output to the CIE.vtp file:
+Create a CIE sky with 8 azimuths, 9 inclinations (including one for zenith), radiation 1200,
+and with equal area hemisphere sectors. Output to the CIE.vtp file:
 
 	./cievtk -a 8 -i 9 -r 1200 -cie 1 -o CIE.vtp
 	
@@ -149,7 +149,7 @@ Open the HTML index file (macOS Terminal):
 ## lignumvtk.py
 `lignumvtk.py` served as an initial trial of the *vtk* library, mentioned here for its role
 in visualizing tree roots. The tree roots for the LIGNUM model are produced in 
-the project FineRoots. The `lignumvtk.py` program processes tree root XML files and creates VTK/VTM files
+the project FineRoots. The `lignumvtk.py` program processes tree root XML files and creates VTK/VTP files
 for ParaView. `lignumvtk.py` is a Python 3 program and requires *numpy* and *vtk* Python packages. 
 
 ## Notes
