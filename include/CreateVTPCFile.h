@@ -7,7 +7,7 @@
 #include <LignumVTKXML.h>
 #include <LignumVTKTree.h>
 ///\file CreateVTPCFile.h
-///\brief Main functions to call to create VTK/VTPC files.
+/// \brief Main functions to call to create VTK/VTPC files.
 
 using namespace lignumxml;
 namespace lignumvtk{

@@ -5,7 +5,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkXMLDataParser.h>
 ///\file LignumVTKXML.h
-///\brief Query tree type in LIGNUM xml file.
+/// \brief Query the tree classification in the LIGNUM xml file.
 
 typedef vtkSmartPointer<vtkXMLDataElement> vtkXMLElementPtr;
 

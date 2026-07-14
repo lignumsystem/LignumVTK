@@ -8,16 +8,16 @@
 #include <mathsym.h>
 #include <LignumVTK.h>
 ///\file CIESky.h
-///\brief Implement CIE skies for ParaView visualization.
+/// \brief Implement CIE skies for ParaView visualization.
 
 namespace lignumvtk{
   ///\brief  Moon-Spencer CIE overcast sky (SOC)
   class CIESOC{
   public:
-    ///\par Create standard Moon-Spencer CIE overcast sky (SOC) 
+    ///\par Create Moon-Spencer CIE overcast sky (SOC) 
     ///
-    ///Breakdown the hemisphere geometry to sectors with equal step size using *vtkSphereSource* and
-    ///assign radiant intensity to each sector. 
+    ///Breakdown the hemisphere geometry to sectors with equal step size using *vtkSphereSource* API
+    ///and assign radiant intensity to each sector. 
     ///
     ///\par Hemisphere breakdown
     ///
@@ -41,8 +41,8 @@ namespace lignumvtk{
     ///\param nazim Number of azimuths
     ///\param nincl Number of inclinations
     ///\param tot_rad Peak radiant intensity, i.e. total incoming radiation on a plane
-    ///\pre The radius of the hemisphere is 1.
-    ///\note The hemisphere division is done with *vtkSphereSource* application programming interface
+    ///\post The radius of the hemisphere is 1.
+    ///\note The hemisphere is divided using the *vtkSphereSource* API.
     CIESOC(int nazim, int nincl, double tot_rad);
     ///\brief Write \p hemisphere to a VTP file
     ///\param file_name File name
@@ -55,11 +55,11 @@ namespace lignumvtk{
   };
   
   ///\brief  Moon-Spencer CIE overcast sky (SOC), equal surface area sectors.
-  ///\note CIESOCEqualArea functions  analogously to the sky::Firmament hemisphere breakdown.
+  ///\note CIESOCEqualArea maps analogously to sky::Firmament.
   ///\sa sky::Firmament
   class CIESOCEqualArea{
   public:
-    ///\par Create standard Moon-Spencer CIE overcast sky (SOC) with equal area sectors
+    ///\par Create Moon-Spencer CIE overcast sky (SOC) with equal area sectors
     ///
     ///Breakdown the hemisphere geometry to equal area sectors and
     ///assign radiant intensity to each sector. Each sector is represented as *vtkQuad*.
@@ -72,7 +72,7 @@ namespace lignumvtk{
     ///.
     ///\par Radiant intensity
     ///
-    ///Radiant intesity of a hemisphere sector depends only  on the inclination angle:
+    ///The radiant intensity of a hemisphere sector depends only on the inclination angle:
     /// + \f$ I_s = I_z(\frac{1+2\cos\theta}{3})\f$
     /// + \f$ I_s \f$: The radiant intensity of the sector \e s.
     /// + \f$ I_z \f$: The peak radiant intensity at zenith.
@@ -105,13 +105,13 @@ namespace lignumvtk{
     /// + Substitute: \f$2\pi R^2(1-\cos\theta_k) = \frac{k}{N}2\pi R^2 \f$.
     /// + Cancel out the common  \f$2\pi R^2\f$ and rearrange: \f$ \cos\theta_k = 1-\frac{k}{N} \f$.
     /// + Take the inverse cosine both sides to solve for the boundary angle formula:
-    ///   \f$ \theta_k = \arccos(1-\frac{k}{N})\f$.
+    ///   \f$ \theta_k = \arccos(1-\frac{k}{N}) \f$.\f$\fbox{\phantom{.}}\f$
     ///.
     ///\param nazim Number of azimuths
     ///\param nincl Number of inclinations
     ///\param tot_rad Peak radiant intensity, i.e. total incoming radiation at zenith (plane sensor).
-    ///\pre The radius of the hemisphere is 1.
-    ///\post The radiant intensity is assgined based on the middle point of a hemisphere sector.
+    ///\post The radius of the hemisphere is 1.
+    ///\post The radiant intensity is assgined to the middle point of a hemisphere sector.
     CIESOCEqualArea(int nazim, int nincl, double tot_rad);
     ///\brief Write \p polydata to a file
     ///\param file_name File name

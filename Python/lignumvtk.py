@@ -1,6 +1,6 @@
 #!python
 ##\file lignumvtk.py
-#brief Read LIGNUM xml files, create LIGNUM representaion of roots and save to VTK/VTP file.
+#\brief Read LIGNUM xml files and save to VTK/VTP file.
 import numpy as np
 from scipy.spatial import distance
 from xml.etree.ElementTree import ElementTree as ET

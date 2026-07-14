@@ -1,3 +1,5 @@
+///\file LignumVTK.h
+/// \brief VTK header files
 #ifndef LIGNUMVTK_H
 #define LIGNUMVTK_H
 #include <vtkNew.h>

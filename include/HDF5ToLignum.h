@@ -4,9 +4,9 @@
 #include <LGMHDF5File.h>
 #include <Lignum.h>
 ///\file HDF5ToLignum.h
-///\brief LIGNUM HDF5 file operations.
+/// \brief LIGNUM HDF5 file operations.
 ///
-///Return LIGNUM tree strings  and voxel space 4D matrices
+/// Create LIGNUM tree strings and voxel space 4D data matrices
 
   
 namespace lignumvtk{

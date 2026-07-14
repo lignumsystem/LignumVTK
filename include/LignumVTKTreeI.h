@@ -1,5 +1,8 @@
 #ifndef LIGNUMVTK_TREE_I_H
 #define LIGNUMVTK_TREE_I_H
+///\file LignumVTKTreeI.h
+/// \brief Implementation file
+
 namespace lignumvtk{
 
   template <class TS, class BUD>

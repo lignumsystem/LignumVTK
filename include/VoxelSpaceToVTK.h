@@ -7,8 +7,9 @@
 #include <LignumVTK.h>
 #include <TMatrixN.h>
 ///\file VoxelSpaceToVTK.h
-///\brief Transform VoxelSpace data for ParaView visualization
-
+/// \brief Transform TMatrix4D  to VTK structured grid
+///
+/// Transform TMatrix4D voxel space data to a VTK structured grid for ParaView visualization.
 namespace lignumvtk{
 
   ///\brief Transform VoxelSpace data to a VTK file for visualization
