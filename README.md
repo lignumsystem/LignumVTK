@@ -8,8 +8,8 @@ and their attributes for the final visualization with ParaView graphics pipeline
 requires neither programming skills nor knowledge of VTK library. Primary purpose of the visualization
 is to extract qualitative insight from simulation results.
 
-`cievtk` creates CIE standard overcast skies mapping radiance values to VTK's geomtric objects for
-visualization.
+`cievtk` generates CIE standard overcast skies, mapping radiance values to a VTK hemisphere geometry
+for visualization.
 
 To visualize and produce journal figures for tree models and voxel spaces, read the
 [Lignum visualization](LIGNUM_VISUALIZATION.md) and [ImageMagick](IMAGE_MAGICK.md) contributing guides.
