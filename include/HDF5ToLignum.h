@@ -6,9 +6,9 @@
 ///\file HDF5ToLignum.h
 /// \brief LIGNUM HDF5 file operations.
 ///
-/// Create LIGNUM tree strings and voxel space 4D data matrices
+/// Create the LIGNUM xml tree strings and voxel space 4D data matrices
 
-  
+///\brief LIGNUM model representations in VTK 
 namespace lignumvtk{
   ///\brief VoxelSpace data for VTK vtkStructuredGrid
   ///
