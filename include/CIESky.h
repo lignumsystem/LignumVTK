@@ -106,12 +106,12 @@ namespace lignumvtk{
     /// + From \f$0\f$ to \f$ \theta_k \f$ and from \f$0\f$ to \f$ 2\pi \f$:
     ///    \f{eqnarray*}{
     ///    A(\phi_k) &=& \int_{0}^{2\pi} \int_{0}^{\theta_k} R^2\sin\theta d\theta d\phi\\
-    ///    &=& R^2(\int_{0}^{2\pi} d\phi)(\int_{0}^{\theta_k}\sin\theta d\theta) \\
-    ///    &=& 2\pi R^2\left[-\cos\theta\right]_{0}^{\theta_k} \\
+    ///    &=& R^2\left(\int_{0}^{2\pi} d\phi\right)\left(\int_{0}^{\theta_k}\sin\theta d\theta\right) \\
+    ///    &=& 2\pi R^2\left[ -\cos\theta \right]_{0}^{\theta_k} \\
     ///    &=& 2\pi R^2(-\cos\theta_k -(-cos(0))) \\
     ///    &=& 2\pi R^2(1-\cos\theta_k)
     ///    \f}
-    /// + Full hemisphere has an area \f$A_{\mathit{tot}} = 2\pi R^2(1-cos(0)) =  2\pi R^2 \f$.
+    /// +  A hemisphere has a curved surface area \f$A_{\mathit{tot}} = 2\pi R^2(1-cos(0)) =  2\pi R^2 \f$.
     ///.
     ///Boundary angle formula:
     /// + The area up to \f$ k \f$-th sector boundary must contain exactly \f$ k \f$-shares of \f$A_{\mathit{tot}}\f$:
