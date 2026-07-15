@@ -146,11 +146,11 @@ Open the HTML index file (macOS Terminal):
 
 	open DoxygenDoc/html/index.html
 
-## lignumvtk.py
-`lignumvtk.py` served as an initial trial of the *vtk* library, mentioned here for its role
-in visualizing tree roots. The tree roots for the LIGNUM model are produced in 
-the project FineRoots. The `lignumvtk.py` program processes tree root XML files and creates VTK/VTP files
-for ParaView. `lignumvtk.py` is a Python 3 program and requires *numpy* and *vtk* Python packages. 
+## fineroot.py
+`fineroot.py` served as an initial trial of the *vtk* library, mentioned here for its role
+in visualizing tree fine roots. The tree fine roots for the LIGNUM model are produced in 
+the project FineRoots. The `fineroot.py` program processes tree root XML files and creates VTK/VTP files
+for ParaView. `fineroot.py` is a Python 3 program and requires *numpy* and *vtk* Python packages. 
 
 ## Notes
 LignumVTK is a work in progress. `lignumvtk` supports kite-shaped leaves with plans to implement
