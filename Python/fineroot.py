@@ -20,7 +20,7 @@ color_table = {
     'yellow':[255,255,0],
 }
 
-# \brief Create spline segements.
+## \brief Create spline segements.
 #  Smooth tree segment connections with spline curves.
 class LignumVTKSpline:
     def __init__(self,branch_lss,cylinder:bool,color_name:str,radius_name:str,lgatype_name:str,resolution:int,
@@ -236,7 +236,7 @@ class LignumVTKSpline:
         self.vtkwriter.Update()
         self.vtkwriter.Write()
 
-#  \brief Create segment lines.
+##  \brief Create segment lines.
 #  Represent tree segments as straight lines.
 #  Do not smooth segment connections.
 class LignumVTKLine:
@@ -391,7 +391,7 @@ class LignumVTKLine:
         self.vtkwriter.AddInputDataObject(self.tube_filter.GetOutput())
         self.vtkwriter.Write()
 
-#  \brief Read LIGNUM xml file and create list of tree segments.
+##  \brief Read LIGNUM xml file and create list of tree segments.
 class LignumXML:
     """
     Read and manipulate Lignum XML file
@@ -481,7 +481,7 @@ class LignumXML:
         ts_ls = list(ts_it)
         return ts_ls
 
-# \brief Recreate branching structure.
+## \brief Recreate branching structure.
 class LignumBranches:
     def __init__(self,ts_ls):
         #Dictionary of segments partitioned based on their branching order
