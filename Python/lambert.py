@@ -1,13 +1,15 @@
-##\file lambert.py
-#\brief Lambert Azimuthal Equal-Area Projection.
-#Preserve the sector surface area when flattening a sphere to a circular disk.
+## \file lambert.py
+#  \namespace Python.lambert
+#  \brief Lambert Azimuthal Equal-Area Projection.
+#         Preserve the sector surface area when flattening an hemisphere to a circular disk.
 #
-#ParaView ProgramableFilter script. Create ProgrammableFilter and copy paste
-#the file content the Script section. Use with the CIE hemispheres created with `cievtk`.
+#         ParaView Programable Filter script. Copy paste the file content into the Script section. 
+#         Use with the CIE hemispheres created with `cievtk`.
 
 import numpy as np
 
 # Get input and output data structures
+# The 'self' refers to the ParaView Python Programable Filter
 input_data = self.GetInputDataObject(0, 0)
 output_data = self.GetOutputDataObject(0)
 
