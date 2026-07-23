@@ -3,6 +3,7 @@
 #ifndef LIGNUMVTK_H
 #define LIGNUMVTK_H
 #include <vtkNew.h>
+#include <vtkMath.h>
 #include <vtkProperty.h>
 #include <vtkInformation.h>
 #include <vtkNamedColors.h>

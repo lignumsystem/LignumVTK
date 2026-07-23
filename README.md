@@ -126,15 +126,18 @@ The `cievtk` creates CIE standard overcast skies and produces VTK/VTP files.
 ### Command line
 The `cievtk` command-line is:
 
-	./cievtk -azimuth|-a <number> -inclination|-i <number> -radiation|-r <number> -cie|-c 0|1 -output|-o <file.vtp>
-	-cie 0: CIE standard ovecast sky with equal step size for sectors
-	-cie 1: CIE standard ovecast sky with equal area sectors
+	./cievtk -azimuth|-a <number> -inclination|-i <number> -totrad |-r <number> -cie|-c <1-15,16> \
+	-params|-p <DK2002|ISO2004> -sunpolar|-sp <0-90 degrees> -sunazimuth|-sa <0-360 degrees> -output|-o <file.vtp> 
 	
+	-params: DK2002  Daruda and Kittler 2002 parameter set
+		     ISO2004 ISO 15469:2004 standard parameter set
+			
 ### Example
-Create a CIE sky with 8 azimuths, 9 inclinations (including one for zenith), radiation 1200,
-and with equal area hemisphere sectors. Output to the CIE.vtp file:
+Create a CIE sky with 8 azimuths, 9 inclinations (including one for zenith), and peak radiance at zenith 1200. 
+Use sky number 10 from CIE ISO 2004 standard parameter set. Set sun polar angle to 30 degrees and azimuth 130 degrees. 
+Output to the CIE10.vtp file:
 
-	./cievtk -a 8 -i 9 -r 1200 -cie 1 -o CIE.vtp
+	./cievtk -a 8 -i 9 -r 1200 -cie 10  -params ISO2004 -sunpolar 30 -sunazimuth 130 -o CIE10.vtp
 	
 
 ## Software documentation
