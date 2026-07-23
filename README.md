@@ -175,8 +175,8 @@ Warning messages regarding missing function files may appear during tree reconst
 These functions were used in simulations and do not prevent the generation of VTK/VTPC files.
 
 > [!CAUTION]
-> The total size of VTK data files can quickly add up. Pay attention to available disk space.
-> It may be useful to save VTK files under separate directory structure for straightforward removals. 
+> VTK data files grow rapidly, so monitor your available disk space. It is a best practice to save
+> these files in a dedicated directory structure to simplify deletion and management..
 
 ## VTK Examples
 [VTK Examples](https://examples.vtk.org/site/) has been pivotal source of information for LignumVTK
