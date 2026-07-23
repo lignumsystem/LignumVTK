@@ -85,10 +85,10 @@ int main(int argc,char* argv[])
   }
   std::cout << "Using " << default_parameters << " CIE sky parameter set" << endl;
   if (default_parameters == "ISO2004"){
-    p = lignumvtk::CIE_PARAMETERS[lignumvtk::ISO2004].at(cie_type);
+    p = lignumvtk::CIE_PARAMETERS[static_cast<size_t>(lignumvtk::CIENAMES::ISO2004)].at(cie_type);
   }
   else{
-    p = lignumvtk::CIE_PARAMETERS[lignumvtk::DK2002].at(cie_type);
+    p = lignumvtk::CIE_PARAMETERS[static_cast<size_t>(lignumvtk::CIENAMES::DK2002)].at(cie_type);
   }
   std::cout << "Using CIE Sky parameters " << p[0] << " " << p[1] << " " << p[2] << " " << p[3] << p[5] << endl; 
   lignumvtk::CIESGS sgs(nazim,nincl,p[0],p[1],p[2],p[3],p[4],sun_polar*(PI_VALUE/180.0),sun_azimuth*(PI_VALUE)/180.0,rad_total);

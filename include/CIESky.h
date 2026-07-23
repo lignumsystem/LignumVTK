@@ -49,7 +49,7 @@
 
 namespace lignumvtk{
   ///\brief Available CIE sky paramters
-  enum CIENAMES {ISO2004,DK2002};
+  enum class CIENAMES {ISO2004,DK2002};
   ///\brief CIE Standard General Sky ISO 2004 Standard parameters
   ///
   /// -# CIE Standard Overcast Sky, steep gradation
