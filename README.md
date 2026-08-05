@@ -135,9 +135,9 @@ those required to calculate radiation attenuation.
 The `cievtk` tool generates the 15 CIE Standard General Skies and exports them as VTP[^vtp] files.
 Additionally, it supports the older CIE Standard Overcast Sky (Moon-Spencer), commonly designated
 as Sky Type 16. The CIE Standard General Sky model defines relative radiance distributions
-using five variable parameters. Two sets of parameters are available, Darula and Kittler 
-2002 and CIE ISO 15469:2004 standard. For implementation steps, see *include/CIESky.h*
-and its accompanying software documentation.
+using five variable parameters. Two sets of parameters are available, Darula and Kittler
+2002 and CIE ISO 15469:2004 standard. For the implementation, see the *lignumvtk::CIESGS* class 
+in the [CIESky.h](include/CIESky.h) file, and its accompanying software documentation.
 
 ### Command line
 The `cievtk` command-line is:

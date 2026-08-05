@@ -17,10 +17,22 @@
 /// recognized mathematical model. It uses five parameters to define the relative
 /// luminance and radiance distributions of the sky. Adjusting these parameters yields
 /// the 15 CIE Standard General Sky types, which characterize atmospheres from heavily
-/// overcast to clear, from turbid to transparent. Formally defined under *ISO 15469:2004 / CIE S 011/E:2003*,
+/// overcast to clear, from turbid to transparent.
+///
+/// The model defines relative sky radiance as the ratio of a specific sky sector's radiance \f$ L_e\mathit{s} \f$
+/// to the zenith radiance \f$ L_e\mathit{z} \f$, deterimined by the scattering indicatrix \f$ f \f$ and radiance
+/// gradation \f$ \psi \f$ functions:
+///
+/// \f{eqnarray*}{
+///  L_e\mathit{rel} = \frac{ L_e\mathit{s} }{ L_e\mathit{z} } = \frac{ f(\chi)\psi(\theta) }{ f(\theta_\mathit{sun})\psi(0) }
+/// \f}
+/// where \f$ \theta \f$ denotes the polar angle and \f$\chi \f$ is the angular distance between the Sun and the
+/// sector. 
+///
+/// Formally defined under *ISO 15469:2004 / CIE S 011/E:2003*,
 /// these sky types establish a unified framework for luminance and radiance models,
 /// replacing earlier discrete, disconnected versions.
-/// \sa Implementation lignumvtk::CIESGS::relativeRadiance(double,double)const
+/// \sa lignumvtk::CIESGS::relativeRadiance(double,double)const
 ///
 /// However, the CIE Standard Overcast Sky (Moon and Spencer) remains a vital legacy metric,
 /// classified as CIE Standard General Sky Type I.1 and commonly known as Sky Type 16.
