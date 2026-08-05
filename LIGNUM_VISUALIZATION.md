@@ -62,7 +62,7 @@ pipeline object.
 ### The core filters for LIGNUM
 
 + **Extract Block:** Selects specific sections (trees, foliage, sapwood, heartwood) 
-  from the imported VTK/VTPC tree file (Partitioned Dataset Collection) to
+  from the imported VTPC tree file (Partitioned Dataset Collection) to
   a separate pipeline entry.
   
 + **Threshold:** Selects portions of an input dataset whose scalar values
@@ -163,10 +163,10 @@ various authoring applications. It is optimized for compact file sizes and seaml
 compatibility with all modern graphics APIs. The conventional file extension for
 this format is *.gltf*.
 
-## Paraview visualization for LIGNUM trees
+## Visualizing LIGNUM trees using Paraview
 Follow these steps to visualize single trees or forest stands:
 
-+ Open the `lignumvtk`-generated VTK/VTPC file.
++ Open the `lignumvtk`-generated VTPC file.
 + Adjust tree orientation for the camera view.
 + Apply the Extract Block filter  to partition your data into distinct subsets for visualization.
   + The availabe selection options depend on the structure of the `lignumvtk`-generated file.
@@ -195,12 +195,11 @@ Be careful in selecting datasets to be exported. Only the selected datasets will
 to a glTF file.
 
 ### Digital image file 
-ParaView does not have direct DPI settings for screenshot resolution, and the default save resolution
-is often too low for high-quality printing or digital scaling. To fix this, export a large-scale screenshot
-(2x or more). Then, scale down the final image to the correct size and set the requested DPI value
-in ImageMagick.
+ParaView's default export resolution is too low for high-quality printing or digital scaling.
+To fix this, export a large-scale screenshot (2x+) and use [ImageMagick](IMAGE_MAGICK.md)
+to downscale it to the correct size and desired DPI.
 
-## Blender visualization for LIGNUM trees
+## Visualizing LIGNUM trees using Blender
 Follow these steps to visualize single trees or forest stands:
 
 + Import the glTF file exported from ParaView.
@@ -233,11 +232,11 @@ a single camera for different views, position multiple cameras throughout the sc
 When using the Nishita sky model, the rendering camera must point strictly above the horizon. 
 Otherwise, Cycles fails to calculate the natural blue daylight correctly. For overhead views
 of a forest stand — where the camera is positioned above the canopy looking down — the Hošek-Wilkie
-model yields better results. The Nishita sky often overexposes default Blender settings.
-Lower the value for sun strength, or search online for optimal configurations. 
+sky model yields better results. If Blender's default Nishita sky overexposes your render,
+deacrease the sun strength.
 
 ### Digital image file 
-Blender allows you to adjust your rendering settings and color management to meet journal requirements.
+Adjust Blender's rendering and color management settings to comply with journal guidelines.
 A 3.5-inch single column image is 1050 pixels wide[^cwidth]. Adjust the following settings in Blender:
 
 + **Resolution:** (*Mission Control > Output > Resolution*)
@@ -247,17 +246,18 @@ A 3.5-inch single column image is 1050 pixels wide[^cwidth]. Adjust the followin
   + *View*: AgX and Filmic are for photorealistic rendering, Standard for better color accuracy.
 + **Rendering engine:** Select Cycles for the best quality.
 
-To maximize final image quality, double or triple the target Resolution. Then, use ImageMagick to scale
-down the image to its intended size and apply the required DPI.
+To improve the final image quality, you can experiment rendering at 2x or 3x the target Resolution.
+From there, use ImageMagick to downscale the image to its intended size and apply the required DPI.
 
-Photorealistic rendering in Blender is essential for lifelike tree visuals. However, because this
-rendering process mimics how camera film handles exposure, the final colors may shift away from
-their exact scientific data values. For color accuracy consult the Blender manual or search online.
+Blender's photorealistic rendering produces lifelike trees. However, because the rendering process 
+compresses the high dynamic range of 3D scenes -  where light intensity can mathematically range 
+from 0 to infinity - to fit standard monitor limits, final colors may shift away from exact scientific
+values.
 
-## ParaView visualization for voxel space
+## Visualing voxel spaces using ParaView
 Follow these steps to visualize a voxel space:
 
-+ Open the `vsvtk`-generated VTK/VTS voxel space file.
++ Open the `vsvtk`-generated VTS voxel space file.
 + Adjust the voxel space orientation.
 + Select foliage data (LGAWf) using the Properties panel (deselecting others).
 + Apply Threshold filter to foliage to isolate positive values (exclude zeros)
@@ -272,7 +272,7 @@ Follow these steps to visualize a voxel space:
 Select Surface as Representation for better rendering quality. Increased Sampling Dimensions
 has better compatibility with Blender.
 
-## Blender visualization for voxel space
+## Visualizing voxel spaces using Blender
 Follow these steps to visualize a voxel space:
 
 + Import the glTF file exported from ParaView.
@@ -295,23 +295,60 @@ Follow these steps to visualize a voxel space:
 
 Cap the Octree depth to 8. Each additional level increases the node count exponentially (8<sup>depth</sup>).
 
-## ParaView visualization of a CIE sky
-Follow these steps to visualize CIE[^cie] sky models:
+## Visualizing CIE sky models using ParaView
+The VTP CIE sky file contains three scalar datasets for visualization:
 
-+ Open the `cievtk`-generated VTK/VTP CIE sky file.
++ *CIE_RelativeRadiance*: Relative radiance values for sky sectors, calculated in accordance
+                          with the CIE Standard General Sky.
++ *Lz_AbsoluteRadiance*: Sectoral sky radiance, calculated using the zenith radiance as the baseline value. 
++ *Eh_AbsoluteRadiance*: Sectoral sky radiance, calculated using the horizontal irradiance as the baseline value.
+
+Follow these steps to visualize CIE Standard General Sky models.
+
++ Open the `cievtk`-generated VTP CIE sky file.
 + Orientate the CIE sky.
++ Select the scalar dataset
 + Choose suitable colormap.
 + Render the CIE sky. 
++ Save the image file.
 
 For publications, a projection of the CIE sky might be more appropriate. The `lambert.py`
 script in the *Python* directory implements the Lambert Azimuthal Equal-Area Projection,
-which preserves sector surface area when flattening an hemisphere to a circular disk.
+which preserves sector surface area when flattening a hemisphere to a circular disk.
 
 To apply `lambert.py`:
 
-+ Create *Programmable Filter* in the pipeline.
-+ Paste the file content into the Script section. 
-+ Render the CIE projection.
++ Create *Programmable Filter* in the graphics pipeline.
++ Paste the *lambert.py* file content into the Script section. 
++ Render the CIE sky projection.
++ Save the image file.
+
+## Colormaps
+When selecting colormaps for scientific data, prioritize presentation goals, perceptual uniformity,
+and colorblindness accessibility. Avoid misleading palettes that lack a natural ordering,
+such as the rainbow spectrum. In many cases, a simple grayscale colormap best fulfills
+these requirements. The example colormaps are built right into ParaView.
+
+Visualizing LIGNUM trees a natural choice is to use authentic foliage and stem colors,
+for example:
+
++ Greens: Visualize foliage mass with linear increments in line with data values.
++ erdc_brown_BW: Visualize stem thickness with linear increments in line with data values.
+
+Voxel space datasets should highlight spatial variations within an entire forest stand, for example:
+
++ Magma: Perceptually uniform and monotonic luminance, converts to grayscale.
+
+Visualizing CIE skies the primary goal is to communicate varying levels of sky brightness
+or radiant intensity, for example:
+
++ Grayscale: Quantitatively most accurate, maps data values to human preception of brightness levels.
++ Viridis, Plasma: Smooth, linear increments in line with data values, no optical illutions.
++ Black-Body radiation: Visually-striking photorealistic rendering, mimics thermal energy.
+
+Contemporary color research has already modernized default colormaps in tools such as ParaView and MATLAB.
+To dive deeper, explore the online resources like the [Color Map Advice](https://www.kennethmoreland.com/color-advice/) guide.
+
 
 [^lod]: [Level of Detail](https://en.wikipedia.org/wiki/Level_of_detail_(computer_graphics)): dynamic 3D model representation. 
 
@@ -319,6 +356,4 @@ To apply `lambert.py`:
 
 [^panel]: The View menu should be rebranded Panels to avoid confusion with Viewport views. 
 
-[^cwidth]: See [IMAGE_MAGICK](IMAGE_MAGICK.md) for details.
-
-[^cie]: International Comission on Illumination or Comission Internationale de l'Eclairage.
+[^cwidth]: See [ImageMagick](IMAGE_MAGICK.md) for details.

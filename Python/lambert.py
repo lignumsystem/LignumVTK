@@ -3,7 +3,7 @@
 #  \brief Lambert Azimuthal Equal-Area Projection.
 #         Preserve the sector surface area when flattening an hemisphere to a circular disk.
 #
-#         ParaView Programable Filter script. Copy paste the file content into the Script section. 
+#         ParaView *Programmable Filter* script. Copy paste the file content into the Script section. 
 #         Use with the CIE hemispheres created with `cievtk`.
 
 import numpy as np

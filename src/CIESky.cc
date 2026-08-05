@@ -115,8 +115,27 @@ namespace lignumvtk{
     //Vectors for points, cells and radiance data.
     vtkNew<vtkPoints> points;
     vtkNew<vtkCellArray> cells;
-    vtkNew<vtkDoubleArray> radiance_values;
-    radiance_values->SetName("RadiantIntensity");
+    //Relative radiance values
+    vtkNew<vtkDoubleArray> relative_radiance_values;
+    //Absolute radiance values based on zentith radiance 
+    vtkNew<vtkDoubleArray> absolute_radiance_values_Lz;
+    //Absolute radiance based on horizontal irradiance
+    vtkNew<vtkDoubleArray> absolute_radiance_values_Eh;
+    const std::string RELATIVE_RADIANCE("CIESOC_Moon-Spencer_RelativeRadiance");
+    const std::string ABSOLUTE_RADIANCE_Lz("CIESOC_Moon-Spencer_Lz_AbsoluteRadiance");
+    const std::string ABSOLUTE_RADIANCE_Eh("CIESOC_Moon-Spencer_Eh_AbsoluteRadiance");
+    relative_radiance_values->SetName(RELATIVE_RADIANCE.c_str());
+    absolute_radiance_values_Lz->SetName(ABSOLUTE_RADIANCE_Lz.c_str());
+    absolute_radiance_values_Eh->SetName(ABSOLUTE_RADIANCE_Eh.c_str());
+    //Equal solid angle for each sector
+    double omega = 2.0*PI_VALUE/(nazim*nincl);
+    //Sector's relative radiance contribution to absolute zenith radiance
+    //based on horizontal irradiance Eh
+    double rad_rel_cos = 0.0;
+    //Absolute zenith radiance based on horizontal irradiance
+    double Lz_Eh = 0.0;
+    //Check sum
+    vtkNew<vtkDoubleArray> polar_angles;
     
     //Inclination polar angles for equal area sectors (the angle is from zenith)
     std::vector<double> incl_angles;
@@ -153,9 +172,9 @@ namespace lignumvtk{
       //CIE standard overcast (Moon-Spencer) 
       //Relative radiant intensity in terms of angle above horizon
       //double I_rel = (1.0+2.0*std::sin(gamma))/3.0;
-      double I_rel = (1.0+2.0*std::cos(mid_theta))/3.0;
+      double Le_rel = (1.0+2.0*std::cos(mid_theta))/3.0;
       //Sector radiant intensity
-      double I_s = tot_rad*I_rel;
+      double Le_s= tot_rad*Le_rel;
       //vtkQuad connections
       for (int j = 0; j < nazim; j++){
 	//The formula maps a 2D coordinate grid to a 1D sequence
@@ -171,28 +190,66 @@ namespace lignumvtk{
 	quad->GetPointIds()->SetId(2,p3);
 	quad->GetPointIds()->SetId(3,p4);
 	cells->InsertNextCell(quad);
-	radiance_values->InsertNextValue(I_s);
+	relative_radiance_values->InsertNextValue(Le_rel);
+	absolute_radiance_values_Lz->InsertNextValue(Le_s);
+	//Add relative radiation contribution to absolute zenith radiance
+	rad_rel_cos = rad_rel_cos+Le_rel*mid_theta;
+	polar_angles->InsertNextValue(mid_theta);
       }
     }
     polydata->SetPoints(points);
     polydata->SetPolys(cells);
-    polydata->GetCellData()->SetScalars(radiance_values);
+    polydata->GetCellData()->AddArray(relative_radiance_values);
+    polydata->GetCellData()->AddArray(absolute_radiance_values_Lz);
+    //Calculate absolute zenith radiance based on horizontal irradiance
+    cout << "Calculating sector radiances with the baseline " << tot_rad << " as horizontal irradiance" <<endl;
+    Lz_Eh = (tot_rad)/(omega*rad_rel_cos);
+    //Calculate vector for absolute radiance values based on horizontal irradiance
+    vtkIdType size = relative_radiance_values->GetNumberOfValues();
+    for (int i = 0; i < size; i++){
+       double rel_rad = relative_radiance_values->GetValue(i);
+       double abs_rad_Lz_Eh = rel_rad*Lz_Eh;
+       absolute_radiance_values_Eh->InsertNextValue(abs_rad_Lz_Eh);
+    }
+    polydata->GetCellData()->AddArray(absolute_radiance_values_Eh);
+    cout << "Done" <<endl;
+    cout << "Checking sum of sector radiances against " << tot_rad << " (as horizontal irradiance)" << endl;
+    double irradiance = 0.0;
+    for (int i = 0; i < size; i++){
+      double theta = polar_angles->GetValue(i);
+      double rad = absolute_radiance_values_Eh->GetValue(i);
+      irradiance = irradiance + rad*theta*omega;
+    }
+    cout << "Sum of irradiances " << irradiance << " should match" << endl;
+    cout << "Done" << endl;
   }   
 
   CIESGS::CIESGS(int nazim, int nincl, double a1, double b1, double c1, double d1, double e1,
-		 double sun_polar1, double sun_azim1, double Le_z1)
-    :N(nazim*nincl),a(a1),b(b1),c(c1),d(d1),e(e1),sun_polar(sun_polar1),sun_azimuth(sun_azim1),Le_z(Le_z1)
-  {
+		 double sun_polar1, double sun_azim1, double rad_baseline1)
+    :N(nazim*nincl),a(a1),b(b1),c(c1),d(d1),e(e1),sun_polar(sun_polar1),sun_azimuth(sun_azim1),rad_baseline(rad_baseline1)
+  { //Solid angle for all secgtors
+    omega = (2*PI_VALUE)/N;
+    //Sun position in cartesian coordinates
     SphericalToCartesian(sun_polar,sun_azimuth,sun_cartesian);
     //Vectors for points, cells and radiance data.
     vtkNew<vtkPoints> points;
     vtkNew<vtkCellArray> cells;
     vtkNew<vtkDoubleArray> relative_radiance_values;
-    vtkNew<vtkDoubleArray> absolute_radiance_values;
-    const std::string RELATIVE_RADIANCE("RelativeRadiance");
-    const std::string ABSOLUTE_RADIANCE("AbsoluteRadiance");
+    vtkNew<vtkDoubleArray> absolute_radiance_values_Lz;
+    vtkNew<vtkDoubleArray> absolute_radiance_values_Eh;
+    const std::string RELATIVE_RADIANCE("CIE_RelativeRadiance");
+    const std::string ABSOLUTE_RADIANCE_Lz("Lz_AbsoluteRadiance");
+    const std::string ABSOLUTE_RADIANCE_Eh("Eh_AbsoluteRadiance");
     relative_radiance_values->SetName(RELATIVE_RADIANCE.c_str());
-    absolute_radiance_values->SetName(ABSOLUTE_RADIANCE.c_str());
+    absolute_radiance_values_Lz->SetName(ABSOLUTE_RADIANCE_Lz.c_str());
+    absolute_radiance_values_Eh->SetName(ABSOLUTE_RADIANCE_Eh.c_str());
+    //Sector's relative radiance contribution to absolute zenith radiance
+    //based on horizontal irradiance Eh
+    double rad_rel_cos = 0.0;
+    //Absolute zenith radiance based on horizontal irradiance
+    double Lz_Eh = 0.0;
+    //Check sum
+    vtkNew<vtkDoubleArray> polar_angles;
     
     //Inclination polar angles for equal area sectors (the angle is from zenith)
     std::vector<double> incl_angles;
@@ -223,6 +280,7 @@ namespace lignumvtk{
     //Connect all points, from first to last
     //Set radiant intensity
     int num_cols = nazim+1;
+    cout << "Calculating sector radiances with the baseline " << rad_baseline << " as peak zenith radiance" <<endl;
     for (int i = 0; i < nincl; i++){
       //Calculate midpoint for polar angle
       double mid_theta = (incl_angles[i]+incl_angles[i+1])/2.0;
@@ -237,7 +295,7 @@ namespace lignumvtk{
 	double chi = std::acos(acos_chi);
 	//Relative and absolute radiances
 	double Le_rel = relativeRadiance(mid_theta,chi);
-	double Le_s = (this->Le_z)*Le_rel;
+	double Le_s = (this->rad_baseline)*Le_rel;
 	//The formula maps a 2D coordinate grid to a 1D sequence
 	//Index = (Row + Total columns)+Column
 	vtkIdType p1 = i*num_cols+j; //Top left corner
@@ -252,13 +310,38 @@ namespace lignumvtk{
 	quad->GetPointIds()->SetId(3,p4);
 	cells->InsertNextCell(quad);
 	relative_radiance_values->InsertNextValue(Le_rel);
-	absolute_radiance_values->InsertNextValue(Le_s);
+	absolute_radiance_values_Lz->InsertNextValue(Le_s);
+	//Add relative radiation contribution to absolute zenith radiance
+	rad_rel_cos = rad_rel_cos+Le_rel*mid_theta;
+	polar_angles->InsertNextValue(mid_theta);
       }
     }
     polydata->SetPoints(points);
     polydata->SetPolys(cells);
     polydata->GetCellData()->AddArray(relative_radiance_values);
-    polydata->GetCellData()->AddArray(absolute_radiance_values);
+    polydata->GetCellData()->AddArray(absolute_radiance_values_Lz);
+    cout << "Done" <<endl;
+    //Calculate absolute zenith radiance based on horizontal irradiance
+    cout << "Calculating sector radiances with the baseline " << rad_baseline << " as horizontal irradiance" <<endl;
+    Lz_Eh = (this->rad_baseline)/(omega*rad_rel_cos);
+    //Calculate vector for absolute radiance values based on horizontal irradiance
+    vtkIdType size = relative_radiance_values->GetNumberOfValues();
+    for (int i = 0; i < size; i++){
+       double rel_rad = relative_radiance_values->GetValue(i);
+       double abs_rad_Lz_Eh = rel_rad*Lz_Eh;
+       absolute_radiance_values_Eh->InsertNextValue(abs_rad_Lz_Eh);
+    }
+    polydata->GetCellData()->AddArray(absolute_radiance_values_Eh);
+    cout << "Done" <<endl;
+    cout << "Checking sum of sector radiances against " << rad_baseline << " (as horizontal irradiance)" << endl;
+    double irradiance = 0.0;
+    for (int i = 0; i < size; i++){
+      double theta = polar_angles->GetValue(i);
+      double rad = absolute_radiance_values_Eh->GetValue(i);
+      irradiance = irradiance + rad*theta*omega;
+    }
+    cout << "Sum of irradiances " << irradiance << " should match" << endl;
+    cout << "Done" << endl;
   }
   
   double CIESGS::relativeRadiance(double theta, double chi)const

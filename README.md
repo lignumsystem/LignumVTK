@@ -8,11 +8,11 @@ and their attributes for the final visualization with ParaView graphics pipeline
 requires neither programming skills nor knowledge of VTK library. Primary purpose of the visualization
 is to extract qualitative insight from simulation results.
 
-`cievtk` generates CIE standard overcast skies, mapping radiance values to a VTK hemisphere geometry
+`cievtk` generates CIE[^cie] Standard General Skies, mapping radiance values to a VTK hemisphere geometry
 for visualization.
 
-To visualize and produce journal figures for tree models and voxel spaces, read the
-[Lignum visualization](LIGNUM_VISUALIZATION.md) and [ImageMagick](IMAGE_MAGICK.md) contributing guides.
+To create journal figures for tree models, voxel spaces, and CIE Standard General Skies,
+see the [Lignum visualization](LIGNUM_VISUALIZATION.md) and [ImageMagick](IMAGE_MAGICK.md) contributing guides.
 
 ## Building LignumVTK
 ### Prerequisites 
@@ -82,24 +82,32 @@ to spline tubes approximating tube cylinders.
 
 	./lignumvtk -input File.h5 -output File.vtpc -substring Tree_11 -spline 10 -sides 20
 
-**Example 8**: Create component view:
+**Example 8**: Create forest view for the year 40:
 
-		./lignumvtk -input File.h5 -output File.vtpc -dataset Tree_8 -view 1
-		
-In summary, the option *-dataset* uses exact match to find the dataset, the option *-substring* searches 
-dataset paths with substring matches and the option *-year* based on simulation year.
-The options *-year*, *-dataset* and *-substring* are mutually exclusive.
-The options *-spline* and *-sides* set the spline tube segment length and roundness.
+		./lignumvtk -input File.h5 -output File.vtpc -year 40 -view 1
 
-The option *-view* assembles VTK datasets for ParaView. The default is tree view (*-view 0*), which organizes 
-spline segments and foliage by individual trees. Alternatively, component view (*-view 1*) groups geometry 
-by type: foliage, segments, and heartwood. The former enables detailed inspection of specific trees,
-whereas the latter focuses on forest stand visualization. 
+In summary, the following, mutually exclusive three options locate tree datasets using different criteria:
+
++ *-dataset*: Finds matches using exact dataset names.
++ *-substring*: Searches dataset paths using partial matches.
++ *-year*: Filters datasets by the specific simulation year.
+
+The *-view* option controls how VTK datasets are structured and organized for display in ParaView:
+
++ Tree view (*-view 0*, Default): Groups VTK datasets by individual trees for detailed, tree-wise inspection.
++ Forest view (*-view 1*): Groups VTK datasets into foliage, segments, and heartwood.
+                           Ideal for forest stand visualization.
+
+Use the *-spline* option to set the spline segment length and the *-sides* option to set the roundness
+of the spline tube.
+
+The output VTPC and VTP files contain scalar datasets to visualize metabolic processes,
+tree segment dimensions, and foliage.
 
 ## Voxel spaces
 The `vsvtk` program processes HDF5 voxel space datasets to produce VTS[^vts] output.
 It reconstructs voxel space and voxel data 4D matrix representation, converting it
-to a VTK structured grid where hexahedral elements are mapped to their corresponding
+to a VTK structured grid, where hexahedral elements are mapped to their corresponding
 voxel attributes. Default hexahedron edge size is the voxel edge size used in a simulation.
 
 ### Command line
@@ -120,14 +128,16 @@ Set hexahedron (voxel) edge size to 3:
 The `vsvtk` program converts single voxel space datasets into VTS format. 
 Therefore, the argument string for `-dataset` requires a full path name.
 
-## CIE sky
-The cievtk tool generates the 15 CIE Standard General Skies and exports them as VTP files.
-Additionally, it supports the older CIE Standard Overcast Sky (Moon-Spencer), commonly designated
-as Sky Type 16. The CIE Standard General Sky model itself defines relative radiance distributions
-using five variable parameters. Two sets of parameters are available, Darula and Kittler 
-2002 and CIE ISO 15469:2004 standard. For implementation steps, see [CIESky.h](\ref include/CIESky.h) 
-and its accompanying software documentation.
+The VTS output file contains ten scalar datasets for visualization, most notably
+those required to calculate radiation attenuation.
 
+## CIE Standard General Sky
+The `cievtk` tool generates the 15 CIE Standard General Skies and exports them as VTP[^vtp] files.
+Additionally, it supports the older CIE Standard Overcast Sky (Moon-Spencer), commonly designated
+as Sky Type 16. The CIE Standard General Sky model defines relative radiance distributions
+using five variable parameters. Two sets of parameters are available, Darula and Kittler 
+2002 and CIE ISO 15469:2004 standard. For implementation steps, see *include/CIESky.h*
+and its accompanying software documentation.
 
 ### Command line
 The `cievtk` command-line is:
@@ -145,18 +155,18 @@ azimuth of 130°, then export the output to CIESky10.vtp.
 
 	./cievtk -a 8 -i 9 -r 1200 -cie 10  -params ISO2004 -sunpolar 30 -sunazimuth 130 -o CIESky10.vtp
 	
-The output file contains three scalar datasets for visualization:
+The VTP output file contains three scalar datasets for visualization:
 
-+ *CIE_RelativeRadiance*: Relative radiance values for sky sectors are calculated in accordance with the CIE Standard General Sky.
-+ *Lz_AbsoluteRadiance*: Sectoral sky radiance calculated using the baseline value as the zenith radiance.
-+ *Eh_AbsoluteRadiance*: Sectoral sky radiance calculated using the baseline value as the horizontal irradiance.
++ *CIE_RelativeRadiance*: Sectoral relative radiance via CIE Standard General Sky.
++ *Lz_AbsoluteRadiance*: Sectoral radiance, where the baseline is zenith radiance.
++ *Eh_AbsoluteRadiance*: Sectoral radiance, where the baseline is horizontal irradiance.
 
 ## Software documentation
 Produce the Doxygen documentation:
 
 	doxygen Doxyfile 2> error.txt
 	
-Open the HTML index file (macOS Terminal):
+Open the HTML index file:
 
 	open DoxygenDoc/html/index.html
 
@@ -186,10 +196,14 @@ These functions were used in simulations and do not prevent the generation of VT
 > these files in a dedicated directory structure to simplify deletion and management..
 
 ## VTK Examples
-[VTK Examples](https://examples.vtk.org/site/) has been pivotal source of information for LignumVTK
-implementation.
+[VTK Examples](https://examples.vtk.org/site/) served as a pivotal resource for the LignumVTK implementation.
 
-[^vtpc]: VTK Partitioned Data Set Collection file format metadata header file.
+[^cie]: Comission Internationale de l'Eclairage, or International Comission on Illumination.
+
+[^vtpc]: VTK Partitioned Dataset Collection file format metadata header file.
 
 [^vts]: VTK Structured Grid file format.
+
+[^vtp]: VTK PolyData file format. 
+
 

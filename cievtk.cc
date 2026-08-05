@@ -39,7 +39,7 @@ int main(int argc,char* argv[])
   }
   if (ParseCommandLine(argc,argv,"-totrad",argument) || ParseCommandLine(argc,argv,"-r",argument)){
     rad_total =std::stod(argument.c_str());
-    std::cout << "Using " << rad_total << " total incoming radiant flux" << std::endl;  
+    std::cout << "Using " << rad_total << " as baseline" << std::endl;  
   }
   if (ParseCommandLine(argc,argv,"-cie",argument) || ParseCommandLine(argc,argv,"-c",argument)){
     cie_type =std::stoi(argument.c_str());

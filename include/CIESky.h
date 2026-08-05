@@ -19,53 +19,71 @@
 /// the 15 CIE Standard General Sky types, which characterize atmospheres from heavily
 /// overcast to clear, from turbid to transparent. Formally defined under *ISO 15469:2004 / CIE S 011/E:2003*,
 /// these sky types establish a unified framework for luminance and radiance models,
-/// replacing earlier discrete versions.
-/// \sa lignumvtk::CIESGS::relativeRadiance(double,double)const
+/// replacing earlier discrete, disconnected versions.
+/// \sa Implementation lignumvtk::CIESGS::relativeRadiance(double,double)const
 ///
 /// However, the CIE Standard Overcast Sky (Moon and Spencer) remains a vital legacy metric,
 /// classified as CIE Standard General Sky Type I.1 and commonly known as Sky Type 16.
 /// It is defined in *CIE S 017:2020 (ILV, term 17-29-111)* as the ratio:
-/// \f{eqnarray*}
+/// \f{eqnarray*}{
 ///   \frac{L_e\gamma}{L_ez} = (1 + 2\sin\gamma) / 3
 /// \f}
 /// where \f$ L_e\gamma \f$ is the radiance of a sky sector in the direction at an angle
 /// \f$ \gamma \f$ above horizon and \f$ L_ez \f$ the radiance at the zenith. 
+/// \sa Implementation lignumvtk::CIESOCEqualArea
 ///
 /// \par Radiometric terms
 ///
-/// Imprecise use of radiometric terms often leads to ambiguity. The following table presents the five core concepts.
+///Imprecise radiometric terminology and overlapping photometric concepts often cause confusion.
+///The \ref "Table 1"  clarifies these issues by presenting the five core concepts for both fields:
 ///
-/// | Quantity          | Symbol         | SI Unit                        | Definition       | Informally |
-/// | :---------------- | :------------: | :----------------------------- | :--------------- |:----------------------| 
-/// | Radiant energy    | \f$ Q_e \f$    | \f$ J \f$                      | Total energy travelling in waves (Joules)                    | Total output        |
-/// | Radiant flux      | \f$ \Phi_e \f$ | \f$ W \f$                      | Power, total energy emitted per second (Watt = J/s)          | Speed of energy     |
-/// | Radiant intensity | \f$ I_e \f$    | \f$ W\mathit{sr}^{-1} \f$      | Power emitted in a specific direction (Watts per steradian)  | Directional power   | 
-/// | Irradiance        | \f$ E_e \f$    | \f$ Wm^{-2} \f$                | Power landing on a flat surface  (Watts per square meter)    | Incoming power      |
-/// | Radiance          | \f$ L_e \f$    | \f$ Wm^{-2}\mathit{sr}^{-1} \f$| Power emitted from a surface area in a specific direction (Watts per square meter per steradian)| Visual brightness |
-///
-/// The subscript *e* (for *energetic*) is often used in litterature to distinguish from photometric terms.
-/// A radian is the SI unit for measuring two-dimensional plane angles, while a steradian is the SI unit for
-/// measuring three-dimensional solid angles.
+/// <table>
+/// <caption id="Table 1">Table 1: Radiometry core concepts</caption>
+/// <tr><th colspan=5 style="text-align: left;"> Radiometric terminology <th colspan=4 style="text-align: left;"> Photometric terminology
+/// <tr>
+/// <td> Quantity <td>  Symbol <td> Definition <td> Note <td> SI unit <td> Quantity <td> Symbol <td> Definition <td> SI unit
+/// <tr>
+/// <td> Radiant energy <td> \f$ Q_e \f$ <td> Total energy travelling in waves <td> Energy on the move<td> \f$ \mathrm{joule}, \mathrm{J} \f$
+/// <td> Luminous energy <td> \f$ Q_v \f$ <td> Perceived total energy of visible light <td> \f$ \mathrm{lumen}\mbox{-}\mathrm{second}, \mathrm{lm} \cdot s \quad (\mathrm{talbot}) \f$
+/// <tr>
+/// <td> Radiant flux <td> \f$ \Phi_e \f$ <td> Power, total energy emitted per second <td >Integrate \f$ \Phi_e \f$ over time to obtain \f$ Q_e \f$ <td>  \f$\mathrm{watt}, \mathrm{W} = \mathrm{J} \cdot \mathrm{s}^{-1} \f$
+/// <td> Luminous flux <td> \f$ \Phi_v \f$ <td> Rate of flow of the visible light per second <td> \f$ \mathrm{lumen}, \mathrm{lm} \f$
+/// <tr>
+/// <td style="white-space: nowrap;"> Radiant intensity  <td>  \f$ I_e \f$ <td> Power emitted in a specific direction <td style="white-space: nowrap;"> Point source, focus on the beam to a specific direction <td> \f$ \mathrm{W} \cdot \mathrm{sr}^{-1} \f$
+/// <td style="white-space: nowrap;"> Luminous intensity <td>  \f$ I_v \f$ <td style="white-space: nowrap;"> Power of emitted visible light in a specific direction  <td> \f$ \mathrm{candela}, \mathrm{cd} = \mathrm{lm}\cdot\mathrm{sr}^{-1} \f$
+/// <tr>
+/// <td> Irradiance <td> \f$ E_e \f$ <td> Radiant flux \f$ \Phi_e \f$ landing on a flat surface <td> Intensity of the radiant power, focus on the target area<td> \f$ \mathrm{W} \cdot \mathrm{m}^{-2} \f$
+/// <td> Illuminance <td> \f$ E_v \f$ <td>  Total luminous flux incident on a surface <td> \f$ \mathrm{lux}, \mathrm{lx} = \mathrm{lm} \cdot \mathrm{m}^{-2} \f$
+/// <tr>
+/// <td> Radiance <td> \f$ L_e \f$  <td style="white-space: nowrap;"> Power emitted from a surface area in a specific direction <td style="white-space: nowrap;"> Area source, focus on the area and its direction <td>  \f$ \mathrm{W}\cdot\mathrm{m}^{-2}\cdot\mathrm{sr}^{-1} \f$
+/// <td> Luminance <td> \f$ L_e \f$ <td> Perceived surface brightness <td> \f$ \mathrm{cd} \cdot \mathrm{m}^{-2} \quad (\mathrm{nit, nt}) \f$
+/// </table>
+/// 
+///The symbol subscripts *e* (for energetic) and *v* (for visual) freqently distinguish radiometric terms
+///from photometric ones in the literature. Steradian (*sr*) is the SI unit for measuring three-dimensional solid angles.
 
 namespace lignumvtk{
   ///\brief Available CIE sky paramters
   enum class CIENAMES {ISO2004,DK2002};
-  ///\brief CIE Standard General Sky ISO 2004 Standard parameters
+  ///\brief CIE Standard General Sky ISO 15469:2004 Standard parameters
   ///
   /// -# CIE Standard Overcast Sky, steep gradation
+  ///  - Zenith to horizon ratio approximately 10:3
+  ///  - Sky Type 1 is parameterized to replicate the Moon-Spencer standard overcast sky.
   /// -# Overcast, steep gradation, slight brightening towards the sun
-  /// -# Overcast, moderately graded, azimuthal uniformity
-  /// -# Overcast, moderately graded, slight brightening towards the sun
+  /// -# Overcast, moderate gradation, azimuthal uniformity
+  ///  - Zenith to horizon ratio approximately 10:7   
+  /// -# Overcast, moderate gradation, slight brightening towards the sun
   /// -# Invariably uniform cloudy sky, no vertical gradation or azimuthal variation
   /// -# Partly cloudy, slight brightening towards the sun
   /// -# Partly cloudy, distinctive corona effect near the sun
   /// -# Partly cloudy, no vertical gradation, sharp solar corona
-  /// -# Partly cloudy, moderately graded with a distinct solar corona
-  /// -# Partly cloudy, moderately graded, bright intense corona
+  /// -# Partly cloudy, moderate gradation with a distinct solar corona
+  /// -# Partly cloudy, moderate gradation, bright intense corona
   /// -# White-blue clear sky, low horizon gradation, sharp solar corona
-  /// -# CIE Standard Clear Sky, low-turbid clear atmosphere
-  /// -# CIE Standard Clear Sky, polluted atmosphere with wide solar corona
-  /// -# Clear sky, highly polluted/turbid atmosphere, immense solar corona
+  /// -# Clear Sky, low-turbid clear atmosphere
+  /// -# Clear Sky, polluted atmosphere with wide solar corona
+  /// -# Clear sky, highly polluted turbid atmosphere, immense solar corona
   /// -# Very clear sky, crisp clean atmosphere with a blindingly sharp solar corona
   const std::map<int, std::vector<double>> CIE_SKY_ISO_2004_STANDARD_PARAMETERS = {
     {1,  { 4.0, -0.7,   0.0, -1.0, 0.0  }},
@@ -98,8 +116,8 @@ namespace lignumvtk{
   /// -# Partly cloudy, with the obscured sun
   /// -# Partly cloudy, with brighter circumsolar region
   /// -# White-blue sky with distinct solar corona
-  /// -# CIE Standard Clear Sky, clear blue sky with low turbidity
-  /// -# CIE Standard Clear Sky, wide scattering glare, polluted atmosphere
+  /// -# Clear Sky, clear blue sky with low turbidity
+  /// -# Clear Sky, wide scattering glare, polluted atmosphere
   /// -# Cloudless turbid clear sky with broad solar corona
   /// -# White-blue turbid sky with broad solar corona
   const std::map<int, std::vector<double>> DARULA_KITTLER_2002_PARAMETERS = {
@@ -230,6 +248,7 @@ namespace lignumvtk{
     ///Breakdown the hemisphere geometry to equal area sectors and
     ///assign radiant intensity to each sector. Each sector is represented as *vtkQuad*.
     ///
+    ///\anchor hemisphere_breakdown
     ///\par Hemisphere breakdown
     ///
     ///+ Inclinations: The boundary angle formula for \f$ N \f$ equal area horizontal zone bands:
@@ -244,6 +263,7 @@ namespace lignumvtk{
     /// + \f$ I_z \f$: The peak radiant intensity at zenith.
     /// + \f$ \theta \f$: The polar angle
     ///.
+    ///
     ///\par Mathematical details for the boundary angle formula
     ///
     ///Define:
@@ -281,14 +301,18 @@ namespace lignumvtk{
   ///\brief CIE Standard General Sky (Darula-Kittler-Perez)
   class CIESGS: public CIEFile{
   public:
-    ///\brief Constructor.
+    ///\brief Create any of the 15 CIE standard general skies.
     ///
-    ///Create any of the 15 CIE standard general skies.
-    ///Calculate the scalar vectors:
-    /// + Relative radiance for each sector
-    /// + Absolute radiance for each sector
+    ///Breakdown the hemisphere geometry to equal area sectors.
+    ///Each sector is represented as *vtkQuad*. For mathemtical
+    ///details consult \ref hemisphere_breakdown "Hemisphere breakdown".
+    ///
+    ///Calculate the three scalar vectors:
+    /// + CIE_RelativeRadiance: Standard General Sky relative radiance for each sector
+    /// + Lz_AbsoluteRadiance: absolute radiance for each sector based on zenith radiance
+    /// + Eh_AbsoluteRadiance: absolute radiance for each sector based on horizontal irradiance
     ///.
-    ///Store the scalar vectors in \p polydata for visualization.
+    ///\post The three scalar vectors are in \p CIEFile::polydata for visualization.    
     ///\param nazim Number of azimuths
     ///\param nincl Number of inclinations
     ///\param a Gradation: horizon brightness 
@@ -298,9 +322,109 @@ namespace lignumvtk{
     ///\param e Indicatrix: atmospheric backscattering
     ///\param sun_polar Sun polar angle, radians
     ///\param sun_azim Sun azimuth angle, radians
-    ///\param Le_z Peak radiance at zenith.
-    ///\note To convert \f$ d \f$ degrees to radians: \f$ \mathit{rad} = d\frac{\pi}{180^\circ} \f$ 
-    CIESGS(int nazim, int nincl, double a, double b, double c, double d, double e, double sun_polar, double sun_azim, double Le_z);
+    ///\param rad_baseline Baseline radiation 1. Zenith radiance 2. Horizontal irradiance
+    ///
+    ///\note To convert degrees to radians multiply by \f$ \pi/180 \f$.
+    ///For example:
+    ///\f{eqnarray*}{
+    /// 1^\circ &=& 1 \frac{\pi}{180}\mathrm{rad} \approx 0.0175 \mathrm{rad} \\
+    /// 45^\circ &=& 45 \frac{\pi}{180}\mathrm{rad} \approx 0.7854 \mathrm{rad}
+    ///\f}
+    ///The \p sun_polar and \p sun_azim values can be more intuitive in degrees.
+    ///
+    ///\par Mathematical details for sector radiance
+    ///
+    ///The calculation method for each sector's absolute radiance depends on whether the baseline
+    ///represents the zenith radiance (\f$ L_z \f$) or the horizontal irradiance on a plane (\f$ E_h \f$).
+    ///The calculation is straightforward with zenith radiance. If the horizontal irradiance is used,
+    ///it requires reconstructing the zenith radiance first.
+    ///
+    ///\par Baseline: zenith radiance
+    ///
+    ///The CIE Standard General Sky radiance distribution  model natively calculates relative radiance
+    ///values (\f$ r_k \f$) for each sector \f$ k \f$. The radiance value (\f$ L_k \f$) for each sector
+    ///is a result of direct multiplication:
+    ///\f{eqnarray*}{
+    /// L_k = r_k \times L_z
+    ///\f}
+    ///
+    ///\par Baseline: horizontal irradiance
+    ///
+    ///Lambert's cosine law of incidence states that the irradiance on a surface decreases proportionally
+    ///with the cosine of the angle of incidence — the angle between the incoming radiation and the surface
+    ///normal — because the same amount of radiant flux is spread over a larger surface area.
+    ///
+    ///Because each sector in CIESGS has equal area on the sphere surface they share the same solid angle:
+    ///\f{eqnarray*}{
+    /// \Delta\Omega = \frac{2\pi}{N}
+    ///\f}
+    ///where \f$ N \f$  is the number of sectors. 
+    ///
+    ///Each sector contributes to horizontal irradiance (\f$ E_h \f$) according to Lambert's cosine law of incidence and
+    ///sector's absolute radiance (\f$L_k\f$).
+    ///\f{eqnarray*}{
+    /// E_h = \sum_{k=1}^{N} L_k\cos\theta_k\Delta\Omega
+    ///\f}
+    ///where \f$ \theta_k \f$ is the sector's polar angle.
+    ///
+    ///Substitute \f$ L_k \f$ with the formula from the zenith baseline radiance:
+    ///\f{eqnarray*}{
+    ///  E_h = \sum_{k=1}^{N} r_kL_z\cos\theta_k\Delta\Omega
+    ///\f}
+    ///
+    ///Rearrange the constant \f$ \Delta\Omega\f$ and solve for \f$ L_z \f$:
+    ///\f{eqnarray*}{
+    /// L_z = \frac{E_h}{\Delta\Omega\sum_{k=1}^{N}r_k\cos\theta_k}
+    ///\f}
+    ///
+    ///Once \f$ L_z \f$ is calculated, assign sector radiances following the baseline method for the zenith radiance.
+    ///
+    ///\par On the Lambert's cosine law of incidence
+    ///
+    ///Define a uniform parallel beam of radiation with a cross-sectional area \f$ A_{\mathit{beam}} \f$
+    ///and carrying radiant flux \f$ \Phi \f$. The irradiance \f$ E_0 \f$ passing perpendicularly through the
+    ///beam is:
+    ///\f{eqnarray*}{
+    /// E_0 = \frac{\Phi}{A_{\mathit{beam}}}
+    ///\f}
+    ///
+    ///When the beam hits a flat surface at an angle \f$ \theta \f$ the irradiance spreads out
+    ///to surface area \f$ A_{\mathit{s}}\f$. Using basic trigonotmetry:
+    ///\f{eqnarray*}{
+    /// A_{\mathit{beam}} = A_{\mathit{s}}\cos\theta
+    ///\f}
+    ///Rearranging gives:
+    ///\f{eqnarray*}
+    /// A_{\mathit{s}} = \frac{A_{\mathit{beam}}}{\cos\theta}
+    ///\f}
+    ///
+    ///By definition the irradiance received (\f$ E\f$) on the actual surface \f$ A_s \f$ is:
+    ///\f{eqnarray*}{
+    /// E = \frac{\Phi}{A_s}
+    ///\f}
+    ///Using substitutions:
+    ///\f{eqnarray*}{
+    /// E = \frac{\Phi}{\frac{A_{\mathit{beam}}}{cos\theta}} = \left(\frac{\Phi}{A_{\mathit{beam}}}\right)\cdot cos\theta = E_0\cos\theta
+    ///\f}
+    ///
+    ///Alternatively, the normal irradiance is the product of radiance (\f$ L \f$) and
+    ///the subtended solid angle (\f$ \Delta\Omega \f$):
+    ///\f{eqnarray*}{
+    /// E_0 = L\Delta\Omega
+    ///\f}
+    ///Incorporating \f$ E_0 \f$ the equation for \f$ E \f$ expands to:
+    ///\f{eqnarray*}{
+    /// E = L\cos\theta\Delta\Omega
+    ///\f}
+    ///
+    ///With the hemisphere the same decline of the radiant energy applies to every individual ray
+    ///in the equation for \f$E_h\f$.\f$\fbox{\phantom{.}}\f$
+    ///
+    ///\par Sanity test for sector radiances
+    ///
+    ///Because each sector's radiance contributes via Lambert's cosine law, the total horizontal irradiance \f$E_{h}\f$
+    ///equals the sum of all cosine-weighted sector radiances.
+    CIESGS(int nazim, int nincl, double a, double b, double c, double d, double e, double sun_polar, double sun_azim, double rad_baseline);
     ///\brief Relative radiance function.
     ///
     ///Calculate relative radiance for a sky sector. 
@@ -311,7 +435,7 @@ namespace lignumvtk{
     ///A sky sector center point is defined by two parameters \p theta and \p chi.
     ///Relative radiance is the ratio of sky sector radiance \f$ L_e\mathit{s} \f$ to zenith radiance \f$ L_e\mathit{z} \f$.
     ///It is defined by the scattering indicatrix \f$ f \f$ and radiance gradation \f$ \psi \f$ functions.
-    ///\f{eqnarray*}
+    ///\f{eqnarray*}{
     ///  L_e\mathit{rel} = \frac{ L_e\mathit{s} }{ L_e\mathit{z} } = \frac{ f(\chi)\psi(\theta) }{ f(\theta_\mathit{sun})\psi(0) }
     ///\f}
     ///where \f$ \theta_\mathit{sun} \f$ is the sun polar angle. 
@@ -325,7 +449,7 @@ namespace lignumvtk{
     ///\return Radiance gradation
     ///
     ///The gradation function \f$ \psi \f$ relates radiance of a sky and its polar angle:
-    ///\f{eqnarray*}
+    ///\f{eqnarray*}{
     /// \psi(\theta) = 1 + a\exp(b/cos\theta)
     ///\f}
     ///where \f$ a \f$ and \f$ b \f$ are parameters.
@@ -340,7 +464,7 @@ namespace lignumvtk{
     ///
     ///The scattering indicatrix function \f$ f \f$ relates relative radiance of a sky sector to its angular
     ///distance from the sun:
-    ///\f{eqnarray*}
+    ///\f{eqnarray*}{
     /// f(\chi) = 1+c(\exp(d\chi)-exp(d\pi/2))+e\cos^2\chi
     ///\f}
     ///where \f$ c, d \f$ and \f$ e \f$ are parameters.
@@ -351,13 +475,23 @@ namespace lignumvtk{
     ///\sa CIESGS::e
     double indicatrix(double chi)const;
   private:
-    int N;   ///< Number of hemisphere sectors
+    int N;///< Number of hemisphere sectors
+    double omega;///< Sector solid angle
     double a;///< Horizon brightness relative to the rest of the sky. CIESGS::gradation() parameter
     double b;///< Rate of radiance change between the horizon and the zenith, CIESGS::gradation() function
     double c;///< The solar corona intensity, CIESGS::indicatrix() parameter
     double d;///< The solar corona glare width, CIESGS::indicatrix() parameter
-    double e;///< Backscattering or second-order reflections of radiation. Diffuse atmospheric component, CIESGS::indicatrix() parameter
-    double Le_z;///< Peak radiance at zenith.
+    ///\brief Backscattering or second-order reflections of radiation.
+    ///
+    ///Diffuse atmospheric component, CIESGS::indicatrix() parameter
+    double e;
+    ///\brief Baseline radiation with two interpretation for visualization.
+    ///
+    ///-# Lz: Radiance at zenith
+    ///-# Eh: Horizontal irradinace
+    ///.
+    ///Both interpretations have own methods to assign sector absolute radiance.
+    double rad_baseline;
     double sun_polar;///< Sun polar angle, radians
     double sun_azimuth;///< Sun azimuth angle, radians
     double sun_cartesian[3];///< Sun position, cartesian coordinates
