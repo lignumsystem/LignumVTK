@@ -24,7 +24,7 @@
 /// gradation \f$ \psi \f$ functions:
 ///
 /// \f{eqnarray*}{
-///  L_e\mathit{rel} = \frac{ L_e\mathit{s} }{ L_e\mathit{z} } = \frac{ f(\chi)\psi(\theta) }{ f(\theta_\mathit{sun})\psi(0) }
+///  L_e\mathit{rel} = \frac{ L_e\mathit{s} }{ L_e\mathit{z} } = \frac{ f(\chi)\psi(\theta_{\mathit{sector}}) }{ f(\theta_\mathit{sun})\psi(0) }
 /// \f}
 /// where \f$ \theta \f$ denotes the polar angle and \f$\chi \f$ is the angular distance between the Sun and the
 /// sector. 
