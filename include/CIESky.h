@@ -80,11 +80,13 @@ namespace lignumvtk{
   ///\brief CIE Standard General Sky ISO 15469:2004 Standard parameters
   ///
   /// -# CIE Standard Overcast Sky, steep gradation
-  ///  - Zenith to horizon ratio approximately 10:3
+  ///  - Zenith-to-horizon ratio approximately 1:0.3
   ///  - Sky Type 1 is parameterized to replicate the Moon-Spencer standard overcast sky.
+  ///  - Sky Type 1 effectively has the same zenith-to-horizon radiance distribution with the Moon-Spencer standard.
+  ///  - Underlying equations cause the two models to diverge by up to 8%.
   /// -# Overcast, steep gradation, slight brightening towards the sun
   /// -# Overcast, moderate gradation, azimuthal uniformity
-  ///  - Zenith to horizon ratio approximately 10:7   
+  ///  - Zenith to horizon ratio approximately 1:0.67 
   /// -# Overcast, moderate gradation, slight brightening towards the sun
   /// -# Invariably uniform cloudy sky, no vertical gradation or azimuthal variation
   /// -# Partly cloudy, slight brightening towards the sun
