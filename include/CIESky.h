@@ -119,17 +119,23 @@ namespace lignumvtk{
   
   ///\brief CIE Standard General Sky Darula & Kittler 2002 parameters
   ///
+  /// Parameters (a, b, c, d, e) follow the article; minor deviations from ISO 15469:2004 are
+  /// noted in the sky type descriptions.
   /// -# Standard Overcast Sky, steep vertical gradation
   /// -# Overcast, steep gradation, with slight solar brightening
   /// -# Overcast, moderately graded, azimuthally uniform
   /// -# Overcast, moderately graded with slight brightening towards the sun
   /// -# Uniform cloudy sky, sky of uniform radiance
   /// -# Partly cloudy, no vertical gradation, slight solar brightening
+  ///  - \p a is 2.0 instead of 2.5
   /// -# Partly cloudy, no vertical gradation, brighter solar corona region
   /// -# Partly cloudy, no vertical gradation, distinct solar corona
   /// -# Partly cloudy, with the obscured sun
+  ///  - \p a is -1.0 instead of 0.5
   /// -# Partly cloudy, with brighter circumsolar region
+  ///  - \p a is -1.0 instead of 0.5
   /// -# White-blue sky with distinct solar corona
+  ///  - \p a is -1.0 instead of 0.5
   /// -# Clear Sky, clear blue sky with low turbidity
   /// -# Clear Sky, wide scattering glare, polluted atmosphere
   /// -# Cloudless turbid clear sky with broad solar corona
