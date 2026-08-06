@@ -32,7 +32,8 @@
 /// Formally defined under *ISO 15469:2004 / CIE S 011/E:2003*,
 /// these sky types establish a unified framework for luminance and radiance models,
 /// replacing earlier discrete, disconnected versions.
-/// \sa lignumvtk::CIESGS::relativeRadiance(double,double)const
+///
+/// \sa Implementation lignumvtk::CIESGS::relativeRadiance(double,double)const
 ///
 /// However, the CIE Standard Overcast Sky (Moon and Spencer) remains a vital legacy metric,
 /// classified as CIE Standard General Sky Type I.1 and commonly known as Sky Type 16.
@@ -42,6 +43,7 @@
 /// \f}
 /// where \f$ L_e\gamma \f$ is the radiance of a sky sector in the direction at an angle
 /// \f$ \gamma \f$ above horizon and \f$ L_ez \f$ the radiance at the zenith. 
+///
 /// \sa Implementation lignumvtk::CIESOCEqualArea
 ///
 /// \par Radiometric terms
@@ -318,21 +320,13 @@ namespace lignumvtk{
     CIESOCEqualArea(int nazim, int nincl, double tot_rad);
   };
 
-  ///\brief CIE Standard General Sky (Darula-Kittler-Perez)
+  ///\brief CIE Standard General Sky (Darula-Kittler-Perez).
+  ///
+  ///VTP file export for ParaView visualization.
   class CIESGS: public CIEFile{
   public:
-    ///\brief Create any of the 15 CIE standard general skies.
+    ///\brief Constructor: Create any of the 15 CIE Standard General Sky types.
     ///
-    ///Breakdown the hemisphere geometry to equal area sectors.
-    ///Each sector is represented as *vtkQuad*. For mathemtical
-    ///details consult \ref hemisphere_breakdown "Hemisphere breakdown".
-    ///
-    ///Calculate the three scalar vectors:
-    /// + CIE_RelativeRadiance: Standard General Sky relative radiance for each sector
-    /// + Lz_AbsoluteRadiance: absolute radiance for each sector based on zenith radiance
-    /// + Eh_AbsoluteRadiance: absolute radiance for each sector based on horizontal irradiance
-    ///.
-    ///\post The three scalar vectors are in \p CIEFile::polydata for visualization.    
     ///\param nazim Number of azimuths
     ///\param nincl Number of inclinations
     ///\param a Gradation: horizon brightness 
@@ -342,15 +336,28 @@ namespace lignumvtk{
     ///\param e Indicatrix: atmospheric backscattering
     ///\param sun_polar Sun polar angle, radians
     ///\param sun_azim Sun azimuth angle, radians
-    ///\param rad_baseline Baseline radiation 1. Zenith radiance 2. Horizontal irradiance
+    ///\param rad_baseline Baseline radiation 
     ///
-    ///\note To convert degrees to radians multiply by \f$ \pi/180 \f$.
+    ///Breakdown the hemisphere geometry to equal area sectors.
+    ///Each sector is represented as *vtkQuad*. For mathematical
+    ///details, see \ref hemisphere_breakdown "Hemisphere breakdown".
+    ///
+    ///Calculate three scalar-valued vectors. The baseline \p rad_baseline is interpreted
+    ///as zenith radiance and horizontal irradiance:
+    /// + CIE_RelativeRadiance: Standard General Sky relative radiance for each sector
+    /// + Lz_AbsoluteRadiance: absolute radiance for each sector, \p rad_baseline  zenith radiance
+    /// + Eh_AbsoluteRadiance: absolute radiance for each sector, \p rad_baseline horizontal irradiance
+    ///.
+    ///\post The hemisphere and the three scalar-valued vectors are in \p CIEFile::polydata.
+    ///\note The \p sun_polar and \p sun_azim values can be more intuitive in degrees.
+    ///To convert degrees to radians multiply by \f$ \pi/180 \f$.
     ///For example:
     ///\f{eqnarray*}{
     /// 1^\circ &=& 1 \frac{\pi}{180}\mathrm{rad} \approx 0.0175 \mathrm{rad} \\
     /// 45^\circ &=& 45 \frac{\pi}{180}\mathrm{rad} \approx 0.7854 \mathrm{rad}
     ///\f}
-    ///The \p sun_polar and \p sun_azim values can be more intuitive in degrees.
+    ///
+    ///\sa VTP file export with CIEFile::writeHemisphere.
     ///
     ///\par Mathematical details for sector radiance
     ///
@@ -445,7 +452,7 @@ namespace lignumvtk{
     ///Because each sector's radiance contributes via Lambert's cosine law, the total horizontal irradiance \f$E_{h}\f$
     ///equals the sum of all cosine-weighted sector radiances.
     CIESGS(int nazim, int nincl, double a, double b, double c, double d, double e, double sun_polar, double sun_azim, double rad_baseline);
-    ///\brief Relative radiance function.
+    ///\brief CIE Standard General Sky relative radiance function.
     ///
     ///Calculate relative radiance for a sky sector. 
     ///\param theta Polar angle \f$ \theta \f$ of the sky sector, radians
@@ -495,12 +502,26 @@ namespace lignumvtk{
     ///\sa CIESGS::e
     double indicatrix(double chi)const;
   private:
-    int N;///< Number of hemisphere sectors
-    double omega;///< Sector solid angle
-    double a;///< Horizon brightness relative to the rest of the sky. CIESGS::gradation() parameter
-    double b;///< Rate of radiance change between the horizon and the zenith, CIESGS::gradation() function
-    double c;///< The solar corona intensity, CIESGS::indicatrix() parameter
-    double d;///< The solar corona glare width, CIESGS::indicatrix() parameter
+    ///\brief Number of hemisphere sectors
+    int N;
+    ///\brief Sector solid angle
+    double omega;
+    ///\brief Horizon brightness relative to the rest of the sky.
+    ///
+    ///CIESGS::gradation() parameter
+    double a;
+    ///\brief Rate of radiance change between the horizon and the zenith.
+    ///
+    ///CIESGS::gradation() function
+    double b;
+    ///\brief The solar corona intensity.
+    ///
+    ///CIESGS::indicatrix() parameter
+    double c;
+    ///\brief The solar corona glare width.
+    ///
+    ///CIESGS::indicatrix() parameter
+    double d;
     ///\brief Backscattering or second-order reflections of radiation.
     ///
     ///Diffuse atmospheric component, CIESGS::indicatrix() parameter
