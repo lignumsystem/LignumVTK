@@ -169,7 +169,8 @@ namespace lignumvtk{
   /// - Darula and Kittler. 2002. CIE General Sky Standard defining luminance distributions.
   /// - https://drajmarsh.bitbucket.io/cie-sky.html: Web-based tool to visualize and simulate 15 standard CIE sky conditions.
   ///.
-  ///\note Both parameter sets, lignumvtk::CIE_SKY_ISO_2004_STANDARD_PARAMETERS and lignumvtk::DARULA_KITTLER_2002_PARAMETERS, proved to be identical.
+  ///\note After corrections the lignumvtk::CIE_SKY_ISO_2004_STANDARD_PARAMETERS and lignumvtk::DARULA_KITTLER_2002_PARAMETERS parameter sets
+  ///proved to be identical.
   ///\sa CIENAMES
   const std::vector<std::map<int, std::vector<double>>> CIE_PARAMETERS ={CIE_SKY_ISO_2004_STANDARD_PARAMETERS, DARULA_KITTLER_2002_PARAMETERS};
   ///\brief Polar coordinates to cartesian coordinates.
