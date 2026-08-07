@@ -9,18 +9,17 @@
 #include <mathsym.h>
 #include <LignumVTK.h>
 ///\file CIESky.h
-/// \brief CIE skies for ParaView visualization.
+/// \brief CIE Standard General Sky: Generation and VTK data export.
 ///
 /// \par CIE Standard General Sky
 ///
-/// The CIE Standard General Sky, developed by S. Darula, R. Kittler and R. Perez, is a globally
-/// recognized mathematical model. It uses five parameters to define the relative
-/// luminance and radiance distributions of the sky. Adjusting these parameters yields
-/// the 15 CIE Standard General Sky types, which characterize atmospheres from heavily
-/// overcast to clear, from turbid to transparent.
+/// The CIE Standard General Sky, co-developed by S. Darula, R. Kittler and R. Perez, is a globally
+/// recognized mathematical model. It uses five parameters to define the relative luminance and radiance
+/// distributions of the sky. Adjusting these parameters generates the 15 CIE Standard General Sky types,
+/// which characterize atmospheric conditions from heavily overcast to clear, and turbid to transparent.
 ///
 /// The model defines relative sky radiance as the ratio of a specific sky sector's radiance \f$ L_e\mathit{s} \f$
-/// to the zenith radiance \f$ L_e\mathit{z} \f$, deterimined by the scattering indicatrix \f$ f \f$ and radiance
+/// to the zenith radiance \f$ L_e\mathit{z} \f$, determined by the scattering indicatrix \f$ f \f$ and radiance
 /// gradation \f$ \psi \f$ functions:
 ///
 /// \f{eqnarray*}{
@@ -29,15 +28,15 @@
 /// where \f$ \theta \f$ denotes the polar angle and \f$\chi \f$ is the angular distance between the Sun and the
 /// sector. 
 ///
-/// Formally defined under *ISO 15469:2004 / CIE S 011/E:2003*,
-/// these sky types establish a unified framework for luminance and radiance models,
-/// replacing earlier discrete, disconnected versions.
+/// The CIE Standard General Sky, adopted as ISO 15469:2004 / CIE S 011/E:2003 standard, unifies atmospheric
+/// luminance and radiance distributions into a single, continuous mathematical framework, effectively replacing
+/// previous separate and isolated sky models.
 ///
-/// \sa Implementation lignumvtk::CIESGS::relativeRadiance(double,double)const
+/// \sa Implementation lignumvtk::CIESGS
 ///
-/// However, the CIE Standard Overcast Sky (Moon and Spencer) remains a vital legacy metric,
+/// The CIE Standard Overcast Sky (Moon and Spencer) remains a vital legacy metric,
 /// classified as CIE Standard General Sky Type I.1 and commonly known as Sky Type 16.
-/// It is defined in *CIE S 017:2020 (ILV, term 17-29-111)* as the ratio:
+/// It is defined in CIE S 017:2020 (ILV, term 17-29-111) as the ratio:
 /// \f{eqnarray*}{
 ///   \frac{L_e\gamma}{L_ez} = (1 + 2\sin\gamma) / 3
 /// \f}
@@ -77,90 +76,101 @@
 ///from photometric ones in the literature. Steradian (*sr*) is the SI unit for measuring three-dimensional solid angles.
 
 namespace lignumvtk{
-  ///\brief Available CIE sky paramters
-  enum class CIENAMES {ISO2004,DK2002};
   ///\brief CIE Standard General Sky ISO 15469:2004 Standard parameters
   ///
-  /// -# CIE Standard Overcast Sky, steep gradation
+  /// -# CIE Standard Overcast Sky, steep radiance gradation
   ///  - Zenith-to-horizon ratio approximately 1:0.3
   ///  - Sky Type 1 is parameterized to replicate the Moon-Spencer standard overcast sky.
   ///  - Sky Type 1 effectively has the same zenith-to-horizon radiance distribution with the Moon-Spencer standard.
   ///  - Underlying equations cause the two models to diverge by up to 8%.
-  /// -# Overcast, steep gradation, slight brightening towards the sun
-  /// -# Overcast, moderate gradation, azimuthal uniformity
+  /// -# Overcast, steep radiance gradation, slight brightening towards the sun
+  /// -# Overcast, moderate radiance gradation, azimuthal uniformity
   ///  - Zenith to horizon ratio approximately 1:0.67 
-  /// -# Overcast, moderate gradation, slight brightening towards the sun
-  /// -# Invariably uniform cloudy sky, no vertical gradation or azimuthal variation
-  /// -# Partly cloudy, slight brightening towards the sun
-  /// -# Partly cloudy, distinctive corona effect near the sun
-  /// -# Partly cloudy, no vertical gradation, sharp solar corona
-  /// -# Partly cloudy, moderate gradation with a distinct solar corona
-  /// -# Partly cloudy, moderate gradation, bright intense corona
-  /// -# White-blue clear sky, low horizon gradation, sharp solar corona
-  /// -# Clear Sky, low-turbid clear atmosphere
-  /// -# Clear Sky, polluted atmosphere with wide solar corona
-  /// -# Clear sky, highly polluted turbid atmosphere, immense solar corona
-  /// -# Very clear sky, crisp clean atmosphere with a blindingly sharp solar corona
+  /// -# Overcast, moderate radiance gradation, slight brightening towards the sun
+  /// -# CIE Standard Uniform Sky, no vertical or azimuthal variation
+  /// -# Partly cloudy, no radiance gradation, slight brightening towards the sun
+  /// -# Partly cloudy, no radiance gradation, brighter near the sun than Type 6
+  /// -# Partly cloudy, no radiance gradation, moderate direct sun, a distinct solar corona
+  /// -# Partly cloudy, moderate radiance gradation, obscured sun
+  /// -# Partly cloudy, moderate radiance gradation, brighter sun region than in Type 9
+  /// -# Clear white-blue sky, high turbidity, low radiance gradation, a distinct solar corona
+  /// -# Clear Sky, low-turbidity, low radiance gradation, a distinct solar corona
+  /// -# CIE Standard Clear Sky, low radiance gradation, polluted atmosphere
+  /// -# Clear turbid sky, sharp radiance gradation, a broad solar corona
+  /// -# White-blue turbid sky, broad solar corona
+  ///.
+  ///\sa DARULA_KITTLER_2002_PARAMETERS
   const std::map<int, std::vector<double>> CIE_SKY_ISO_2004_STANDARD_PARAMETERS = {
     {1,  { 4.0, -0.7,   0.0, -1.0, 0.0  }},
     {2,  { 4.0, -0.7,   2.0, -1.5, 0.15 }},
     {3,  { 1.1, -0.8,   0.0, -1.0, 0.0  }},
     {4,  { 1.1, -0.8,   2.0, -1.5, 0.15 }},
     {5,  { 0.0, -1.0,   0.0, -1.0, 0.0  }},
-    {6,  { 2.5, -0.15,  2.0, -1.5, 0.15 }},
-    {7,  { 2.5, -0.15,  5.0, -2.2, 0.30 }},
-    {8,  { 2.5, -0.15, 10.0, -3.0, 0.45 }},
-    {9,  { 0.5, -0.55,  2.0, -1.5, 0.15 }},
-    {10, { 0.5, -0.55,  5.0, -2.2, 0.30 }},
-    {11, { 0.5, -0.55, 10.0, -3.0, 0.45 }},
-    {12, {-1.0, -0.32,  5.0, -2.2, 0.30 }},
-    {13, {-1.0, -0.32, 10.0, -3.0, 0.45 }},
-    {14, {-1.0, -0.32, 16.0, -3.0, 0.30 }},
-    {15, {-1.0, -0.32, 24.0, -2.8, 0.15 }}
+    {6,  { 0.0, -1.0,   2.0, -1.5, 0.15 }},
+    {7,  { 0.0, -1.0,   5.0, -2.5, 0.30 }},
+    {8,  { 0.0, -1.0,   10.0, -3.0, 0.45 }},
+    {9,  {-1.0, -0.55,  2.0, -1.5, 0.15 }},
+    {10, {-1.0, -0.55,  5.0, -2.5, 0.30 }},
+    {11, {-1.0, -0.55, 10.0, -3.0, 0.45 }},
+    {12, {-1.0, -0.32, 10.0, -3.0, 0.45 }},
+    {13, {-1.0, -0.32, 16.0, -3.0, 0.30 }},
+    {14, {-1.0, -0.15, 16.0, -3.0, 0.30 }},
+    {15, {-1.0, -0.15, 24.0, -2.8, 0.15 }}
   };
   
   ///\brief CIE Standard General Sky Darula & Kittler 2002 parameters
   ///
-  /// Parameters (a, b, c, d, e) follow the article; minor deviations from ISO 15469:2004 are
-  /// noted in the sky type descriptions.
+  /// Parameters (a, b, c, d, e) from the article Table 1.
   /// -# Standard Overcast Sky, steep vertical gradation
   /// -# Overcast, steep gradation, with slight solar brightening
   /// -# Overcast, moderately graded, azimuthally uniform
   /// -# Overcast, moderately graded with slight brightening towards the sun
   /// -# Uniform cloudy sky, sky of uniform radiance
   /// -# Partly cloudy, no vertical gradation, slight solar brightening
-  ///  - \p a is 2.0 instead of 2.5
   /// -# Partly cloudy, no vertical gradation, brighter solar corona region
   /// -# Partly cloudy, no vertical gradation, distinct solar corona
   /// -# Partly cloudy, with the obscured sun
-  ///  - \p a is -1.0 instead of 0.5
   /// -# Partly cloudy, with brighter circumsolar region
-  ///  - \p a is -1.0 instead of 0.5
   /// -# White-blue sky with distinct solar corona
-  ///  - \p a is -1.0 instead of 0.5
   /// -# Clear Sky, clear blue sky with low turbidity
   /// -# Clear Sky, wide scattering glare, polluted atmosphere
   /// -# Cloudless turbid clear sky with broad solar corona
   /// -# White-blue turbid sky with broad solar corona
+  ///.
+  ///\sa CIE_SKY_ISO_2004_STANDARD_PARAMETERS 
   const std::map<int, std::vector<double>> DARULA_KITTLER_2002_PARAMETERS = {
     {1,  { 4.0, -0.70,   0.0, -1.0, 0.0  }},
     {2,  { 4.0, -0.70,   2.0, -1.5, 0.15 }},
     {3,  { 1.1, -0.80,   0.0, -1.0, 0.0  }},
     {4,  { 1.1, -0.80,   2.0, -1.5, 0.15 }},
     {5,  { 0.0, -1.00,   0.0, -1.0, 0.0  }},
-    {6,  { 2.0, -0.15,   2.0, -1.5, 0.15 }}, // Note: 'a' is 2.0 instead of 2.5
-    {7,  { 2.5, -0.15,   5.0, -2.2, 0.30 }},
-    {8,  { 2.5, -0.15,  10.0, -3.0, 0.45 }},
-    {9,  { -1.0, -0.55,  2.0, -1.5, 0.15 }}, // Note: 'a' is -1.0 instead of 0.5
-    {10, { -1.0, -0.55,  5.0, -2.2, 0.30 }}, // Note: 'a' is -1.0 instead of 0.5
-    {11, { -1.0, -0.55, 10.0, -3.0, 0.45 }}, // Note: 'a' is -1.0 instead of 0.5
-    {12, { -1.0, -0.32,  5.0, -2.2, 0.30 }},
-    {13, { -1.0, -0.32, 10.0, -3.0, 0.45 }},
-    {14, { -1.0, -0.32, 16.0, -3.0, 0.30 }},
-    {15, { -1.0, -0.32, 24.0, -2.8, 0.15 }}
+    {6,  { 0.0, -1.00,   2.0, -1.5, 0.15 }}, 
+    {7,  { 0.0, -1.00,   5.0, -2.5, 0.30 }},
+    {8,  { 0.0, -1.00,  10.0, -3.0, 0.45 }},
+    {9,  { -1.0, -0.55,  2.0, -1.5, 0.15 }}, 
+    {10, { -1.0, -0.55,  5.0, -2.5, 0.30 }}, 
+    {11, { -1.0, -0.55, 10.0, -3.0, 0.45 }}, 
+    {12, { -1.0, -0.32, 10.0, -3.0, 0.45 }},
+    {13, { -1.0, -0.32, 16.0, -3.0, 0.30 }},
+    {14, { -1.0, -0.15, 16.0, -3.0, 0.30 }},
+    {15, { -1.0, -0.15, 24.0, -2.8, 0.15 }}
+  };
+
+  ///\brief Available CIE sky parameters
+  ///\sa CIE_PARAMETERS
+  enum class CIENAMES {ISO2004,///< CIE Standard General Sky ISO 15469:2004 parameters
+		       DK2002  ///< Darula and Kittler 2002 parameters
   };
   
-  ///\brief Selection of available CIE sky parameters 
+  ///\brief Selection of available CIE sky parameters
+  ///
+  ///Constructing the two parameter sets, the following articles were used:
+  /// - Li et al. 2026. Analysis of vertical sky components under various CIE standard general skies.
+  /// - Darula and Kittler. 2002. CIE General Sky Standard Defining Luminance Distributions.
+  /// - https://drajmarsh.bitbucket.io/cie-sky.html: Web-based tool to visualize and simulate 15 standard CIE sky conditions.
+  ///.
+  ///\note CIE_SKY_ISO_2004_STANDARD_PARAMETERS and DARULA_KITTLER_2002_PARAMETERS are the same.
+  ///\sa CIENAMES
   const std::vector<std::map<int, std::vector<double>>> CIE_PARAMETERS ={CIE_SKY_ISO_2004_STANDARD_PARAMETERS, DARULA_KITTLER_2002_PARAMETERS};
   ///\brief Polar coordinates to cartesian coordinates.
   ///

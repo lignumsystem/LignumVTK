@@ -149,7 +149,7 @@ The `cievtk` command-line is:
 		     ISO2004 ISO 15469:2004 standard parameter set
 	
 ### Example
-Generate a CIE Sky Type 10 model using the CIE ISO 15469:2004 standard parameters, configured with 8 azimuths,
+Generate a CIE Sky Type 10 model using the ISO 15469:2004 standard parameters, configured with 8 azimuths,
 9 inclinations including zenith, baseline radiant value of 1200, a sun polar angle of 30°, and a sun
 azimuth of 130°, then export the output to CIESky10.vtp.
 
