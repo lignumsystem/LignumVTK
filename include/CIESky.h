@@ -9,7 +9,9 @@
 #include <mathsym.h>
 #include <LignumVTK.h>
 ///\file CIESky.h
-/// \brief CIE Standard General Sky: Generation and VTK data export.
+/// \brief CIE Standard Skies.
+///
+///Implements CIE Standard General Sky and Moon-Spencer Traditional CIE Overcast Sky models with VTK data export.
 ///
 /// \par CIE Standard General Sky
 ///
@@ -23,7 +25,7 @@
 /// gradation \f$ \psi \f$ functions:
 ///
 /// \f{eqnarray*}{
-///  L_e\mathit{rel} = \frac{ L_e\mathit{s} }{ L_e\mathit{z} } = \frac{ f(\chi)\psi(\theta_{\mathit{sector}}) }{ f(\theta_\mathit{sun})\psi(0) }
+///  L_e\mathit{rel} = \frac{ L_e\mathit{s} }{ L_e\mathit{z} } = \frac{ f(\chi)\psi(\theta_{\mathit{s}}) }{ f(\theta_\mathit{sun})\psi(0) }
 /// \f}
 /// where \f$ \theta \f$ denotes the polar angle and \f$\chi \f$ is the angular distance between the Sun and the
 /// sector. 
@@ -34,8 +36,10 @@
 ///
 /// \sa Implementation lignumvtk::CIESGS
 ///
-/// The CIE Standard Overcast Sky (Moon and Spencer) remains a vital legacy metric,
-/// classified as CIE Standard General Sky Type I.1 and commonly known as Sky Type 16.
+/// \par Moon-Spencer Traditional CIE Overcast Sky
+///
+/// Traditional CIE Overcast Sky (Moon-Spencer) remains a vital legacy metric,
+/// formally classified as CIE Standard General Sky Type I.1 and commonly known as Sky Type 16.
 /// It is defined in CIE S 017:2020 (ILV, term 17-29-111) as the ratio:
 /// \f{eqnarray*}{
 ///   \frac{L_e\gamma}{L_ez} = (1 + 2\sin\gamma) / 3
@@ -72,7 +76,7 @@
 /// <td> Luminance <td> \f$ L_e \f$ <td> Perceived surface brightness <td> \f$ \mathrm{cd} \cdot \mathrm{m}^{-2} \quad (\mathrm{nit, nt}) \f$
 /// </table>
 /// 
-///The symbol subscripts *e* (for energetic) and *v* (for visual) freqently distinguish radiometric terms
+///The symbol subscripts *e* (for energetic) and *v* (for visual) frequently distinguish radiometric terms
 ///from photometric ones in the literature. Steradian (*sr*) is the SI unit for measuring three-dimensional solid angles.
 
 namespace lignumvtk{
@@ -83,16 +87,16 @@ namespace lignumvtk{
   ///  - Sky Type 1 is parameterized to replicate the Moon-Spencer standard overcast sky.
   ///  - Sky Type 1 effectively has the same zenith-to-horizon radiance distribution with the Moon-Spencer standard.
   ///  - Underlying equations cause the two models to diverge by up to 8%.
-  /// -# Overcast, steep radiance gradation, slight brightening towards the sun
+  /// -# Overcast, steep radiance gradation, slight brightening towards the Sun
   /// -# Overcast, moderate radiance gradation, azimuthal uniformity
   ///  - Zenith to horizon ratio approximately 1:0.67 
-  /// -# Overcast, moderate radiance gradation, slight brightening towards the sun
+  /// -# Overcast, moderate radiance gradation, slight brightening towards the Sun
   /// -# CIE Standard Uniform Sky, no vertical or azimuthal variation
-  /// -# Partly cloudy, no radiance gradation, slight brightening towards the sun
-  /// -# Partly cloudy, no radiance gradation, brighter near the sun than Type 6
-  /// -# Partly cloudy, no radiance gradation, moderate direct sun, a distinct solar corona
-  /// -# Partly cloudy, moderate radiance gradation, obscured sun
-  /// -# Partly cloudy, moderate radiance gradation, brighter sun region than in Type 9
+  /// -# Partly cloudy, no radiance gradation, slight brightening towards the Sun
+  /// -# Partly cloudy, no radiance gradation, brighter near the Sun than Type 6
+  /// -# Partly cloudy, no radiance gradation, moderate direct Sun, a distinct solar corona
+  /// -# Partly cloudy, moderate radiance gradation, obscured Sun
+  /// -# Partly cloudy, moderate radiance gradation, brighter Sun region than in Type 9
   /// -# Clear white-blue sky, high turbidity, low radiance gradation, a distinct solar corona
   /// -# Clear Sky, low-turbidity, low radiance gradation, a distinct solar corona
   /// -# CIE Standard Clear Sky, low radiance gradation, polluted atmosphere
@@ -124,12 +128,12 @@ namespace lignumvtk{
   /// -# Standard Overcast Sky, steep vertical gradation
   /// -# Overcast, steep gradation, with slight solar brightening
   /// -# Overcast, moderately graded, azimuthally uniform
-  /// -# Overcast, moderately graded with slight brightening towards the sun
+  /// -# Overcast, moderately graded with slight brightening towards the Sun
   /// -# Uniform cloudy sky, sky of uniform radiance
   /// -# Partly cloudy, no vertical gradation, slight solar brightening
   /// -# Partly cloudy, no vertical gradation, brighter solar corona region
   /// -# Partly cloudy, no vertical gradation, distinct solar corona
-  /// -# Partly cloudy, with the obscured sun
+  /// -# Partly cloudy, with the obscured Sun
   /// -# Partly cloudy, with brighter circumsolar region
   /// -# White-blue sky with distinct solar corona
   /// -# Clear Sky, clear blue sky with low turbidity
@@ -167,7 +171,7 @@ namespace lignumvtk{
   ///Constructing the two parameter sets, the following articles were used:
   /// - Li et al. 2015. Analysis of vertical sky components under various CIE standard general skies.
   /// - Darula and Kittler. 2002. CIE General Sky Standard defining luminance distributions.
-  /// - https://drajmarsh.bitbucket.io/cie-sky.html: Web-based tool to visualize and simulate 15 standard CIE sky conditions.
+  /// - [CIE Sky Generator](https://drajmarsh.bitbucket.io/cie-sky.html): Web-based tool to visualize and simulate 15 standard CIE sky conditions.
   ///.
   ///\note After corrections the lignumvtk::CIE_SKY_ISO_2004_STANDARD_PARAMETERS and lignumvtk::DARULA_KITTLER_2002_PARAMETERS parameter sets
   ///proved to be identical.
@@ -219,8 +223,8 @@ namespace lignumvtk{
   ///\brief  Traditional CIE Overcast Sky (Moon-Spencer)
   ///
   ///Moon-Spencer Traditional CIE Overcast Sky (SOC) discretized using independent, uniform angular
-  ///step sizes for inclinations and azimuths.
-  class CIESOC{
+  ///step sizes for inclinations and azimuths. VTP file export for ParaView visualization.
+  class CIESOCEqualAngle{
   public:
     ///\brief Constructor
     ///\param nazim Number of azimuths
@@ -252,7 +256,7 @@ namespace lignumvtk{
     /// + \f$ I_z \f$: The peak radiant intensity at zenith.
     /// + \f$ \theta \in \left[0,\pi/2\right] \f$: The polar angle measured from zenith downwards.
     ///.
-    CIESOC(int nazim, int nincl, double tot_rad);
+    CIESOCEqualAngle(int nazim, int nincl, double tot_rad);
     ///\brief Write \p hemisphere to a VTP file
     ///\param file_name File name
     ///\retval EXIT_SUCCESS Write success
@@ -266,6 +270,7 @@ namespace lignumvtk{
   ///\brief  Traditional CIE Overcast Sky (Moon-Spencer)
   ///
   ///Moon-Spencer Traditional CIE Overcast Sky (SOC) discretized using equal surface area sectors.
+  ///VTP file export for ParaView visualization.
   ///\note CIESOCEqualArea maps analogously to sky::Firmament.
   ///\sa sky::Firmament
   class CIESOCEqualArea: public CIEFile{
@@ -330,10 +335,10 @@ namespace lignumvtk{
     ///.
     CIESOCEqualArea(int nazim, int nincl, double tot_rad);
   };
-
-  ///\brief CIE Standard General Sky (Darula-Kittler-Perez).
+  
+  ///\brief CIE Standard General Sky
   ///
-  ///VTP file export for ParaView visualization.
+  ///CIE Standard General Sky (Darula-Kittler-Perez) with VTP file export for ParaView visualization.
   class CIESGS: public CIEFile{
   public:
     ///\brief Constructor: Create any of the 15 CIE Standard General Sky types.
@@ -467,16 +472,16 @@ namespace lignumvtk{
     ///
     ///Calculate relative radiance for a sky sector. 
     ///\param theta Polar angle \f$ \theta \f$ of the sky sector, radians
-    ///\param chi Angular distance \f$ \chi \f$ between the sun and the sky sector, radians
+    ///\param chi Angular distance \f$ \chi \f$ between the Sun and the sky sector, radians
     ///\retval Le_rel Relative radiance \f$ L_e\mathit{rel} \f$ of a sky sector, unitless
     ///
-    ///A sky sector center point is defined by two parameters \p theta and \p chi.
-    ///Relative radiance is the ratio of sky sector radiance \f$ L_e\mathit{s} \f$ to zenith radiance \f$ L_e\mathit{z} \f$.
-    ///It is defined by the scattering indicatrix \f$ f \f$ and radiance gradation \f$ \psi \f$ functions.
+    ///Parameters \p theta and \p chi define a sector's center point. Relative radiance is the ratio of a sky sector's
+    ///radiance \f$ L_e\mathit{s} \f$ to zenith radiance \f$ L_e\mathit{z} \f$.
+    ///It is defined by the scattering indicatrix \f$ f \f$ and radiance gradation \f$ \psi \f$ functions:
     ///\f{eqnarray*}{
-    ///  L_e\mathit{rel} = \frac{ L_e\mathit{s} }{ L_e\mathit{z} } = \frac{ f(\chi)\psi(\theta) }{ f(\theta_\mathit{sun})\psi(0) }
+    ///  L_e\mathit{rel} = \frac{ L_e\mathit{s} }{ L_e\mathit{z} } = \frac{ f(\chi)\psi(\theta_{s}) }{ f(\theta_\mathit{sun})\psi(0) }
     ///\f}
-    ///where \f$ \theta_\mathit{sun} \f$ is the sun polar angle. 
+    ///where \f$ \theta \f$ denotes the polar angle, and \f$\chi \f$ is the angular distance between the Sun and the sector.
     ///\sa CIESGS::gradation()
     ///\sa CIESGS::indicatrix()
     double relativeRadiance(double theta, double chi)const;
@@ -496,17 +501,17 @@ namespace lignumvtk{
     double gradation(double theta)const;
     ///\brief Scattering indicatrix function.
     ///
-    ///Glare and light scattering relative to the sun's position \p chi
-    ///\param chi Distance \f$ \chi \f$ between the sun and the sky sector, radians
+    ///Glare and light scattering relative to the Sun's position \p chi
+    ///\param chi Distance \f$ \chi \f$ between the Sun and the sky sector, radians
     ///\return Scattering indicatrix
     ///
     ///The scattering indicatrix function \f$ f \f$ relates relative radiance of a sky sector to its angular
-    ///distance from the sun:
+    ///distance from the Sun:
     ///\f{eqnarray*}{
     /// f(\chi) = 1+c(\exp(d\chi)-exp(d\pi/2))+e\cos^2\chi
     ///\f}
     ///where \f$ c, d \f$ and \f$ e \f$ are parameters.
-    ///\note The angular distance \f$ \chi \f$ between the sun and sector \f$ s \f$
+    ///\note The angular distance \f$ \chi \f$ between the Sun and sector \f$ s \f$
     ///can be expressed with the dot product: \f$ \chi = arccos(\vec{v}_{\mathit{sun}} \cdot \vec{v}_s) \f$
     ///\sa CIESGS::c
     ///\sa CIESGS::d
@@ -515,28 +520,34 @@ namespace lignumvtk{
   private:
     ///\brief Number of hemisphere sectors
     int N;
-    ///\brief Sector solid angle
+    ///\brief Sector solid angle for equal-area partitions.
     double omega;
-    ///\brief Horizon brightness relative to the rest of the sky.
+    ///\defgroup  CIESGS_GROUP CIE Standard General Sky model parameters
+    ///\name Gradation magnitude and gradient
+    ///\ingroup CIESGS_GROUP
+    ///@{
+    ///\brief Zenith-Horizon gradation magnitude and direction.
     ///
-    ///CIESGS::gradation() parameter
+    ///Positive values overcast sky, near zero values no gradation, and negative values clear skies.
     double a;
-    ///\brief Rate of radiance change between the horizon and the zenith.
+    ///\brief Zenith-Horizon gradation gradient. 
     ///
-    ///CIESGS::gradation() function
+    ///Rate of change of radiance profile between the zenith and horizon.
     double b;
-    ///\brief The solar corona intensity.
-    ///
-    ///CIESGS::indicatrix() parameter
+    ///@}
+    ///\name Radiance reflected, transmitted, or scattered
+    ///\ingroup CIESGS_GROUP
+    ///@{
+    ///\brief The circumsolar intensity.
     double c;
-    ///\brief The solar corona glare width.
-    ///
-    ///CIESGS::indicatrix() parameter
+    ///\brief The circumsolar glare width.
     double d;
-    ///\brief Backscattering or second-order reflections of radiation.
+    ///\brief Rayleigh scattering, diffuse atmospheric component.
     ///
-    ///Diffuse atmospheric component, CIESGS::indicatrix() parameter
+    ///Scattering from (air molecule) particles that are much smaller than the wavelength of the radiation itself.
+    ///In practice blue daylight skies, orange-red sunsets.
     double e;
+    ///@}
     ///\brief Baseline radiation with two interpretation for visualization.
     ///
     ///-# Lz: Radiance at zenith
@@ -544,8 +555,12 @@ namespace lignumvtk{
     ///.
     ///Both interpretations have own methods to assign sector absolute radiance.
     double rad_baseline;
+    ///\name Sun position
+    ///\ingroup  CIESGS_GROUP 
+    ///@{
     double sun_polar;///< Sun polar angle, radians
     double sun_azimuth;///< Sun azimuth angle, radians
+    ///@}
     double sun_cartesian[3];///< Sun position, cartesian coordinates
   };
     

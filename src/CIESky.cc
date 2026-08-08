@@ -24,7 +24,7 @@ namespace lignumvtk{
     }
   }
   
-  CIESOC::CIESOC(int nazim, int nincl, double tot_rad)
+  CIESOCEqualAngle::CIESOCEqualAngle(int nazim, int nincl, double tot_rad)
   {
 
     //double nincl_span = 90.0/static_cast<double>(nincl);//Opens the zenith sector 
@@ -85,7 +85,7 @@ namespace lignumvtk{
     data->GetCellData()->SetActiveScalars(radiant_scalar.c_str());
   }
   
-  int CIESOC::writeHemisphere(const std::string& file_name)
+  int CIESOCEqualAngle::writeHemisphere(const std::string& file_name)
   {
     std::cout << "Writing hemisphere to: " << file_name << endl; 
     this->writer->SetFileName(file_name.c_str());
