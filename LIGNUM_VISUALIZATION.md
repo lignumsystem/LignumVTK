@@ -312,22 +312,23 @@ Follow these steps to visualize CIE Standard General Sky models.
 + Render the CIE sky. 
 + Save the image file.
 
-For publications, a projection of the CIE sky might be more appropriate. The `lambert.py`
-script in the *Python* directory implements the Lambert Azimuthal Equal-Area Projection,
-which preserves sector surface area when flattening a hemisphere to a circular disk.
+### Lambert Azimuthal Equal-Area Projection
+For academic publication, projecting the CIE sky model provides a more standardized representation. 
+The [lambert.py](Python/lambert.py) script implements Lambert Azimuthal Equal-Area Projection, ensuring 
+surface areas remain undistorted during flattening a hemisphere to a disk.
 
-To apply `lambert.py`:
+To apply `lambert.py` in ParaView:
 
 + Create *Programmable Filter* in the graphics pipeline.
-+ Paste the *lambert.py* file content into the Script section. 
++ Paste the `lambert.py` file content into the Script section. 
 + Render the CIE sky projection.
 + Save the image file.
 
 ## Colormaps
-When selecting colormaps for scientific data, prioritize presentation goals, perceptual uniformity,
-and colorblindness accessibility. Avoid misleading palettes that lack a natural ordering,
-such as the rainbow spectrum. In many cases, a simple grayscale colormap best fulfills
-these requirements. The example colormaps are built right into ParaView.
+When selecting scientific colormaps, prioritize presentation goals, colorblind accessibility, and perceptual
+uniformity — where equal mathematical steps produce equal visual differences. Avoid misleading palettes that
+lack a natural ordering, such as the rainbow spectrum. In many cases, a simple grayscale colormap is the
+best choice.
 
 Visualizing LIGNUM trees a natural choice is to use authentic foliage and stem colors,
 for example:
@@ -346,8 +347,9 @@ or radiant intensity, for example:
 + Viridis, Plasma: Smooth, linear increments in line with data values, no optical illutions.
 + Black-Body radiation: Visually-striking photorealistic rendering, mimics thermal energy.
 
-Contemporary color research has already modernized default colormaps in tools such as ParaView and MATLAB.
-To dive deeper, explore the online resources like the [Color Map Advice](https://www.kennethmoreland.com/color-advice/) guide.
+The example colormaps are built right into ParaView. Contemporary color research has already modernized
+default colormaps in tools such as ParaView and MATLAB. To dive deeper, explore the online resources like
+the [Color Map Advice](https://www.kennethmoreland.com/color-advice/) guide.
 
 
 [^lod]: [Level of Detail](https://en.wikipedia.org/wiki/Level_of_detail_(computer_graphics)): dynamic 3D model representation. 
