@@ -71,8 +71,8 @@ The general formula for image size is:
 For instance, a 7-inch wide, two column image with 300 DPI requirement is 2100 pixels wide. 
 For a 3.5-inch single column image, the width is 1050 pixels:
 
-    magick figure.png  -density 300 -resize 2100x -units PixelsPerInch figure_out.png #Two column image
-    magick figure.png  -density 300 -resize 1050x -units PixelsPerInch figure_out.png #Single column image
+    magick figure.tiff  -density 300 -resize 2100x -units PixelsPerInch figure_out.tiff #Two column image
+    magick figure.tiff  -density 300 -resize 1050x -units PixelsPerInch figure_out.tiff #Single column image
     
 The *-resize* options set the image width explicitly while maintaining the aspect ratio. When an academic
 journal requires 300 DPI, the editors actually mean 300 PPI[^ppi] in the digital file to ensure adequate pixel
@@ -81,9 +81,9 @@ density for printing.
 Journals routinely use automated software to scan and verify image metadata during editorial triage.
 Verify the image confirms to the requested size, resolution, and color space:
 
-    magick identify -format "%w x %h pixels, %x DPI\n" figure_out.png #Size and resolution
-    magick identify -format "%x x %y %U\n" figure_out.png             #Units: PixelsPerInch
-    magick identify -format "%[colorspace]\n" figure_out.png          #Color space
+    magick identify -format "%w x %h pixels, %x DPI\n" figure_out.tiff #Size and resolution
+    magick identify -format "%x x %y %U\n" figure_out.tiff             #Units: PixelsPerInch
+    magick identify -format "%[colorspace]\n" figure_out.tiff          #Color space
 
 After completing these verification steps, the image is ready for submission. 
 
@@ -121,8 +121,8 @@ you can download them from the profile registries:
 To set or convert a color profile, you *must* use ICC color profiles. This technique utilizes exact color lookup
 tables rather than generic equations to match how human eyes, computer monitors, and printers interpret colors.
 
-    magick figure.png -profile sRGB.icc figure_out_srgb.tiff                              #Set color profile to sRGB
-    magick figure.png -profile sRGB.icc -profile USWebCoatedSWOP.icc figure_out_cmyk.tiff #Color profile conversion to CMYK
+    magick figure.tiff -profile sRGB.icc figure_out_srgb.tiff                              #Set color profile to sRGB
+    magick figure.tiff -profile sRGB.icc -profile USWebCoatedSWOP.icc figure_out_cmyk.tiff #Color profile conversion to CMYK
 
 In the conversion, the first *-profile* assigns the baseline color space, while the second triggers 
 the actual pixel transformation; the sRGB.icc profile is applied if the image lacks an embedded profile.
