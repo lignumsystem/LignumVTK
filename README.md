@@ -161,8 +161,13 @@ The VTP output file contains three scalar datasets for visualization:
 + *Lz_AbsoluteRadiance*: Sectoral radiance, where the baseline is zenith radiance.
 + *Eh_AbsoluteRadiance*: Sectoral radiance, where the baseline is horizontal irradiance.
 
+### Lambert Equal Area Projection
+The [lambert.py](Python/lambert.py) script implements Lambert Azimuthal Equal-Area Projection, ensuring 
+surface areas remain undistorted when flattening a CIE hemisphere to a disk.
+Refer [LIGNUM VISUALIZATION](LIGNUM_VISUALIZATION.md) for usage instructions.
+
 ## Software documentation
-Produce the Doxygen documentation:
+Produce the Doxygen documentation for LignumVTK:
 
 	doxygen Doxyfile 2> error.txt
 	
