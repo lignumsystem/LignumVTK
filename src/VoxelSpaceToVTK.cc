@@ -6,7 +6,7 @@ namespace lignumvtk{
   {
     sgrid->SetDimensions(nx,ny,nz);
     vtkNew<vtkPoints> points;
-    points->Allocate(nx * ny * nz);
+    points->Reserve(nx * ny * nz);
     for (int k = 0; k < nz; k++) {
         for (int j = 0; j < ny; j++) {
             for (int i = 0; i < nx; i++) {
@@ -25,7 +25,7 @@ namespace lignumvtk{
   {
     sgrid->SetDimensions(nx,ny,nz);
     vtkNew<vtkPoints> points;
-    points->Allocate(nx * ny * nz);
+    points->Reserve(nx * ny * nz);
     //Note these structured bindings may generate warnings but are available since C++17
     for (auto [k,pz] = std::pair<int,double>{0,0.0}; k < nz; k++, pz = pz + z_edge) {
       for (auto [j,py] = std::pair<int,double>{0,0.0}; j < ny; j++, py = py + y_edge) {
