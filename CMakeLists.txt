@@ -25,7 +25,10 @@ include(CMakePrintHelpers)
 #located inside the LignumVTK build directory.
 add_subdirectory(../ lignum-core_build)
 
-find_package(HDF5 COMPONENTS C CXX HL REQUIRED)
+#Use CMake's own configuration files for HDF5.
+#MacPorts HDF5 package has an infamous duplicate path bug.
+set(HDF5_NO_FIND_PACKAGE_CONFIG_FILE TRUE)
+find_package(HDF5 COMPONENTS C CXX HL REQUIRED MODULE)
 
 #Use one of Qt4, Qt5 or Qt6 for XML parsing
 #Qt4 is obsolete in macOS Tahoe and available only for macOS with Intel processors
