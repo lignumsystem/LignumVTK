@@ -132,21 +132,24 @@ The VTS output file contains ten scalar datasets for visualization, most notably
 those required to calculate radiation attenuation.
 
 ## CIE Standard General Sky
+The CIE Standard General Sky (ISO 15469 / CIE S 011) defines relative luminance distributions using five
+variable parameters. The parameter values for the 15 sky types published in the same document were adopted
+from the framework finalized by Darula and Kittler (2002). The five parameter model is also applied to
+predict sky radiance distributions in general, especially for characterizing the spatial dependency of PAR
+under varying cloud and atmospheric conditions.
+
 The `cievtk` tool generates the 15 CIE Standard General Skies and exports them as VTP[^vtp] files.
-Additionally, it supports the older CIE Standard Overcast Sky (Moon-Spencer), commonly designated
-as Sky Type 16. The CIE Standard General Sky model defines relative radiance distributions
-using five variable parameters. Two sets of parameters are available, Darula and Kittler
-2002, and ISO 15469:2004 standard. For the implementation, see the *CIESGS* class 
-in the [CIESky.h](include/CIESky.h) file, and its accompanying software documentation.
+Additionally, it supports the older CIE Standard Overcast Sky (Moon-Spencer, 1942), commonly designated
+as Sky Type 16.  For the implementation, see the *CIESGS* class in the [CIESky.h](include/CIESky.h)
+file, and its accompanying software documentation.
 
 ### Command line
 The `cievtk` command-line is:
 
 	./cievtk [-help|-h] -azimuth|-a <number> -inclination|-i <number> -rad |-r <number> -cie|-c <1-15,16> \
-	-params|-p <DK2002|ISO2004> -sunpolar|-sp <0-90 degrees> -sunazimuth|-sa <0-360 degrees> -output|-o <file.vtp> 
+	-params|-p ISO2004 -sunpolar|-sp <0-90 degrees> -sunazimuth|-sa <0-360 degrees> -output|-o <file.vtp> 
 	
-	-params: DK2002  Darula and Kittler 2002 parameter set
-		     ISO2004 ISO 15469:2004 standard parameter set
+	-params: ISO2004 ISO 15469:2004 standard parameter set
 	
 ### Example
 Generate a CIE Sky Type 10 model using the ISO 15469:2004 standard parameters, configured with 8 azimuths,
