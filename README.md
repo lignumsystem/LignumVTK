@@ -132,16 +132,16 @@ The VTS output file contains ten scalar datasets for visualization, most notably
 those required to calculate radiation attenuation.
 
 ## CIE Standard General Sky
-The CIE Standard General Sky (ISO 15469 / CIE S 011) defines relative luminance distributions using five
-variable parameters. The parameter values for the 15 sky types published in the same document were adopted
-from the framework finalized by Darula and Kittler (2002). The five-parameter model is also applied to
-predict sky radiance distributions in general, especially for characterizing the spatial dependency of PAR
-under varying cloud and atmospheric conditions.
+The CIE Standard General Sky (defined by [ISO 15469:2004/CIE S 011/E:2003](https://cie.co.at/publications/spatial-distribution-daylight-cie-standard-general-sky)
+defines relative luminance distributions using five variable parameters. The parameter values for the 15 sky
+types published in the same document were adopted from the framework finalized by Darula and Kittler (2002).
+The Overcast Sky (1955) is retained as a separate formula, based on the Moon and Spencer (1942) proposal[^soc].
+The CIE Standard General Sky and the Overcast Sky are also applied to predict sky radiance distributions in general, 
+especially for characterizing the spatial dependency of PAR under varying cloud and atmospheric conditions.
 
-The `cievtk` tool generates the 15 CIE Standard General Skies and exports them as VTP[^vtp] files.
-Additionally, it supports the older CIE Standard Overcast Sky (Moon-Spencer, 1942)[^soc], commonly designated
-as Sky Type 16.  For the implementation, see the *CIESGS* class in the [CIESky.h](include/CIESky.h)
-file, and its accompanying software documentation.
+The `cievtk` tool generates the 15 CIE Standard General Sky types and exports them as VTP[^vtp] files. Additionally,
+it supports the Overcast Sky (1955) formula, commonly designated as Sky Type 16. For the implementation, see the *CIESGS*
+class in the [CIESky.h](include/CIESky.h) file, and its accompanying software documentation.
 
 ### Command line
 The `cievtk` command-line is:
@@ -212,8 +212,10 @@ These functions were used in simulations and do not prevent the generation of VT
 
 [^vts]: VTK Structured Grid file format.
 
+[^soc]: The overcast sky used in the Firmament model.
+
 [^vtp]: VTK PolyData file format. 
 
-[^soc]: The standard overcast sky used in the Firmament model.
+
 
 
