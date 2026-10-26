@@ -132,8 +132,8 @@ The VTS output file contains ten scalar datasets for visualization, most notably
 those required to calculate radiation attenuation.
 
 ## CIE Standard General Sky
-The CIE Standard General Sky (defined by [ISO 15469:2004/CIE S 011/E:2003](https://cie.co.at/publications/spatial-distribution-daylight-cie-standard-general-sky)
-defines relative luminance distributions using five variable parameters. The parameter values for the 15 sky
+Standardised in [ISO 15469:2004/CIE S 011/E:2003](https://cie.co.at/publications/spatial-distribution-daylight-cie-standard-general-sky),
+the CIE Standard General Sky specifies relative luminance distributions using five variable parameters. The parameter values for the 15 sky
 types published in the same document were adopted from the framework finalized by Darula and Kittler (2002).
 The Overcast Sky (1955) is retained as a separate formula, based on the Moon and Spencer (1942) proposal[^soc].
 The CIE Standard General Sky and the Overcast Sky are also applied to predict sky radiance distributions in general, 
