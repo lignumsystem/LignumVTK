@@ -110,7 +110,7 @@ It reconstructs voxel space and voxel data 4D matrix representation, converting 
 to a VTK structured grid, where hexahedral elements are mapped to their corresponding
 voxel attributes. Default hexahedron edge size is the voxel edge size used in a simulation.
 
-The VTS output file contains ten scalar datasets for visualization, most notably
+The VTS output file contains 10 scalar datasets for visualization, most notably
 those required to calculate radiation attenuation.
 
 ### Command line
