@@ -110,6 +110,9 @@ It reconstructs voxel space and voxel data 4D matrix representation, converting 
 to a VTK structured grid, where hexahedral elements are mapped to their corresponding
 voxel attributes. Default hexahedron edge size is the voxel edge size used in a simulation.
 
+The VTS output file contains ten scalar datasets for visualization, most notably
+those required to calculate radiation attenuation.
+
 ### Command line
 The `vsvtk` command-line is:
 
@@ -120,16 +123,12 @@ The `vsvtk` command-line is:
 
 	./vsvtk -i File.h5 -list
 	
-**Example 2**: Read voxel space dataset from an HDF5 file and create VTS file. 
+**Example 2**: Read the voxel space dataset saved from year 60 in the HDF5 file and create the VTS file. 
 Set hexahedron (voxel) edge size to 3:
 	
 	./vsvtk -i File.h5 -dataset /VoxelSpaceData60 -o File.vts -edge 3
 
-The `vsvtk` program converts single voxel space datasets into VTS format. 
-Therefore, the argument string for `-dataset` requires a full path name.
-
-The VTS output file contains ten scalar datasets for visualization, most notably
-those required to calculate radiation attenuation.
+The *-dataset* argument requires the full path to the dataset.
 
 ## CIE Standard General Sky
 Standardised in [ISO 15469:2004/CIE S 011/E:2003](https://cie.co.at/publications/spatial-distribution-daylight-cie-standard-general-sky),
